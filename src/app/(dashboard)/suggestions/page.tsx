@@ -25,9 +25,9 @@ const Suggestions = () => {
           <Card className="relative w-full py-6 lg:py-8 max-w-xl rounded-xl text-center bg-primary/10">
             <CardHeader className="space-y-0 pb-2">
               <CardTitle className="text-3xl lg:text-6xl font-bold text-green-500">
-                {stats?.data?.newResponsesCount < 10
-                  ? `0${stats?.data?.newResponsesCount}`
-                  : stats?.data?.newResponsesCount || "00"}
+                {stats?.data?.newQueryCount < 10
+                  ? `0${stats?.data?.newQueryCount}`
+                  : stats?.data?.newQueryCount || "00"}
               </CardTitle>
             </CardHeader>
             <CardContent>

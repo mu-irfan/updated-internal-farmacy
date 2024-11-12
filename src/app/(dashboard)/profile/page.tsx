@@ -35,8 +35,6 @@ export default function ProfileForm() {
   const { mutate: updateCompany, isPending: updating } =
     useUpdateCompanyProfile();
 
-  console.log(data, "company profile");
-
   const form = useForm<z.infer<typeof profileFormSchema>>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {

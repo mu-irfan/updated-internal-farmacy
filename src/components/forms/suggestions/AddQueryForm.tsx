@@ -23,14 +23,17 @@ import {
 } from "@/components/ui/select";
 import LabelInputContainer from "../LabelInputContainer";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateTicket } from "@/hooks/useDataFetch";
+import { useCreateTicket, useGetAllCompanies } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { Toaster } from "react-hot-toast";
-import { productCategory } from "@/constant/data";
 
 const AddQueryForm = ({ onClose }: any) => {
-  const { mutate: addQuery, isPending: loading } = useCreateTicket();
   const { token } = useContextConsumer();
+  const { mutate: addQuery, isPending: loading } = useCreateTicket();
+  const { data: companiesList, isLoading: companiesListLoading } =
+    useGetAllCompanies(token);
+
+  console.log(companiesList, "stassssss");
 
   const form = useForm<z.infer<typeof addQueryFormSchema>>({
     resolver: zodResolver(addQueryFormSchema),
@@ -75,11 +78,14 @@ const AddQueryForm = ({ onClose }: any) => {
                       <SelectContent className="rounded-xl">
                         <SelectGroup>
                           <SelectLabel>Company</SelectLabel>
-                          {productCategory.map((item) => (
-                            <SelectItem key={item.value} value={item.value}>
-                              {item.label}
-                            </SelectItem>
-                          ))}
+                          {!companiesListLoading &&
+                            companiesList?.data?.companies.map(
+                              (company: any, index: number) => (
+                                <SelectItem key={index} value={company.company}>
+                                  {company.company}
+                                </SelectItem>
+                              )
+                            )}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
