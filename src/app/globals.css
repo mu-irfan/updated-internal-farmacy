@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.main-auth-div {
+  background-image: radial-gradient(
+      circle at 33% 41%,
+      rgba(250, 250, 250, 0.03) 0%,
+      rgba(250, 250, 250, 0.03) 50%,
+      rgba(37, 37, 37, 0.03) 50%,
+      rgba(37, 37, 37, 0.03) 100%
+    ),
+    radial-gradient(
+      circle at 76% 49%,
+      rgba(28, 28, 28, 0.03) 0%,
+      rgba(28, 28, 28, 0.03) 50%,
+      rgba(187, 187, 187, 0.03) 50%,
+      rgba(187, 187, 187, 0.03) 100%
+    ),
+    radial-gradient(
+      circle at 41% 99%,
+      rgba(247, 247, 247, 0.03) 0%,
+      rgba(247, 247, 247, 0.03) 50%,
+      rgba(120, 120, 120, 0.03) 50%,
+      rgba(120, 120, 120, 0.03) 100%
+    ),
+    radial-gradient(
+      circle at 66% 27%,
+      rgba(17, 17, 17, 0.03) 0%,
+      rgba(17, 17, 17, 0.03) 50%,
+      rgba(156, 156, 156, 0.03) 50%,
+      rgba(156, 156, 156, 0.03) 100%
+    ),
+    linear-gradient(0deg, rgb(21, 128, 61), rgb(20, 83, 45));
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 142 86% 28%;
+    --primary-foreground: 356 29% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 45%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 142 86% 28%;
+    --chart-1: 139 65% 20%;
+    --chart-2: 140 74% 44%;
+    --chart-3: 142 88% 28%;
+    --chart-4: 137 55% 15%;
+    --chart-5: 141 40% 9%;
+  }
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 142 86% 28%;
+    --primary-foreground: 356 29% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 142 86% 28%;
+    --chart-1: 142 88% 28%;
+    --chart-2: 139 65% 20%;
+    --chart-3: 140 74% 24%;
+    --chart-4: 137 55% 15%;
+    --chart-5: 141 40% 9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.cards {
+  background-image: radial-gradient(
+      circle at 33% 41%,
+      rgba(250, 250, 250, 0.03) 0%,
+      rgba(250, 250, 250, 0.03) 50%,
+      rgba(37, 37, 37, 0.03) 50%,
+      rgba(37, 37, 37, 0.03) 100%
+    ),
+    radial-gradient(
+      circle at 76% 49%,
+      rgba(28, 28, 28, 0.03) 0%,
+      rgba(28, 28, 28, 0.03) 50%,
+      rgba(187, 187, 187, 0.03) 50%,
+      rgba(187, 187, 187, 0.03) 100%
+    ),
+    radial-gradient(
+      circle at 41% 99%,
+      rgba(247, 247, 247, 0.03) 0%,
+      rgba(247, 247, 247, 0.03) 50%,
+      rgba(120, 120, 120, 0.03) 50%,
+      rgba(120, 120, 120, 0.03) 100%
+    ),
+    radial-gradient(
+      circle at 66% 27%,
+      rgba(17, 17, 17, 0.03) 0%,
+      rgba(17, 17, 17, 0.03) 50%,
+      rgba(156, 156, 156, 0.03) 50%,
+      rgba(156, 156, 156, 0.03) 100%
+    ),
+    linear-gradient(0deg, rgb(21, 128, 61), rgb(20, 83, 45));
+}
+
+.scrollbar-custom {
+  --sb-track-color: #ffffff;
+  --sb-thumb-color: #2aab59;
+  --sb-size: 2px;
+}
+.scrollbar-custom::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 17px;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 17px;
+}
+@supports not selector(::-webkit-scrollbar) {
+  .scrollbar-custom {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}
