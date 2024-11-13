@@ -7,44 +7,56 @@ import { Ban, Check, Search, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import DataTable from "@/components/Table/DataTable";
-import { companiesData } from "@/constant/data";
 import Header from "@/components/Header";
 import { debounce } from "lodash";
+import {
+  useDeleteRegisterCompany,
+  useRegisterCompaniesUsers,
+} from "@/hooks/useDataFetch";
+import { useContextConsumer } from "@/context/Context";
+import NoData from "@/components/alerts/NoData";
+import { SkeletonCard } from "@/components/SkeletonLoader";
+import { SweetAlert } from "@/components/alerts/SweetAlert";
+import { Toaster } from "react-hot-toast";
 
 const ManageRegisterCompanies = () => {
+  const { token } = useContextConsumer();
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const {
+    data: registeredCompaniesList,
+    isLoading: registeredCompaniesListLoading,
+  } = useRegisterCompaniesUsers(token);
+  const { mutate: deleteCompany, isPending: deletingCompany } =
+    useDeleteRegisterCompany(token);
 
   const handleSearchChange = debounce((value: string) => {
     setSearchQuery(value);
   }, 300);
 
-  // const filterRegisterCompanies = useMemo(() => {
-  //   if (!seeds || !seeds.data) return [];
-  //   return seeds.data
-  //     .filter((seed: any) =>
-  //       seed.seed_variety_name.toLowerCase().includes(searchQuery.toLowerCase())
-  //     )
-  //     .filter((seed: any) => {
-  //       if (
-  //         filterCriteria.category &&
-  //         seed.crop_category !== filterCriteria.category
-  //       )
-  //         return false;
-  //       if (filterCriteria.crop && seed.crop !== filterCriteria.crop)
-  //         return false;
-  //       return true;
-  //     });
-  // }, [seeds, searchQuery, filterCriteria]);
+  const filterRegisterCompaniesData = useMemo(() => {
+    if (!registeredCompaniesList || !registeredCompaniesList?.data) return [];
+    return registeredCompaniesList?.data?.filter((company: any) =>
+      company.company_name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [registeredCompaniesList, searchQuery]);
 
   const handleView = (franchise: Companies) => {
-    router.push(`/companies/register-companies/company/${franchise.id}`);
+    router.push(`/companies/register-companies/company/${franchise.uuid}`);
   };
 
-  const handleDelete = (franchiseId: number) => {
-    // Logic to delete the product
-    console.log("Delete franchise with ID:", franchiseId);
-    // Add your delete logic here
+  const handleDelete = async (company: any) => {
+    const isConfirmed = await SweetAlert(
+      "Delete Company?",
+      "",
+      "warning",
+      "Yes, delete it!",
+      "#15803D"
+    );
+    if (isConfirmed) {
+      deleteCompany(company.uuid);
+    }
   };
 
   const companyColumns: {
@@ -52,10 +64,10 @@ const ManageRegisterCompanies = () => {
     accessor: CompaniesColumnAccessor;
     Cell?: ({ row }: any) => JSX.Element;
   }[] = [
-    { Header: "Company Name", accessor: "managerName" },
+    { Header: "Company Name", accessor: "company_name" },
     { Header: "Email", accessor: "email" },
     { Header: "NTN", accessor: "ntn" },
-    { Header: "Contact", accessor: "phoneNo" },
+    { Header: "Contact", accessor: "contact" },
     {
       Header: "Verified",
       accessor: "verified",
@@ -81,8 +93,9 @@ const ManageRegisterCompanies = () => {
           </Button>
           <Button
             size="icon"
-            onClick={() => handleDelete(row.original.id)}
+            onClick={() => handleDelete(row.original)}
             className="bg-red-400 hover:bg-red-500 text-black"
+            disabled={deletingCompany}
           >
             <Trash className="w-4 h-4" />
           </Button>
@@ -93,6 +106,7 @@ const ManageRegisterCompanies = () => {
 
   return (
     <>
+      <Toaster />
       <DashboardLayout>
         <Header title="Get Registered Companies" />
         <p className="text-md lg:pl-2 font-normal text-left pb-3 dark:text-farmacieGrey">
@@ -113,10 +127,21 @@ const ManageRegisterCompanies = () => {
             </div>
           </CardContent>
         </Card>
-        <DataTable
-          columns={companyColumns}
-          data={companiesData as FranchiseTableRow[]}
-        />
+        <div className="w-full lg:col-span-3">
+          {registeredCompaniesListLoading ? (
+            <SkeletonCard className="w-full h-80" />
+          ) : registeredCompaniesList?.data &&
+            registeredCompaniesList?.data?.length > 0 ? (
+            <DataTable
+              columns={companyColumns}
+              data={filterRegisterCompaniesData as FranchiseTableRow[]}
+              extendWidth
+              paginate
+            />
+          ) : (
+            <NoData message="No Data Available" />
+          )}
+        </div>
       </DashboardLayout>
     </>
   );

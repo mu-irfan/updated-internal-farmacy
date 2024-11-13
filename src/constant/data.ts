@@ -188,9 +188,9 @@ export const productCategory = [
 ];
 
 export const companiesReportsTitles = [
-  { title: "Total Companies in List", key: "fertilizerCount" },
-  { title: "Registered Companies", key: "pesticideCount" },
-  { title: "Verified Companies", key: "pesticideCount" },
+  { title: "Total Companies in List", key: "globalListCompanies" },
+  { title: "Registered Companies", key: "registeredCompanies" },
+  { title: "Verified Companies", key: "verifiedCompanies" },
 ];
 
 //
@@ -222,49 +222,6 @@ export const provinces = [
   {
     value: "islamabad",
     label: "Islamabad",
-  },
-];
-
-export const suggestionsData: Suggestions[] = [
-  {
-    id: 1,
-    date: "2024-09-01",
-    query:
-      "There is an active ingredient name Nitrogen that is missingin the select active ingredient list.",
-    response:
-      " Your active ingredient is successfully added in the global list.",
-  },
-  {
-    id: 2,
-    date: "2024-09-01",
-    query:
-      " There is an active ingredient name Nitrogen that is missingin the select active ingredient list.",
-    response:
-      " Your active ingredient is successfully added in the global list.",
-  },
-  {
-    id: 3,
-    date: "2024-09-01",
-    query:
-      " There is an active ingredient name Nitrogen that is missingin the select active ingredient list.",
-    response:
-      " Your active ingredient is successfully added in the global list.",
-  },
-  {
-    id: 4,
-    date: "2024-09-01",
-    query:
-      " There is an active ingredient name Nitrogen that is missingin the select active ingredient list.",
-    response:
-      " Your active ingredient is successfully added in the global list.",
-  },
-  {
-    id: 5,
-    date: "2024-09-01",
-    query:
-      " There is an active ingredient name Nitrogen that is missingin the select active ingredient list.",
-    response:
-      " Your active ingredient is successfully added in the global list.",
   },
 ];
 

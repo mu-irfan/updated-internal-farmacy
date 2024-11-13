@@ -1,38 +1,75 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import DashboardLayout from "../dashboard-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, Trash } from "lucide-react";
 import Header from "@/components/Header";
 import { Input } from "@/components/ui/input";
 import DataTable from "@/components/Table/DataTable";
-import { ManagersData } from "@/constant/data";
 import { Button } from "@/components/ui/button";
 import AddIngredientModal from "@/components/forms-modals/ingredeints/AddNewIngredient";
+import {
+  useDeleteIngredient,
+  useGetAllIngredients,
+} from "@/hooks/useDataFetch";
+import { useContextConsumer } from "@/context/Context";
+import { debounce } from "lodash";
+import { SkeletonCard } from "@/components/SkeletonLoader";
+import NoData from "@/components/alerts/NoData";
+import { SweetAlert } from "@/components/alerts/SweetAlert";
+import { Toaster } from "react-hot-toast";
 
 const Ingredients = () => {
+  const { token } = useContextConsumer();
   const [isAddIngredientModalOpen, setAddIngredientModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isViewIngredientModalOpen, setViewIngredientModalOpen] =
     useState<boolean>(false);
   const [selectedIngredientToView, setSelectedIngredientToView] = useState({});
 
+  const { data: ingredeintsList, isLoading: ingredeintsListLoading } =
+    useGetAllIngredients(token);
+  const { mutate: deleteIngredient, isPending: deletingIngredient } =
+    useDeleteIngredient(token);
+
+  const handleSearchChange = debounce((value: string) => {
+    setSearchQuery(value);
+  }, 300);
+
+  const filterIngredientData = useMemo(() => {
+    if (!ingredeintsList?.data || !ingredeintsList?.data?.ingredients)
+      return [];
+    return ingredeintsList?.data?.ingredients?.filter((ingredient: any) =>
+      ingredient.ingredient_name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+    );
+  }, [ingredeintsList, searchQuery]);
+
   const handleView = (manager: any) => {
     setViewIngredientModalOpen(true);
     setSelectedIngredientToView(manager);
   };
 
-  const handleDelete = (managerId: string) => {
-    console.log("Delete seed with ID:", managerId);
-    // deleteManager(managerId);
+  const handleDelete = async (ingredient: any) => {
+    const isConfirmed = await SweetAlert(
+      "Delete Ingredient?",
+      "",
+      "warning",
+      "Yes, delete it!",
+      "#15803D"
+    );
+    if (isConfirmed) {
+      deleteIngredient(ingredient.ingredient_name);
+    }
   };
 
-  const ManagerColumns: {
+  const IngredientColumns: {
     Header: string;
-    accessor: ManagersColumnAccessor;
+    accessor: IngredientListColumnAccessor;
     Cell?: ({ row }: any) => JSX.Element;
   }[] = [
-    { Header: "Ingredient Name", accessor: "full_name" },
+    { Header: "Ingredient Name", accessor: "ingredient_name" },
     {
       Header: "",
       accessor: "actions",
@@ -48,9 +85,9 @@ const Ingredients = () => {
           </Button>
           <Button
             size="icon"
-            onClick={() => handleDelete(row.original.id)}
+            onClick={() => handleDelete(row.original)}
             className="bg-red-400 hover:bg-red-500 text-black"
-            // disabled={deletingManager}
+            disabled={deletingIngredient}
           >
             <Trash className="w-4 h-4" />
           </Button>
@@ -61,6 +98,7 @@ const Ingredients = () => {
 
   return (
     <>
+      <Toaster />
       <DashboardLayout>
         <Header title="Ingredient List" />
         <p className="text-md lg:pl-2 font-normal pb-4 text-left dark:text-farmacieGrey">
@@ -74,7 +112,7 @@ const Ingredients = () => {
                   placeholder="Search ingredient by name..."
                   type="text"
                   className="outline-none border py-5 border-primary rounded-full pl-12 w-full"
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => handleSearchChange(e.target.value)}
                 />
                 <Search className="absolute left-3.5 -translate-y-1/2 bottom-0.5 w-5 h-5 text-gray-400" />
               </div>
@@ -90,15 +128,24 @@ const Ingredients = () => {
         </Card>
         <div className="grid lg:grid-cols-4 grid-cols-1 gap-4 xl:gap-14">
           <div className="w-full lg:col-span-3">
-            <DataTable
-              columns={ManagerColumns}
-              data={ManagersData as ManagersTableRow[]}
-            />
+            {ingredeintsListLoading ? (
+              <SkeletonCard className="w-full h-80" />
+            ) : ingredeintsList?.data?.ingredients &&
+              ingredeintsList?.data?.ingredients?.length > 0 ? (
+              <DataTable
+                columns={IngredientColumns}
+                data={filterIngredientData as ingredientListTableRow[]}
+                extendWidth
+                paginate
+              />
+            ) : (
+              <NoData message="No Data Available" />
+            )}
           </div>
           <Card className="relative flex flex-col justify-center py-5 lg:col-span-1 rounded-xl text-center bg-primary/10 transition-all delay-75 group/number dark:shadow-2xl">
             <CardHeader className="space-y-0 pb-2">
               <CardTitle className="text-3xl lg:text-6xl font-bold text-primary dark:text-green-500">
-                25
+                {ingredeintsList?.data?.count || "00"}
               </CardTitle>
             </CardHeader>
             <CardContent className="dark:text-farmacieGrey">

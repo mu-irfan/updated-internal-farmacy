@@ -40,9 +40,11 @@ import {
   useCreateProduct,
   useDeleteProductImage,
   useGetAllActiveIngredients,
+  useGetAllCompaniesUsers,
   useGetCompanyProfile,
   useSubscribeProduct,
   useUpdateProduct,
+  useVerifyProduct,
 } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SweetAlert } from "@/components/alerts/SweetAlert";
@@ -88,20 +90,22 @@ const AddProductForm = ({
   const { mutate: addProduct, isPending: loading } = useCreateProduct();
   const { mutate: updateProduct, isPending: updating } =
     useUpdateProduct(token);
+  const { mutate: verifyProduct, isPending: verifying } =
+    useVerifyProduct(token);
   const { mutate: deleteProductImage, isPending: deletingImage } =
     useDeleteProductImage(token);
   const { data: activeIngredientsList, isLoading: loadingActiveIngredients } =
     useGetAllActiveIngredients(token);
   const { data: companyProfile, isLoading: profileDataLoading } =
     useGetCompanyProfile(token);
-
-  console.log(activeIngredientsList, "activeIngredientsList");
+  const { data: companiesUsersList, isLoading: companiesListLoading } =
+    useGetAllCompaniesUsers(token);
 
   const form = useForm<z.infer<typeof addProductFormSchema>>({
     resolver: zodResolver(addProductFormSchema),
     defaultValues: {
       name: "",
-      company_fk: companyProfile?.data?.company_fk,
+      company_fk: "",
       category: "",
       sub_category: "",
       package_weight: "",
@@ -147,12 +151,6 @@ const AddProductForm = ({
       }
     }
   }, [productData, reset, setInputFields]);
-
-  useEffect(() => {
-    if (companyProfile?.data?.company_fk) {
-      form.setValue("company_fk", companyProfile.data.company_fk);
-    }
-  }, [companyProfile, form]);
 
   const transformedActiveIngredients =
     activeIngredientsList?.data?.ingredients.map((ingredient: any) => ({
@@ -211,6 +209,11 @@ const AddProductForm = ({
       );
     }
     if (mode === "edit") {
+      // verifyProduct(productData.uuid, {
+      //   onError: (log) => {
+      //     console.log(log, "loglogloglog");
+      //   },
+      // });
       updateProduct(
         { data: formData, uuid: productData.uuid },
         {
@@ -311,15 +314,34 @@ const AddProductForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        placeholder="Sygenta fixed"
-                        type="text"
-                        id="company_fk"
-                        className="outline-none focus:border-primary disabled:bg-primary/20"
-                        {...field}
-                        value={form.getValues("company_fk")}
-                        disabled
-                      />
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                        }}
+                        disabled={isViewMode}
+                      >
+                        <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectValue
+                            placeholder={
+                              productData?.company_fk || "Select Brand Company"
+                            }
+                          />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-xl">
+                          <SelectGroup>
+                            <SelectLabel>Brand Name</SelectLabel>
+                            {!companiesListLoading &&
+                              companiesUsersList?.data?.map((company: any) => (
+                                <SelectItem
+                                  key={company.uuid}
+                                  value={company.company_fk}
+                                >
+                                  {company.company_fk}
+                                </SelectItem>
+                              ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

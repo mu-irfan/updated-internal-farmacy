@@ -1,28 +1,47 @@
 "use client";
 import DashboardLayout from "@/app/(dashboard)/dashboard-layout";
+import NoData from "@/components/alerts/NoData";
 import VerifyCompanyModal from "@/components/forms-modals/companies/VerifyCompany";
 import Stats from "@/components/forms-modals/ingredeints/Stats";
 import Header from "@/components/Header";
 import DataTable from "@/components/Table/DataTable";
 import { Button } from "@/components/ui/button";
 import { companiesData, franchiseData } from "@/constant/data";
+import { useContextConsumer } from "@/context/Context";
+import {
+  useGetAllCompanyFranchises,
+  useGetCompanyFranchiseStats,
+  useRegisterCompaniesUsers,
+} from "@/hooks/useDataFetch";
 import { Ban, Check } from "lucide-react";
 import React, { useState } from "react";
 
 const RegisterCompanyDetails = ({ params }: { params: { id: string } }) => {
+  const { token } = useContextConsumer();
   const [isVerifyCompanyModalOpen, setVerifyCompanyModalOpen] =
     useState<boolean>(false);
-  const [visibleTable, setVisibleTable] = useState<"seeds" | "products" | null>(
-    null
+  const [visibleTable, setVisibleTable] = useState<
+    "franchise" | "companies" | null
+  >(null);
+
+  //
+  const {
+    data: registeredCompaniesList,
+    isLoading: registeredCompaniesListLoading,
+  } = useRegisterCompaniesUsers(token);
+
+  const selectedCompany = registeredCompaniesList?.data?.find(
+    (franchise: any) => franchise.uuid === params.id
   );
 
-  const franchiseId = parseInt(params.id, 10);
-  const selectedFranchise = companiesData.find(
-    (franchise) => franchise.id === franchiseId
-  );
+  const {
+    data: CompanyFranchises,
+    isLoading: franchisesLoading,
+    refetch,
+  } = useGetAllCompanyFranchises(selectedCompany?.company_fk, token);
 
-  if (!selectedFranchise) {
-    return <p>Franchise not found.</p>;
+  if (!selectedCompany) {
+    return <p>Register Company Not Found.</p>;
   }
 
   const franchiseColumns: {
@@ -31,7 +50,11 @@ const RegisterCompanyDetails = ({ params }: { params: { id: string } }) => {
     Cell?: ({ row }: any) => JSX.Element;
   }[] = [
     { Header: "Address", accessor: "address" },
-    { Header: "Contact", accessor: "contact" },
+    {
+      Header: "Contact",
+      accessor: "contact",
+      Cell: ({ row }: any) => row.original.franchise_manager?.contact || "N/A",
+    },
     { Header: "Tehsil", accessor: "tehsil" },
     { Header: "District", accessor: "district" },
     { Header: "Province", accessor: "province" },
@@ -51,33 +74,50 @@ const RegisterCompanyDetails = ({ params }: { params: { id: string } }) => {
     <>
       <DashboardLayout>
         <Header title="Company Details" />
-        <Stats stats={selectedFranchise} />
+        <Stats stats={selectedCompany} />
         <div className="flex items-center justify-end gap-3 mb-8">
-          {selectedFranchise.verified && (
+          {selectedCompany.verified && (
             <Button
               className="font-medium w-60"
-              onClick={() => setVisibleTable("products")}
+              onClick={() => {
+                refetch();
+                setVisibleTable("franchise");
+              }}
             >
               Verify Franchises
             </Button>
           )}
-          {!selectedFranchise.verified && (
+          {!selectedCompany.verified && (
             <Button
               className="font-medium w-60"
-              onClick={() => setVerifyCompanyModalOpen(true)}
+              onClick={() => {
+                setVisibleTable("companies");
+                setVerifyCompanyModalOpen(true);
+              }}
             >
               Verify Company
             </Button>
           )}
         </div>
-        {visibleTable === "products" && (
-          <DataTable columns={franchiseColumns} data={franchiseData} paginate />
+        {visibleTable === "franchise" &&
+        CompanyFranchises &&
+        CompanyFranchises?.data?.length > 0 ? (
+          <DataTable
+            columns={franchiseColumns}
+            data={CompanyFranchises?.data as FranchiseTableRow[]}
+          />
+        ) : (
+          visibleTable === "franchise" && (
+            <NoData message="No Franchise Available..." />
+          )
         )}
       </DashboardLayout>
-      <VerifyCompanyModal
-        open={isVerifyCompanyModalOpen}
-        onOpenChange={setVerifyCompanyModalOpen}
-      />
+      {visibleTable === "companies" && (
+        <VerifyCompanyModal
+          open={isVerifyCompanyModalOpen}
+          onOpenChange={setVerifyCompanyModalOpen}
+        />
+      )}
     </>
   );
 };

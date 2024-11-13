@@ -11,7 +11,7 @@ import { Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
 import AddCompanyForm from "@/components/forms/companies/AddNewCompanyForm";
 
-const AddCompanyModal = ({ open, onOpenChange, mode, manager }: any) => {
+const AddCompanyModal = ({ open, onOpenChange, mode, company }: any) => {
   const [currentMode, setCurrentMode] = useState(mode);
 
   useEffect(() => {
@@ -47,7 +47,11 @@ const AddCompanyModal = ({ open, onOpenChange, mode, manager }: any) => {
                 : "Update the company name in the list"}
             </DialogDescription>
           </DialogHeader>
-          <AddCompanyForm mode={currentMode} manager={manager} />
+          <AddCompanyForm
+            mode={currentMode}
+            company={company}
+            onClose={onOpenChange}
+          />
         </DialogContent>
       </Dialog>
     </>

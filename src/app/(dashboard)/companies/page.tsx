@@ -7,14 +7,14 @@ import Link from "next/link";
 import ReportCard from "@/components/ReportCard";
 import { companiesReportsTitles } from "@/constant/data";
 import { useContextConsumer } from "@/context/Context";
-import { useGetProductStats } from "@/hooks/useDataFetch";
+import { useGetCompaniesStats } from "@/hooks/useDataFetch";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 
 const Franchises = () => {
   const { token, setMode } = useContextConsumer();
 
   //
-  const { data: stats, isLoading: loading } = useGetProductStats(token);
+  const { data: stats, isLoading: loading } = useGetCompaniesStats(token);
 
   const reportsWithStats = useMemo(() => {
     return companiesReportsTitles.map((report) => ({

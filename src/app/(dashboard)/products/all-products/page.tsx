@@ -11,6 +11,7 @@ import Header from "@/components/Header";
 import { Input } from "@/components/ui/input";
 import {
   useDeleteProduct,
+  useGetAllCompanies,
   useGetAllProducts,
   useGetProduct,
 } from "@/hooks/useDataFetch";
@@ -40,7 +41,9 @@ import { SweetAlert } from "@/components/alerts/SweetAlert";
 import { cn } from "@/lib/utils";
 import { filterProductsFormSchema } from "@/schemas/validation/validationSchema";
 import LabelInputContainer from "@/components/forms/LabelInputContainer";
-import { productCategory } from "@/constant/data";
+import { productCategory, productsList } from "@/constant/data";
+
+type ProductCategory = keyof typeof productsList;
 
 const AllProducts = () => {
   const { token } = useContextConsumer();
@@ -50,6 +53,9 @@ const AllProducts = () => {
   const [selectedProductToView, setSelectedProductToView] = useState({});
   const [isProductFilterModalOpen, setProductFilterModalOpen] =
     useState<boolean>(false);
+  const [selectedCategory, setSelectedCategory] = useState<
+    ProductCategory | ""
+  >("");
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [currentProductUuid, setCurrentProductUuid] = useState<string | null>(
     null
@@ -59,19 +65,23 @@ const AllProducts = () => {
     resolver: zodResolver(filterProductsFormSchema),
     defaultValues: {
       category: "",
-      subCategory: "",
-      allCompanies: "",
+      sub_category: "",
+      company_fk: "",
     },
   });
 
   const [filterCriteria, setFilterCriteria] = useState({
     category: "",
-    subCategory: "",
-    allCompanies: "",
+    sub_category: "",
+    company_fk: "",
   });
 
   // data management
-  const { data: products, isLoading: loading } = useGetAllProducts(token);
+  const { data: products, isLoading: loading } = useGetAllProducts(
+    token,
+    filterCriteria
+  );
+
   const {
     data: productDetails,
     isLoading: productLoading,
@@ -81,19 +91,22 @@ const AllProducts = () => {
   const { mutate: deleteProduct, isPending: deletingProduct } =
     useDeleteProduct(token);
 
+  const { data: companiesList, isLoading: companiesListLoading } =
+    useGetAllCompanies(token);
+
   const handleSearchChange = debounce((value: string) => {
     setSearchQuery(value);
   }, 300);
 
   const handleFilterSubmit = (criteria: {
     category?: string;
-    subCategory?: string;
-    allCompanies?: string;
+    sub_category?: string;
+    company_fk?: string;
   }) => {
     setFilterCriteria({
       category: criteria.category || "",
-      subCategory: criteria.subCategory || "",
-      allCompanies: criteria.allCompanies || "",
+      sub_category: criteria.sub_category || "",
+      company_fk: criteria.company_fk || "",
     });
     setProductFilterModalOpen(false);
   };
@@ -111,13 +124,13 @@ const AllProducts = () => {
         )
           return false;
         if (
-          filterCriteria.subCategory &&
-          product.sub_category !== filterCriteria.subCategory
+          filterCriteria.sub_category &&
+          product.sub_category !== filterCriteria.sub_category
         )
           return false;
         if (
-          filterCriteria.allCompanies &&
-          product.allCompanies !== filterCriteria.allCompanies
+          filterCriteria.company_fk &&
+          product.company_fk !== filterCriteria.company_fk
         )
           return false;
         return true;
@@ -219,7 +232,11 @@ const AllProducts = () => {
                         <FormItem>
                           <FormControl>
                             <Select
-                              onValueChange={(value) => field.onChange(value)}
+                              onValueChange={(value) => {
+                                setSelectedCategory(value as any);
+                                form.setValue("sub_category", "");
+                                field.onChange(value);
+                              }}
                             >
                               <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieGrey focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
                                 <SelectValue placeholder="Select Category" />
@@ -247,7 +264,7 @@ const AllProducts = () => {
                   <LabelInputContainer className="lg:col-span-3">
                     <FormField
                       control={form.control}
-                      name="subCategory"
+                      name="sub_category"
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
@@ -255,19 +272,22 @@ const AllProducts = () => {
                               onValueChange={(value) => field.onChange(value)}
                             >
                               <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieGrey focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
-                                <SelectValue placeholder="All Subcategory" />
+                                <SelectValue placeholder="All sub_category" />
                               </SelectTrigger>
                               <SelectContent className="rounded-xl">
                                 <SelectGroup>
                                   <SelectLabel>Sub-Category</SelectLabel>
-                                  {productCategory.map((item) => (
-                                    <SelectItem
-                                      key={item.value}
-                                      value={item.value}
-                                    >
-                                      {item.label}
-                                    </SelectItem>
-                                  ))}
+                                  {selectedCategory &&
+                                    productsList[selectedCategory]?.map(
+                                      (subCategory: any, ind: number) => (
+                                        <SelectItem
+                                          key={ind}
+                                          value={subCategory.toLowerCase()}
+                                        >
+                                          {subCategory}
+                                        </SelectItem>
+                                      )
+                                    )}
                                 </SelectGroup>
                               </SelectContent>
                             </Select>
@@ -280,7 +300,7 @@ const AllProducts = () => {
                   <LabelInputContainer className="lg:col-span-3">
                     <FormField
                       control={form.control}
-                      name="allCompanies"
+                      name="company_fk"
                       render={({ field }) => (
                         <FormItem>
                           <FormControl>
@@ -292,15 +312,18 @@ const AllProducts = () => {
                               </SelectTrigger>
                               <SelectContent className="rounded-xl">
                                 <SelectGroup>
-                                  <SelectLabel>Companies</SelectLabel>
-                                  {productCategory.map((item) => (
-                                    <SelectItem
-                                      key={item.value}
-                                      value={item.value}
-                                    >
-                                      {item.label}
-                                    </SelectItem>
-                                  ))}
+                                  <SelectLabel>Company</SelectLabel>
+                                  {!companiesListLoading &&
+                                    companiesList?.data?.companies?.map(
+                                      (company: any) => (
+                                        <SelectItem
+                                          key={company.uuid}
+                                          value={company.company}
+                                        >
+                                          {company.company}
+                                        </SelectItem>
+                                      )
+                                    )}
                                 </SelectGroup>
                               </SelectContent>
                             </Select>
@@ -364,7 +387,7 @@ const AllProducts = () => {
             extendWidth
           />
         ) : (
-          <NoData message="No Data Available" />
+          <NoData message="No Data Available, Please Select Category, sub category to view products" />
         )}
       </DashboardLayout>
       <div className="overflow-y-auto">

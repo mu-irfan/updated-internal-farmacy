@@ -24,8 +24,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useGetAllCompaniesUsers } from "@/hooks/useDataFetch";
+import { useContextConsumer } from "@/context/Context";
 
 const VerifyCompanyForm = () => {
+  const { token } = useContextConsumer();
   const form = useForm<z.infer<typeof verifyCompanyFormSchema>>({
     resolver: zodResolver(verifyCompanyFormSchema),
     defaultValues: {
@@ -33,8 +36,11 @@ const VerifyCompanyForm = () => {
     },
   });
 
+  const { data: companiesUsersList, isLoading: companiesListLoading } =
+    useGetAllCompaniesUsers(token);
+
   const onSubmit = (data: z.infer<typeof verifyCompanyFormSchema>) => {
-    console.log("Submitting form data:", data);
+    console.log("heyyyyy", data);
   };
 
   return (
@@ -60,12 +66,13 @@ const VerifyCompanyForm = () => {
                     </SelectTrigger>
                     <SelectContent className="rounded-xl">
                       <SelectGroup>
-                        <SelectLabel>Company Name</SelectLabel>
-                        {productCategory.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
+                        <SelectLabel>Company</SelectLabel>
+                        {!companiesListLoading &&
+                          companiesUsersList?.data?.map((company: any) => (
+                            <SelectItem key={company.uuid} value={company.uuid}>
+                              {company.company_fk}
+                            </SelectItem>
+                          ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>

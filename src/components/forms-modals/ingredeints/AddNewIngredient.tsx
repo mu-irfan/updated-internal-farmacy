@@ -49,7 +49,11 @@ const AddIngredientModal = ({ open, onOpenChange, mode, manager }: any) => {
                 : "Update the active ingredient name in the list"}
             </DialogDescription>
           </DialogHeader>
-          <AddIngredientForm mode={currentMode} manager={manager} />
+          <AddIngredientForm
+            mode={currentMode}
+            company={manager}
+            onClose={onOpenChange}
+          />
         </DialogContent>
       </Dialog>
     </>

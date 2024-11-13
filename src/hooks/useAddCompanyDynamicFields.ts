@@ -8,8 +8,15 @@ const useCompanyDynamicFields = (initialCount: number) => {
   };
 
   const handleDeleteField = (index: number) => {
+    if (inputFields.length > 1) {
+      const updatedFields = inputFields.filter((_, i) => i !== index);
+      setInputFields(updatedFields);
+    }
+  };
+
+  const handleFieldChange = (index: number, value: string) => {
     const updatedFields = [...inputFields];
-    updatedFields.splice(index, 1);
+    updatedFields[index] = value;
     setInputFields(updatedFields);
   };
 
@@ -17,6 +24,7 @@ const useCompanyDynamicFields = (initialCount: number) => {
     inputFields,
     handleAddField,
     handleDeleteField,
+    handleFieldChange,
   };
 };
 

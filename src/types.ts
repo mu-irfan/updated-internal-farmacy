@@ -74,6 +74,14 @@ interface Manager {
   contact: string;
 }
 
+interface GlobalCompaniesList {
+  company: string;
+}
+
+interface IngredientList {
+  ingredient_name: string;
+}
+
 interface TrailData {
   id: number;
   stage: string;
@@ -127,20 +135,21 @@ interface CropTrailsStages {
 }
 
 interface Companies {
-  id: number;
-  managerName: string;
+  uuid: number;
+  company_name: string;
   email: string;
   franchiseName: string;
-  phoneNo: string;
+  contact: string;
   ntn: string;
   verified: boolean;
 }
 
 interface Suggestions {
   id: number;
-  date: string;
-  query: string;
-  response: string;
+  createdAt: string;
+  first_query: string;
+  responded: string;
+  query_viewed: string;
 }
 
 interface Franchises {
@@ -192,6 +201,14 @@ interface ManagersTableRow extends Manager {
   actions?: never;
 }
 
+interface GlobalCompaniesListTableRow extends GlobalCompaniesList {
+  actions?: never;
+}
+
+interface ingredientListTableRow extends IngredientList {
+  actions?: never;
+}
+
 interface FranchiseTableRow extends Franchise {
   actions?: never;
 }
@@ -231,6 +248,10 @@ type SeedColumnAccessor = keyof Seed | "actions";
 
 type ManagersColumnAccessor = keyof Manager | "actions";
 
+type GlobalCompaniesListColumnAccessor = keyof GlobalCompaniesList | "actions";
+
+type IngredientListColumnAccessor = keyof IngredientList | "actions";
+
 type CropColumnAccessor = keyof Crop | "actions";
 
 type CropStageColumnAccessor = keyof CropTrailsStages | "actions";
@@ -250,8 +271,8 @@ type FranchisesColumnAccessor = keyof Franchises | "active";
 type SuggestionsColumnAccessor =
   | keyof Suggestions
   | "actions"
-  | "response"
-  | "viewed";
+  | "responded"
+  | "query_viewed";
 
 type AddProductModalProps = {
   open: boolean;
@@ -339,3 +360,11 @@ interface MultiSelectContextProps {
   ref: React.RefObject<HTMLInputElement>;
   handleSelect: (e: React.SyntheticEvent<HTMLInputElement>) => void;
 }
+
+type AddCompanyGlobalListFormData = {
+  companies: string[];
+};
+
+type AddIngredientFormData = {
+  ingredients: string[];
+};

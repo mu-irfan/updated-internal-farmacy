@@ -2,21 +2,15 @@
 import React, { useState } from "react";
 import DashboardLayout from "../../dashboard-layout";
 import { Button } from "@/components/ui/button";
-import { Ban, Check, Trash } from "lucide-react";
+import { Ban, Check } from "lucide-react";
 import DataTable from "@/components/Table/DataTable";
 import Header from "@/components/Header";
 import QueryResponsesModal from "@/components/forms-modals/suggestions/QueryResponses";
-import {
-  useDeleteQuery,
-  useGetAllTickets,
-  useQueryResponseViewed,
-} from "@/hooks/useDataFetch";
+import { useGetAllTickets, useQueryResponseViewed } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import NoData from "@/components/alerts/NoData";
-import { SweetAlert } from "@/components/alerts/SweetAlert";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import { Toaster } from "react-hot-toast";
-import { suggestionsData } from "@/constant/data";
 
 const ManageSuggestions = () => {
   const { token } = useContextConsumer();
@@ -26,8 +20,6 @@ const ManageSuggestions = () => {
 
   //
   const { data: queries, isLoading: loading } = useGetAllTickets(token);
-  const { mutate: deleteQuery, isPending: deletingQuery } =
-    useDeleteQuery(token);
   const { mutate: responseViewed, isPending: viewing } =
     useQueryResponseViewed(token);
 
@@ -37,42 +29,34 @@ const ManageSuggestions = () => {
     responseViewed(suggestion.uuid);
   };
 
-  const handleDelete = async (suggestionId: any) => {
-    const isConfirmed = await SweetAlert(
-      "Delete Query?",
-      "",
-      "warning",
-      "Yes, delete it!",
-      "#15803D"
-    );
-    if (isConfirmed) {
-      deleteQuery(suggestionId);
-    }
-  };
-
   const suggestionsColumns: {
     Header: string;
     accessor: SuggestionsColumnAccessor;
     Cell?: ({ row }: any) => JSX.Element;
   }[] = [
-    { Header: "Date", accessor: "date" },
+    {
+      Header: "Date",
+      accessor: "createdAt",
+      Cell: ({ row }: any) =>
+        row.original.createdAt.toString().split("T")[0] || "N/A",
+    },
     {
       Header: "Query",
-      accessor: "query",
+      accessor: "first_query",
       Cell: ({ row }: any) => (
         <div
           className="w-40 overflow-hidden text-ellipsis whitespace-nowrap"
-          title={row.original.query}
+          title={row.original.first_query}
         >
-          {row.original.query}
+          {row.original.first_query}
         </div>
       ),
     },
     {
       Header: "Response",
-      accessor: "response",
+      accessor: "responded",
       Cell: ({ row }: any) =>
-        row.original.response ? (
+        row.original.responded ? (
           <Check className="text-primary" />
         ) : (
           <Ban className="text-yellow-500 w-5 h-5" />
@@ -80,9 +64,9 @@ const ManageSuggestions = () => {
     },
     {
       Header: "Viewed",
-      accessor: "viewed",
+      accessor: "query_viewed",
       Cell: ({ row }: any) =>
-        row.original.viewed ? (
+        row.original.query_viewed ? (
           <Check className="text-primary" />
         ) : (
           <Ban className="text-yellow-500 w-5 h-5" />
@@ -114,24 +98,17 @@ const ManageSuggestions = () => {
         <p className="text-md lg:pl-2 font-normal pb-4 text-left dark:text-farmacieGrey">
           Responses of your suggestion and quries
         </p>
-        {/* {loading ? (
+        {loading ? (
           <SkeletonCard className="w-full h-80" />
         ) : queries?.data && queries?.data?.length > 0 ? (
           <DataTable
             columns={suggestionsColumns}
-            // data={queries.data as SuggestionsTableActionRow[]}
-            data={suggestionsData as SuggestionsTableActionRow[]}
+            data={queries.data as SuggestionsTableActionRow[]}
             extendWidth
           />
         ) : (
           <NoData message="No Data Available" />
-        )} */}
-        <DataTable
-          columns={suggestionsColumns}
-          // data={queries.data as SuggestionsTableActionRow[]}
-          data={suggestionsData as SuggestionsTableActionRow[]}
-          extendWidth
-        />
+        )}
       </DashboardLayout>
       <QueryResponsesModal
         open={isQueryResponsesModalOpen}

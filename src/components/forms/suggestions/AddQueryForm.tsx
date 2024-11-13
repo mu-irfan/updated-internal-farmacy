@@ -23,17 +23,15 @@ import {
 } from "@/components/ui/select";
 import LabelInputContainer from "../LabelInputContainer";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateTicket, useGetAllCompanies } from "@/hooks/useDataFetch";
+import { useCreateTicket, useGetAllCompaniesUsers } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { Toaster } from "react-hot-toast";
 
 const AddQueryForm = ({ onClose }: any) => {
   const { token } = useContextConsumer();
   const { mutate: addQuery, isPending: loading } = useCreateTicket();
-  const { data: companiesList, isLoading: companiesListLoading } =
-    useGetAllCompanies(token);
-
-  console.log(companiesList, "stassssss");
+  const { data: companiesUsersList, isLoading: companiesListLoading } =
+    useGetAllCompaniesUsers(token);
 
   const form = useForm<z.infer<typeof addQueryFormSchema>>({
     resolver: zodResolver(addQueryFormSchema),
@@ -45,7 +43,10 @@ const AddQueryForm = ({ onClose }: any) => {
 
   const onSubmit = (data: z.infer<typeof addQueryFormSchema>) => {
     addQuery(
-      { data, token },
+      {
+        data: { query: data.query, company_uuid: data.company },
+        token,
+      },
       {
         onSuccess: (log) => {
           if (log?.success) {
@@ -79,13 +80,14 @@ const AddQueryForm = ({ onClose }: any) => {
                         <SelectGroup>
                           <SelectLabel>Company</SelectLabel>
                           {!companiesListLoading &&
-                            companiesList?.data?.companies.map(
-                              (company: any, index: number) => (
-                                <SelectItem key={index} value={company.company}>
-                                  {company.company}
-                                </SelectItem>
-                              )
-                            )}
+                            companiesUsersList?.data?.map((company: any) => (
+                              <SelectItem
+                                key={company.uuid}
+                                value={company.uuid}
+                              >
+                                {company.company_fk}
+                              </SelectItem>
+                            ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>

@@ -24,7 +24,6 @@ import {
 import {
   createFurtherQuery,
   createQuery,
-  deleteQuery,
   getAllQueries,
   getQueriesChats,
   getSuggestionsStats,
@@ -39,6 +38,7 @@ import {
   getProduct,
   getProductStats,
   updateProduct,
+  verifyProduct,
 } from "@/api/products";
 import {
   createSeed,
@@ -77,7 +77,25 @@ import {
   getSeedTrailStagesFormFields,
   updateSeedTrailStages,
 } from "@/api/seedTrail";
-import { getAllCompaniesList } from "@/api/companies";
+import {
+  createCompany,
+  deleteCompany,
+  getAllCompaniesList,
+  getCompaniesStats,
+} from "@/api/companies";
+import {
+  deleteRegisterCompany,
+  getAllCompaniesUserList,
+  getCompaniesFranchiseStats,
+  getCompanyFranchises,
+  getRegisterCompaniesList,
+  verifyCompany,
+} from "@/api/companiesUser";
+import {
+  createIngredient,
+  deleteIngredient,
+  getAllIngredientsList,
+} from "@/api/ingredients";
 
 export const useRegisterCompany = () => {
   const router = useRouter();
@@ -375,24 +393,6 @@ export const useCreateFurtherQuery = () => {
   });
 };
 
-export const useDeleteQuery = (token: string) => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (uuid: any) => deleteQuery(uuid, token),
-    onSuccess: (data: any, variables: { data: any; token: string }) => {
-      if (data?.success) {
-        toast.success(data?.message);
-        queryClient.invalidateQueries(["alTickets", variables.token] as any);
-      } else {
-        toast.error(data?.response?.data?.message);
-      }
-    },
-    onError: (error: any) => {
-      toast.error(error.response?.data?.message);
-    },
-  });
-};
-
 // Products  API's Functions
 export const useGetProductStats = (token: string) => {
   return useQuery<any, Error>({
@@ -413,10 +413,10 @@ export const useGetProductStats = (token: string) => {
   } as UseQueryOptions);
 };
 
-export const useGetAllProducts = (token: string) => {
+export const useGetAllProducts = (token: string, filters: any) => {
   return useQuery<any, Error>({
-    queryKey: ["allProducts", token],
-    queryFn: () => getAllProducts(token),
+    queryKey: ["allProducts", token, filters],
+    queryFn: () => getAllProducts(token, filters),
     onSuccess: (data: any) => {
       if (data?.success) {
         toast.success(data?.message);
@@ -523,6 +523,24 @@ export const useDeleteProductImage = (token: string) => {
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message);
+    },
+  });
+};
+
+export const useVerifyProduct = (token: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ uuid }: { uuid: any }) => verifyProduct(uuid, token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data.message);
+        queryClient.invalidateQueries(["allProducts", token] as any);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
     },
   });
 };
@@ -1209,4 +1227,248 @@ export const useGetAllCompanies = (token: string) => {
     staleTime: 60000,
     refetchOnWindowFocus: false,
   } as UseQueryOptions);
+};
+
+export const useGetCompaniesStats = (token: string) => {
+  return useQuery<any, Error>({
+    queryKey: ["companiesStats", token],
+    queryFn: () => getCompaniesStats(token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+  } as UseQueryOptions);
+};
+
+export const useGetAllCompaniesUsers = (token: string) => {
+  return useQuery<any, Error>({
+    queryKey: ["allCompaniesUserList", token],
+    queryFn: () => getAllCompaniesUserList(token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+  } as UseQueryOptions);
+};
+
+export const useCreateCompany = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ data, token }: { data: any; token: string }) =>
+      createCompany(data, token),
+    onSuccess: (data: any, variables: { data: any; token: string }) => {
+      if (data?.success) {
+        toast.success(data?.message);
+        queryClient.invalidateQueries([
+          "allCompaniesUserList",
+          variables.token,
+        ] as any);
+      } else {
+        toast.error(data?.response?.data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message);
+    },
+  });
+};
+
+export const useDeleteCompany = (token: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (name: any) => deleteCompany(name, token),
+    onSuccess: (data: any, variables: { data: any; token: string }) => {
+      if (data?.success) {
+        toast.success(data?.message);
+        queryClient.invalidateQueries([
+          "allCompaniesUserList",
+          variables.token,
+        ] as any);
+      } else {
+        toast.error(data?.response?.data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message);
+    },
+  });
+};
+
+export const useGetAllIngredients = (token: string) => {
+  return useQuery<any, Error>({
+    queryKey: ["allIngredientsList", token],
+    queryFn: () => getAllIngredientsList(token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+  } as UseQueryOptions);
+};
+
+// ingredients
+export const useCreateIngredient = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ data, token }: { data: any; token: string }) =>
+      createIngredient(data, token),
+    onSuccess: (data: any, variables: { data: any; token: string }) => {
+      if (data?.success) {
+        toast.success(data?.message);
+        queryClient.invalidateQueries([
+          "allIngredientsList",
+          variables.token,
+        ] as any);
+      } else {
+        toast.error(data?.response?.data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message);
+    },
+  });
+};
+
+export const useDeleteIngredient = (token: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (name: any) => deleteIngredient(name, token),
+    onSuccess: (data: any, variables: { data: any; token: string }) => {
+      if (data?.success) {
+        toast.success(data?.message);
+        queryClient.invalidateQueries([
+          "allIngredientsList",
+          variables.token,
+        ] as any);
+      } else {
+        toast.error(data?.response?.data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message);
+    },
+  });
+};
+
+export const useRegisterCompaniesUsers = (token: string) => {
+  return useQuery<any, Error>({
+    queryKey: ["allRegisterCompaniesUsersList", token],
+    queryFn: () => getRegisterCompaniesList(token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+  } as UseQueryOptions);
+};
+
+export const useDeleteRegisterCompany = (token: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (uuid: any) => deleteRegisterCompany(uuid, token),
+    onSuccess: (data: any, variables: { data: any; token: string }) => {
+      if (data?.success) {
+        toast.success(data?.message);
+        queryClient.invalidateQueries([
+          "allRegisterCompaniesUsersList",
+          variables.token,
+        ] as any);
+      } else {
+        toast.error(data?.response?.data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message);
+    },
+  });
+};
+
+export const useGetCompanyFranchiseStats = (company: string, token: string) => {
+  return useQuery<any, Error>({
+    queryKey: ["companyFranchiseStats", company, token],
+    queryFn: () => getCompaniesFranchiseStats(company, token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+  } as UseQueryOptions);
+};
+
+export const useGetAllCompanyFranchises = (company: string, token: string) => {
+  return useQuery<any, Error>({
+    queryKey: ["companyFranchises", company, token],
+    queryFn: () => getCompanyFranchises(company, token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+  } as UseQueryOptions);
+};
+
+export const useVerifyCompany = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ data, token }: { data: any; token: string }) =>
+      verifyCompany(data, token),
+    onSuccess: (data: any, variables: { data: any; token: string }) => {
+      if (data?.success) {
+        toast.success(data?.message);
+        queryClient.invalidateQueries([
+          "allRegisterCompaniesUsersList",
+          variables.token,
+        ] as any);
+      } else {
+        toast.error(data?.response?.data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message);
+    },
+  });
 };

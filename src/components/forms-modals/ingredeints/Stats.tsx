@@ -1,9 +1,15 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useGetCompanyFranchiseStats } from "@/hooks/useDataFetch";
+import { useContextConsumer } from "@/context/Context";
 
 const Stats = ({ stats }: any) => {
+  const { token } = useContextConsumer();
   const franchiseEntries = Object.entries(stats);
+
+  const { data: franchiseStats, isLoading: loading } =
+    useGetCompanyFranchiseStats(stats.company_fk, token);
 
   return (
     <>
@@ -39,7 +45,9 @@ const Stats = ({ stats }: any) => {
           <Card className="relative flex flex-col justify-center w-full pt-4 rounded-xl text-center bg-primary/10 overflow-hidden flex-grow min-h-[100px]">
             <CardHeader className="space-y-0 pb-2">
               <CardTitle className="text-3xl lg:text-6xl font-bold text-green-500">
-                12
+                {franchiseStats?.data?.franchiseCount < 10
+                  ? `0${franchiseStats?.data?.franchiseCount}`
+                  : franchiseStats?.data?.franchiseCount || "00"}
               </CardTitle>
             </CardHeader>
             <CardContent>

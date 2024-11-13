@@ -29,20 +29,21 @@ const Responses = ({ currentQueryUuid }: { currentQueryUuid: string }) => {
     currentQueryUuid!,
     token
   );
+
   const { mutate: addFurtherQuery, isPending: creatingQuery } =
     useCreateFurtherQuery();
 
   const form = useForm<z.infer<typeof queryResponseSchema>>({
     resolver: zodResolver(queryResponseSchema),
     defaultValues: {
-      query: "",
+      response: "",
     },
   });
 
   const onSubmit = (data: z.infer<typeof queryResponseSchema>) => {
     const payload = {
       uuid: currentQueryUuid,
-      query: data.query,
+      response: data.response,
     };
     addFurtherQuery(
       { data: payload, token },
@@ -91,12 +92,12 @@ const Responses = ({ currentQueryUuid }: { currentQueryUuid: string }) => {
                 <LabelInputContainer className="mt-4">
                   <FormField
                     control={form.control}
-                    name="query"
+                    name="response"
                     render={({ field }) => (
                       <FormItem className="relative">
                         <FormControl>
                           <Input
-                            placeholder="Query Further ..."
+                            placeholder="Enter Response ..."
                             type="text"
                             id="varietyName"
                             className="outline-none border py-6 border-primary rounded-full pl-5 pr-20 font-light"

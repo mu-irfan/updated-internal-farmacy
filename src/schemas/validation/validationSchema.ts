@@ -129,8 +129,8 @@ const addProductFormSchema = z.object({
 
 const filterProductsFormSchema = z.object({
   category: z.string().optional(),
-  subCategory: z.string().optional(),
-  allCompanies: z.string().optional(),
+  sub_category: z.string().optional(),
+  company_fk: z.string().optional(),
 });
 
 //seed
@@ -268,6 +268,14 @@ const addManagerFormSchema = z.object({
   }),
 });
 
+const addCompanyToGlobalListFormSchema = z.object({
+  companies: z.array(z.string().min(1, "Company name is required")),
+});
+
+const addIngredientListFormSchema = z.object({
+  ingredients: z.array(z.string().min(1, "Ingredient name is required")),
+});
+
 // crops
 const filterCropVarietyFormSchema = z.object({
   crop: z.string().nonempty({
@@ -377,7 +385,13 @@ const addQueryFormSchema = z.object({
 });
 
 const queryResponseSchema = z.object({
-  query: z.string().optional(),
+  response: z.string().optional(),
+});
+
+const verifyCompanyFormSchema = z.object({
+  name: z.string().nonempty({
+    message: "Select Company",
+  }),
 });
 
 //user
@@ -412,15 +426,18 @@ export {
   addProductFormSchema,
   filterProductsFormSchema,
   addSeedFormSchema,
+  addCompanyToGlobalListFormSchema,
   addPaymentFormSchema,
   filterSeedFormSchema,
   filterSubscribedProduct,
   addFranchiseFormSchema,
   filterFranchiceFormSchema,
   addSeedTrailDataFormSchema,
+  addIngredientListFormSchema,
   addQueryFormSchema,
   queryResponseSchema,
   addManagerFormSchema,
+  verifyCompanyFormSchema,
   profileFormSchema,
   filterCropVarietyFormSchema,
 };
