@@ -220,16 +220,21 @@ const AddCropToSimulatorFormSchema = z.object({
   source: z.string().nonempty({
     message: "Source is required.",
   }),
-  root_depth_max_m: z.string().nonempty({
-    message: "Root Depth is required.",
-  }),
-  seed_sowing_depth_m: z.string().nonempty({
-    message: "Sowing Depth is required.",
-  }),
+  seed_sowing_depth_m: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Sowing Depth is required.",
+    }),
+  root_depth_max_m: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Root Depth is required.",
+    }),
 });
 
 // add seed trial data
-
 const AddStageToSimulatorFormSchema = z.object({
   crop_variety_fk: z.string().nonempty({
     message: "Variety is required.",

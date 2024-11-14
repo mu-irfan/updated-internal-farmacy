@@ -21,6 +21,7 @@ const AddSeedToSimulatorModal = ({
   viewVariety,
   viewStage,
   selectedItem,
+  loading,
   mode,
 }: any) => {
   const [currentMode, setCurrentMode] = useState(mode);
@@ -75,6 +76,7 @@ const AddSeedToSimulatorModal = ({
                   crop={selectedItem}
                   mode={currentMode}
                   onClose={onOpenChange}
+                  loading={loading}
                 />
               )}
               {viewVariety && <AddVarietyToSimulatorForm crop={selectedItem} />}

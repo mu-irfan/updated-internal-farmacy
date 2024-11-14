@@ -42,3 +42,46 @@ export const getAllCrops = async (token: string) => {
     return error;
   }
 };
+
+// get crop
+export const getCrop = async (name: any, token: string) => {
+  try {
+    const res = await axios.get(`${baseUrl}/crop/?crop_name=${name}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
+// update crop
+export const updateCrop = async (data: any, name: any, token: string) => {
+  try {
+    const res = await axios.patch(`${baseUrl}/crop/?crop_name=${name}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// delete crop
+export const deleteCrop = async (name: any, token: string) => {
+  try {
+    const res = await axios.delete(`${baseUrl}/crop/?crop_name=${name}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};

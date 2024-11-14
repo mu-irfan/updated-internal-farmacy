@@ -97,8 +97,16 @@ import {
   deleteIngredient,
   getAllIngredientsList,
 } from "@/api/ingredients";
-import { createCrop, getAllCrops, getCropStats } from "@/api/crop/crop";
+import {
+  createCrop,
+  deleteCrop,
+  getAllCrops,
+  getCrop,
+  getCropStats,
+  updateCrop,
+} from "@/api/crop/crop";
 import { createVarietyStage } from "@/api/crop/varietyStages";
+import { getCropStage } from "@/api/crop/cropStages";
 
 export const useRegisterCompany = () => {
   const router = useRouter();
@@ -1553,8 +1561,64 @@ export const useGetAllCrops = (token: string) => {
   } as UseQueryOptions);
 };
 
-// variety stages functions
+export const useGetCrop = (crop_name: string, token: string) => {
+  return useQuery<any, Error>({
+    queryKey: ["crop", crop_name, token],
+    queryFn: () => getCrop(crop_name, token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+    enabled: !!crop_name,
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+  } as UseQueryOptions);
+};
 
+export const useUpdateCrop = (token: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ data, crop_name }: { data: any; crop_name: any }) =>
+      updateCrop(data, crop_name, token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data.message);
+        queryClient.invalidateQueries(["allCrops", token] as any);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+  });
+};
+
+export const useDeleteCrop = (token: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (uuid: any) => deleteCrop(uuid, token),
+    onSuccess: (data: any, variables: { data: any; token: string }) => {
+      if (data?.success) {
+        toast.success(data?.message);
+        queryClient.invalidateQueries(["allCrops", variables.token] as any);
+      } else {
+        toast.error(data?.response?.data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message);
+    },
+  });
+};
+
+// variety stages functions
 export const useCreateVarietyStage = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -1575,4 +1639,25 @@ export const useCreateVarietyStage = () => {
       toast.error(error.response?.data?.message);
     },
   });
+};
+
+// crop stages functions
+export const useGetCropStage = (crop_name: string, token: string) => {
+  return useQuery<any, Error>({
+    queryKey: ["cropStage", crop_name, token],
+    queryFn: () => getCropStage(crop_name, token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+    enabled: !!crop_name,
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+  } as UseQueryOptions);
 };

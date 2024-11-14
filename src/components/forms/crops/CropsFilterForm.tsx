@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { debounce } from "lodash";
@@ -7,10 +7,17 @@ import { Button } from "@/components/ui/button";
 import DataTable from "@/components/Table/DataTable";
 import { cropsData } from "@/constant/data";
 import AddSeedToSimulatorModal from "@/components/forms-modals/seeds/AddSeedToSimulator";
-import { useGetAllCrops, useGetAllSeeds } from "@/hooks/useDataFetch";
+import {
+  useDeleteCrop,
+  useGetAllCrops,
+  useGetAllSeeds,
+  useGetCrop,
+  useGetCropStage,
+} from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import NoData from "@/components/alerts/NoData";
+import { SweetAlert } from "@/components/alerts/SweetAlert";
 
 const CropsFilterForm = () => {
   const { token } = useContextConsumer();
@@ -20,23 +27,26 @@ const CropsFilterForm = () => {
     useState<boolean>(false);
   const [viewStageAgainstCrop, setViewStageAgainstCrop] =
     useState<boolean>(false);
+  const [currentCropName, setCurrentCropName] = useState<string | null>(null);
 
   const handleSearchChange = debounce((value: string) => {
     setSearchQuery(value);
   }, 300);
 
-  const [currentSeedUuid, setCurrentSeedUuid] = useState<string | null>(null);
-
-  // crop data, below code will be replaced by crop
+  // crop apis
   const { data: crops, isLoading: cropsLoading } = useGetAllCrops(token);
+  const { data: cropDetails, isLoading: cropLoading } = useGetCrop(
+    currentCropName!,
+    token
+  );
+  const {
+    data: cropStage,
+    isLoading: cropStageLoading,
+    refetch,
+  } = useGetCropStage(currentCropName!, token);
+  const { mutate: deleteCrop, isPending: deleting } = useDeleteCrop(token);
 
-  console.log(crops, "cropsloadinggggggg");
-
-  // const { data: seedDetails, isLoading: seedLoading } = useGetSeed(
-  //   currentSeedUuid!,
-  //   token
-  // );
-  // const { mutate: deleteSeed, isPending: deletingSeed } = useDeleteSeed(token);
+  console.log(cropStage, "cropStagecropStagecropStage");
 
   const filteredCrops = useMemo(() => {
     if (!crops || !crops.message) return [];
@@ -45,21 +55,42 @@ const CropsFilterForm = () => {
     );
   }, [crops, searchQuery]);
 
-  const handleView = (crop: any) => {
-    setSelectedCropToView(crop);
+  const filteredCropStages = useMemo(() => {
+    if (!cropStage || !cropStage.message) return [];
+    return cropStage?.message?.filter((crop: any) =>
+      crop?.stage?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [cropStage, searchQuery]);
+
+  const handleCropView = (crop: any) => {
     setViewCropsModalOpen(true);
-    // setCurrentSeedUuid(seed.uuid);
+    setCurrentCropName(crop.crop_name);
   };
 
-  const handleDelete = (cropId: string) => {
-    // deleteSeed(seedId);
+  const handleStageView = (crop: any) => {
+    setViewStageAgainstCrop(true);
+    setCurrentCropName(crop.crop_name);
+    refetch();
   };
 
-  // useEffect(() => {
-  //   if (seedDetails?.success && seedDetails.data) {
-  //     setSelectedCropToView(seedDetails.data);
-  //   }
-  // }, [seedDetails]);
+  const handleDeleteCrop = async (name: any) => {
+    const isConfirmed = await SweetAlert(
+      "Delete Crop?",
+      "",
+      "warning",
+      "Yes, delete it!",
+      "#15803D"
+    );
+    if (isConfirmed) {
+      deleteCrop(name);
+    }
+  };
+
+  useEffect(() => {
+    if (cropDetails?.success && cropDetails.message) {
+      setSelectedCropToView(cropDetails.message);
+    }
+  }, [cropDetails]);
 
   const cropColoums: {
     Header: string;
@@ -78,7 +109,7 @@ const CropsFilterForm = () => {
           <Button
             size="sm"
             variant="outline"
-            onClick={() => setViewStageAgainstCrop(true)}
+            onClick={() => handleStageView(row.original)}
             className="border-yellow-600 bg-yellow-300/10 w-28 text-yellow-600 tracking-wider hover:text-yellow/80"
           >
             Crop Stage
@@ -86,16 +117,16 @@ const CropsFilterForm = () => {
           <Button
             size="sm"
             variant="outline"
-            onClick={() => handleView(row.original)}
+            onClick={() => handleCropView(row.original)}
             className="border-primary bg-primary/10 w-20 text-primary tracking-wider hover:text-primary/80"
           >
             View
           </Button>
           <Button
             size="icon"
-            onClick={() => handleDelete(row.original.uuid)}
+            onClick={() => handleDeleteCrop(row.original.crop_name)}
             className="bg-red-400 hover:bg-red-500 text-black"
-            // disabled={deletingSeed}
+            disabled={deleting}
           >
             <Trash className="w-4 h-4" />
           </Button>
@@ -129,14 +160,14 @@ const CropsFilterForm = () => {
           <Button
             size="sm"
             variant="outline"
-            onClick={() => handleView(row.original)}
+            // onClick={() => handleView(row.original)}
             className="border-primary bg-primary/10 w-20 text-primary tracking-wider hover:text-primary/80"
           >
             View
           </Button>
           <Button
             size="icon"
-            onClick={() => handleDelete(row.original.uuid)}
+            // onClick={() => handleDelete(row.original.uuid)}
             className="bg-red-400 hover:bg-red-500 text-black"
             // disabled={deletingSeed}
           >
@@ -164,35 +195,43 @@ const CropsFilterForm = () => {
           </div>
         </CardContent>
       </Card>
-      {/* {!viewStageAgainstCrop &&
-        (loading ? (
+      {!viewStageAgainstCrop &&
+        (cropsLoading ? (
           <SkeletonCard className="w-full h-80" />
-        ) : seedTrails.data && seedTrails.data.length > 0 ? (
+        ) : crops?.message && crops?.message?.length > 0 ? (
           <div className="mt-8">
             <DataTable
-              columns={SeedTrailColoumn}
-              data={seedTrails.data as SeedTrailTableRow[]}
+              columns={cropColoums}
+              data={filteredCrops as CropTableRow[]}
             />
           </div>
         ) : (
           <NoData message="No Data Available" />
-        ))} */}
-      {!viewStageAgainstCrop && (
-        <DataTable
-          columns={cropColoums}
-          data={filteredCrops as CropTableRow[]}
-        />
-      )}
-      {viewStageAgainstCrop && (
+        ))}
+      {viewStageAgainstCrop &&
+        (cropStageLoading ? (
+          <SkeletonCard className="w-full h-80" />
+        ) : cropStage?.message && cropStage?.message?.length > 0 ? (
+          <div className="mt-8">
+            <DataTable
+              columns={stageColumns}
+              data={filteredCropStages as CropTrailsStages[]}
+            />
+          </div>
+        ) : (
+          <NoData message="No Data Available" />
+        ))}
+      {/* {viewStageAgainstCrop && (
         <DataTable
           columns={stageColumns}
           data={cropsData as CropTrailsStages[]}
         />
-      )}
+      )} */}
       <AddSeedToSimulatorModal
         open={isViewCropsModalOpen}
         onOpenChange={setViewCropsModalOpen}
         selectedItem={selectedCropToView}
+        loading={cropLoading}
         mode="view"
         viewCrop
       />

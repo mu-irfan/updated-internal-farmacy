@@ -398,7 +398,7 @@ const AddStagesToSimulatorForm = ({
             </LabelInputContainer>
           </div>
           <Button className="w-full text-white font-medium" type="submit">
-            Add Stage In Simulator
+            {creating ? "Creating..." : "Add Stage In Simulator"}
           </Button>
         </form>
       </Form>
