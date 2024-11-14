@@ -74,10 +74,16 @@ const AddSeedToSimulatorModal = ({
                 <AddCropToSimulatorForm
                   crop={selectedItem}
                   mode={currentMode}
+                  onClose={onOpenChange}
                 />
               )}
               {viewVariety && <AddVarietyToSimulatorForm crop={selectedItem} />}
-              {viewStage && <AddStagesToSimulatorForm stage={selectedItem} />}
+              {viewStage && (
+                <AddStagesToSimulatorForm
+                  stage={selectedItem}
+                  onClose={onOpenChange}
+                />
+              )}
             </DialogDescription>
             {!viewCrop && !viewVariety && !viewStage && (
               <DialogDescription className="!dark:text-farmacieLightGray py-4">
@@ -92,7 +98,10 @@ const AddSeedToSimulatorModal = ({
                       <h3 className="text-primary text-base font-bold py-4">
                         Add crop details
                       </h3>
-                      <AddCropToSimulatorForm />
+                      <AddCropToSimulatorForm
+                        mode={currentMode}
+                        onClose={onOpenChange}
+                      />
                     </div>
                   </TabsContent>
                   <TabsContent value="Variety">
@@ -100,7 +109,10 @@ const AddSeedToSimulatorModal = ({
                       <h3 className="text-primary text-base font-bold py-4">
                         Add variety details
                       </h3>
-                      <AddVarietyToSimulatorForm />
+                      <AddVarietyToSimulatorForm
+                      // mode={currentMode}
+                      // onClose={onOpenChange}
+                      />
                     </div>
                   </TabsContent>
                   <TabsContent value="Stages">
@@ -108,7 +120,10 @@ const AddSeedToSimulatorModal = ({
                       <h3 className="text-primary text-base font-bold py-4">
                         Add stages details
                       </h3>
-                      <AddStagesToSimulatorForm />
+                      <AddStagesToSimulatorForm
+                        mode={currentMode}
+                        onClose={onOpenChange}
+                      />
                     </div>
                   </TabsContent>
                 </Tabs>

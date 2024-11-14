@@ -4,12 +4,13 @@ import DashboardLayout from "../dashboard-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CirclePlus, Search } from "lucide-react";
 import Link from "next/link";
-import { useGetSeedsStats } from "@/hooks/useDataFetch";
+import { useGetCropStats } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import ReportCard from "@/components/ReportCard";
 import { cropsReportsTitles } from "@/constant/data";
 import AddSeedToSimulatorModal from "@/components/forms-modals/seeds/AddSeedToSimulator";
 import { SkeletonCard } from "@/components/SkeletonLoader";
+import { Toaster } from "react-hot-toast";
 
 const Crops = () => {
   const { token } = useContextConsumer();
@@ -17,7 +18,7 @@ const Crops = () => {
     useState<boolean>(false);
 
   //stats data
-  const { data: stats, isLoading: loading } = useGetSeedsStats(token);
+  const { data: stats, isLoading: loading } = useGetCropStats(token);
 
   const reportsWithStats = useMemo(() => {
     return cropsReportsTitles.map((report) => ({
@@ -31,6 +32,7 @@ const Crops = () => {
 
   return (
     <>
+      <Toaster />
       <DashboardLayout contentAtCenter>
         <div className="w-full grid gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 max-w-4xl mx-auto">
           {loading ? (

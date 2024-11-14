@@ -53,10 +53,10 @@ interface Seed {
   company_fk: string;
   crop_category: string;
   crop: string;
-  inSimulator: boolean;
+  in_simulator: boolean;
   subscribed?: boolean;
   seedWeight: string;
-  trialData: string;
+  trial_count: string;
   packageWeight: string;
   germination_percentage: string;
   maturity_percentage: string;
@@ -166,7 +166,7 @@ interface Crop {
   id: number;
   crop_name: string;
   crop_category: string;
-  stages_count: number;
+  stage_count: number;
   source: string;
   seed_sowing_depth: number;
   root_depth: number;

@@ -98,3 +98,27 @@ export const deleteSeed = async (uuid: any, token: string) => {
     return error;
   }
 };
+
+// already in simulator seed
+export const alreadyInSimulatorSeed = async (
+  data: any,
+  uuid: any,
+  token: string
+) => {
+  console.log(data, "simulator seed");
+
+  try {
+    const res = await axios.patch(
+      `${baseUrl}/seed/already-in-simulator?uuid=${uuid}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};

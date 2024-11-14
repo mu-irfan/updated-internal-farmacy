@@ -210,6 +210,64 @@ const filterSeedFormSchema = z.object({
 });
 
 // add seed trial data
+const AddCropToSimulatorFormSchema = z.object({
+  crop_name: z.string().nonempty({
+    message: "Crop is required.",
+  }),
+  crop_category: z.string().nonempty({
+    message: "Category is required.",
+  }),
+  source: z.string().nonempty({
+    message: "Source is required.",
+  }),
+  root_depth_max_m: z.string().nonempty({
+    message: "Root Depth is required.",
+  }),
+  seed_sowing_depth_m: z.string().nonempty({
+    message: "Sowing Depth is required.",
+  }),
+});
+
+// add seed trial data
+
+const AddStageToSimulatorFormSchema = z.object({
+  crop_variety_fk: z.string().nonempty({
+    message: "Variety is required.",
+  }),
+  stage: z.string().nonempty({
+    message: "Stage is required.",
+  }),
+  sub_stage: z.string().nonempty({
+    message: "Sub Stage is required.",
+  }),
+  bbch_scale: z.string().nonempty({
+    message: "bbch scale is required.",
+  }),
+  kc: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "kc is required.",
+    }),
+  // kc: z.string().nonempty({
+  //   message: "kc is required.",
+  // }),
+  start_gdd: z.string().nonempty({
+    message: "Sub Stage is required.",
+  }),
+  end_gdd: z.string().nonempty({
+    message: "bbch scale is required.",
+  }),
+  base_temp: z.string().nonempty({
+    message: "kc is required.",
+  }),
+  min_temp: z.string().nonempty({
+    message: "Sub Stage is required.",
+  }),
+  max_temp: z.string().nonempty({
+    message: "bbch scale is required.",
+  }),
+});
 
 //seed
 const addSeedTrailDataFormSchema = z.object({
@@ -439,5 +497,7 @@ export {
   addManagerFormSchema,
   verifyCompanyFormSchema,
   profileFormSchema,
+  AddCropToSimulatorFormSchema,
+  AddStageToSimulatorFormSchema,
   filterCropVarietyFormSchema,
 };

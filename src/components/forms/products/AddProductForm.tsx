@@ -209,11 +209,6 @@ const AddProductForm = ({
       );
     }
     if (mode === "edit") {
-      // verifyProduct(productData.uuid, {
-      //   onError: (log) => {
-      //     console.log(log, "loglogloglog");
-      //   },
-      // });
       updateProduct(
         { data: formData, uuid: productData.uuid },
         {
@@ -247,21 +242,15 @@ const AddProductForm = ({
   const verifyToSubscribeProduct = async () => {
     onClose();
     const isConfirmed = await SweetAlert(
-      "Subscribe Product?",
+      "Verify Product?",
       "",
       "question",
-      "Yes, subscribe it!",
+      "Yes, Verify it!",
       "#15803D"
     );
     if (isConfirmed) {
-      subscribeProduct(
-        {
-          data: {
-            franchise_fk: currentFranchiseUuid,
-            product_fk: productData?.uuid,
-          },
-          token,
-        },
+      verifyProduct(
+        { uuid: productData.uuid },
         {
           onSuccess: (log) => {
             if (log?.success) {
@@ -879,14 +868,16 @@ const AddProductForm = ({
           />
           <Button
             className="w-full text-white font-medium"
-            type={subscribe ? "button" : "submit"}
-            disabled={isViewMode && !subscribe}
-            onClick={subscribe ? verifyToSubscribeProduct : undefined}
+            type={!productData.verified ? "button" : "submit"}
+            disabled={isViewMode && productData.verified}
+            onClick={
+              !productData.verified ? verifyToSubscribeProduct : undefined
+            }
           >
             {mode === "edit"
               ? "Update Product"
-              : subscribe
-              ? "Subscribe"
+              : !productData.verified
+              ? "Mark As Verified"
               : "Submit"}
           </Button>
           <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent mt-6 h-[1px] w-full" />

@@ -130,8 +130,10 @@ export const getAlActiveIngredient = async (token: string) => {
 
 // verify product
 export const verifyProduct = async (uuid: any, token: string) => {
+  console.log(uuid, token, "verifyProductverifyProduct");
+
   try {
-    const res = await axios.post(`${baseUrl}/product/verify?uuid=${uuid}`, {
+    const res = await axios.post(`${baseUrl}/product/verify?uuid=${uuid}`, "", {
       headers: {
         Authorization: `Bearer ${token}`,
       },

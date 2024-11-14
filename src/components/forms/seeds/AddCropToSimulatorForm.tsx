@@ -9,7 +9,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { addSeedTrailDataFormSchema } from "@/schemas/validation/validationSchema";
+import { AddCropToSimulatorFormSchema } from "@/schemas/validation/validationSchema";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -24,25 +24,34 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { productCategory } from "@/constant/data";
+import { useCreateCrop } from "@/hooks/useDataFetch";
+import { useContextConsumer } from "@/context/Context";
 
 const AddCropToSimulatorForm = ({
   crop,
   mode,
+  onClose,
 }: {
   crop?: any;
   mode?: "add" | "view" | "edit";
+  onClose: () => void;
 }) => {
   console.log(mode, "modee");
 
   const isViewMode = mode === "view";
-  const form = useForm<z.infer<typeof addSeedTrailDataFormSchema>>({
-    resolver: zodResolver(addSeedTrailDataFormSchema),
+  const { token } = useContextConsumer();
+
+  //
+  const { mutate: createCrop, isPending: creating } = useCreateCrop();
+
+  const form = useForm<z.infer<typeof AddCropToSimulatorFormSchema>>({
+    resolver: zodResolver(AddCropToSimulatorFormSchema),
     defaultValues: {
       crop_name: "",
       crop_category: "",
       source: "",
-      seed_sowing_depth: "",
-      root_depth: "",
+      root_depth_max_m: "",
+      seed_sowing_depth_m: "",
     },
   });
 
@@ -54,14 +63,25 @@ const AddCropToSimulatorForm = ({
         crop_name: crop.crop_name || "",
         crop_category: crop.crop_category || "",
         source: crop.crop_name || "",
-        seed_sowing_depth: crop.seed_sowing_depth || "",
-        root_depth: crop.root_depth || "",
+        seed_sowing_depth_m: crop.seed_sowing_depth_m || "",
+        root_depth_max_m: crop.root_depth_max_m || "",
       });
     }
   }, [crop, reset]);
 
-  const onSubmit = (data: z.infer<typeof addSeedTrailDataFormSchema>) => {
-    console.log("Submitting form data:", data);
+  const onSubmit = (data: z.infer<typeof AddCropToSimulatorFormSchema>) => {
+    if (mode === "add") {
+      createCrop(
+        { data: data, token },
+        {
+          onSuccess: (log) => {
+            if (log?.success) {
+              onClose();
+            }
+          },
+        }
+      );
+    }
   };
 
   return (
@@ -169,21 +189,21 @@ const AddCropToSimulatorForm = ({
           <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
             <LabelInputContainer className="mb-4">
               <Label
-                htmlFor="seed_sowing_depth"
+                htmlFor="seed_sowing_depth_m"
                 className="dark:text-farmacieGrey"
               >
                 Seed sowing depth (m)
               </Label>
               <FormField
                 control={form.control}
-                name="seed_sowing_depth"
+                name="seed_sowing_depth_m"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         placeholder="Enter seed sowing depth in meter"
                         type="text"
-                        id="seed_sowing_depth"
+                        id="seed_sowing_depth_m"
                         className="outline-none focus:border-primary disabled:bg-primary/20"
                         disabled={isViewMode}
                         {...field}
@@ -195,19 +215,22 @@ const AddCropToSimulatorForm = ({
               />
             </LabelInputContainer>
             <LabelInputContainer className="mb-4">
-              <Label htmlFor="root_depth" className="dark:text-farmacieGrey">
+              <Label
+                htmlFor="root_depth_max_m"
+                className="dark:text-farmacieGrey"
+              >
                 Root depth max (m)
               </Label>
               <FormField
                 control={form.control}
-                name="root_depth"
+                name="root_depth_max_m"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         placeholder="Enter seed root depth in meter"
                         type="text"
-                        id="root_depth"
+                        id="root_depth_max_m"
                         className="outline-none focus:border-primary disabled:bg-primary/20"
                         disabled={isViewMode}
                         {...field}

@@ -41,7 +41,9 @@ import AddSeedTrialDataInstructionModal from "@/components/forms-modals/seeds/Ad
 import {
   useCreateSeed,
   useDeleteSeedImage,
+  useGetAllCompaniesUsers,
   useGetCompanyProfile,
+  useInSimulator,
   useSubscribeSeed,
   useUpdateSeed,
 } from "@/hooks/useDataFetch";
@@ -102,14 +104,15 @@ const AddSeedForm = ({
   const { mutate: deleteSeedImage, isPending: deletingImage } =
     useDeleteSeedImage(token);
   const { mutate: updateSeed, isPending: updating } = useUpdateSeed(token);
-  const { data: companyProfile, isLoading: profileDataLoading } =
-    useGetCompanyProfile(token);
+  const { mutate: inSimulator, isPending: simulating } = useInSimulator(token);
+  const { data: companiesUsersList, isLoading: companiesListLoading } =
+    useGetAllCompaniesUsers(token);
 
   const form = useForm<z.infer<typeof addSeedFormSchema>>({
     resolver: zodResolver(addSeedFormSchema),
     defaultValues: {
       seed_variety_name: "",
-      company_fk: companyProfile?.data?.company_fk,
+      company_fk: "",
       crop_category: "",
       crop: "",
       seed_weight: "",
@@ -169,12 +172,6 @@ const AddSeedForm = ({
       });
     }
   }, [seed, reset]);
-
-  useEffect(() => {
-    if (companyProfile?.data?.company_fk) {
-      form.setValue("company_fk", companyProfile.data.company_fk);
-    }
-  }, [companyProfile, form]);
 
   const onSubmit = (data: z.infer<typeof addSeedFormSchema>) => {
     setAddSeedTrailDataInstructionModalOpen(true);
@@ -264,29 +261,15 @@ const AddSeedForm = ({
       document.getElementById("fileInput")?.click();
   };
 
-  const verifyToSubscribeSeed = async () => {
+  const handleInSimulator = () => {
     onClose();
-    const isConfirmed = await SweetAlert(
-      "Subscribe Seed?",
-      "",
-      "warning",
-      "Yes, subscribe it!",
-      "#15803D"
-    );
-    if (isConfirmed) {
-      subscribeSeed(
-        {
-          data: {
-            franchise_fk: currentFranchiseUuid,
-            seed_fk: seed?.uuid,
-          },
-          token,
-        },
+    if (mode === "view") {
+      inSimulator(
+        { data: seed, uuid: seed.uuid },
         {
           onSuccess: (log) => {
             if (log?.success) {
               onClose();
-              router.refresh();
             }
           },
         }
@@ -339,15 +322,36 @@ const AddSeedForm = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input
-                          placeholder="Sygenta fixed"
-                          type="text"
-                          id="company_fk"
-                          className="outline-none focus:border-primary disabled:bg-primary/20"
-                          {...field}
-                          value={form.getValues("company_fk")}
-                          disabled
-                        />
+                        <Select
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                          }}
+                          disabled={isViewMode}
+                        >
+                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                            <SelectValue
+                              placeholder={
+                                seed?.company_fk || "Select Brand Company"
+                              }
+                            />
+                          </SelectTrigger>
+                          <SelectContent className="rounded-xl">
+                            <SelectGroup>
+                              <SelectLabel>Brand Name</SelectLabel>
+                              {!companiesListLoading &&
+                                companiesUsersList?.data?.map(
+                                  (company: any) => (
+                                    <SelectItem
+                                      key={company.uuid}
+                                      value={company.company_fk}
+                                    >
+                                      {company.company_fk}
+                                    </SelectItem>
+                                  )
+                                )}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1054,19 +1058,32 @@ const AddSeedForm = ({
               className="hidden"
               onChange={handleImageChange}
             />
+            {mode === "view" && !seed.in_simulator && (
+              <Button
+                className="w-full text-white font-medium mt-6 mb-4 border border-primary bg-primary/20"
+                variant="outline"
+                type="button"
+                onClick={handleInSimulator}
+                disabled={isViewMode && seed.in_simulator}
+              >
+                Already in simulator
+              </Button>
+            )}
             <Button
               className="w-full text-white font-medium"
               type={subscribe ? "button" : "submit"}
-              disabled={isViewMode && !subscribe}
+              disabled={isViewMode && seed.in_simulator}
               onClick={
-                mode === "view"
-                  ? () => setAddSeedToSimulatorModalOpen(true)
+                mode === "view" && !seed.in_simulator
+                  ? () => {
+                      setAddSeedToSimulatorModalOpen(true);
+                    }
                   : undefined
               }
             >
               {mode === "edit"
                 ? "Update Seed"
-                : mode === "view" && !seed.inSimulator
+                : mode === "view" && !seed.in_simulator
                 ? "Add in simulator"
                 : subscribe
                 ? "Subscribe"

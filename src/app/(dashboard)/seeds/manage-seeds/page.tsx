@@ -103,12 +103,12 @@ const ManageSeeds = () => {
     { Header: "Brand Name", accessor: "company_fk" },
     { Header: "Crop Category", accessor: "crop_category" },
     { Header: "Crop", accessor: "crop" },
-    { Header: "Trial Data", accessor: "trialData" },
+    { Header: "Trial Data", accessor: "trial_count" },
     {
       Header: "In Simulator",
-      accessor: "inSimulator",
+      accessor: "in_simulator",
       Cell: ({ row }: any) =>
-        row.original.inSimulator ? (
+        row.original.in_simulator ? (
           <Check className="text-primary" />
         ) : (
           <X className="text-yellow-500 w-5 h-5" />

@@ -10,7 +10,7 @@ export const seedsTrailReportsTitles = [
 
 export const seedsReportsTitles = [
   { title: "Total seed in seeds global list", key: "seedCount" },
-  { title: "Total seeds in simulator", key: "pesticideCount" },
+  { title: "Total seeds in simulator", key: "seedInSimulatorCount" },
 ];
 
 export const franchiseReports = [
@@ -20,8 +20,8 @@ export const franchiseReports = [
 ];
 
 export const cropsReportsTitles = [
-  { title: "Total Crops", key: "cropCount" },
-  { title: "Total Varieties", key: "variatiesCount" },
+  { title: "Total Crops", key: "cropsCount" },
+  { title: "Total Varieties", key: "varietiesCount" },
 ];
 
 //franchsie
@@ -185,6 +185,12 @@ export const productCategory = [
   { value: "fertilizer", label: "Fertilizer" },
   { value: "pesticide", label: "Pesticide" },
   { value: "crop_nutrition", label: "Crop Nutrition" },
+];
+
+export const bbchCategory = [
+  { value: "1", label: "Fertilizer" },
+  { value: "2", label: "Pesticide" },
+  { value: "3", label: "Crop Nutrition" },
 ];
 
 export const companiesReportsTitles = [

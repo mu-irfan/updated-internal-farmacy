@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { debounce } from "lodash";
@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import DataTable from "@/components/Table/DataTable";
 import { cropsData } from "@/constant/data";
 import AddSeedToSimulatorModal from "@/components/forms-modals/seeds/AddSeedToSimulator";
-import { useGetAllSeeds } from "@/hooks/useDataFetch";
+import { useGetAllCrops, useGetAllSeeds } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import NoData from "@/components/alerts/NoData";
@@ -28,21 +28,22 @@ const CropsFilterForm = () => {
   const [currentSeedUuid, setCurrentSeedUuid] = useState<string | null>(null);
 
   // crop data, below code will be replaced by crop
-  const { data: seeds, isLoading: loading } = useGetAllSeeds(token);
+  const { data: crops, isLoading: cropsLoading } = useGetAllCrops(token);
+
+  console.log(crops, "cropsloadinggggggg");
+
   // const { data: seedDetails, isLoading: seedLoading } = useGetSeed(
   //   currentSeedUuid!,
   //   token
   // );
   // const { mutate: deleteSeed, isPending: deletingSeed } = useDeleteSeed(token);
 
-  // const filteredSeeds = useMemo(() => {
-  //   if (!seeds || !seeds.data) return [];
-  //   return seeds.data.filter((product: any) =>
-  //     product.seed_variety_name
-  //       .toLowerCase()
-  //       .includes(searchQuery.toLowerCase())
-  //   );
-  // }, [seeds, searchQuery]);
+  const filteredCrops = useMemo(() => {
+    if (!crops || !crops.message) return [];
+    return crops?.message?.filter((crop: any) =>
+      crop.crop_name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [crops, searchQuery]);
 
   const handleView = (crop: any) => {
     setSelectedCropToView(crop);
@@ -68,7 +69,7 @@ const CropsFilterForm = () => {
     { Header: "Crop Name", accessor: "crop_name" },
     { Header: "Crop Category", accessor: "crop_category" },
     { Header: "Source", accessor: "source" },
-    { Header: "Stages Count", accessor: "stages_count" },
+    { Header: "Stages Count", accessor: "stage_count" },
     {
       Header: "",
       accessor: "actions",
@@ -177,7 +178,10 @@ const CropsFilterForm = () => {
           <NoData message="No Data Available" />
         ))} */}
       {!viewStageAgainstCrop && (
-        <DataTable columns={cropColoums} data={cropsData as CropTableRow[]} />
+        <DataTable
+          columns={cropColoums}
+          data={filteredCrops as CropTableRow[]}
+        />
       )}
       {viewStageAgainstCrop && (
         <DataTable
