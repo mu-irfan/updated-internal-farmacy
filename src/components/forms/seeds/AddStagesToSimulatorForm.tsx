@@ -31,12 +31,16 @@ const AddStagesToSimulatorForm = ({
   stage,
   mode,
   onClose,
+  loading: stageLoading,
 }: {
   stage?: any;
   mode?: "add" | "view" | "edit";
   onClose: () => void;
+  loading?: boolean;
 }) => {
   const { token } = useContextConsumer();
+
+  console.log(stage, "stagestagestagestage");
 
   //
   const { mutate: createVarietyStage, isPending: creating } =
@@ -88,7 +92,6 @@ const AddStagesToSimulatorForm = ({
         start_gdd: Number(data.start_gdd),
         end_gdd: Number(data.end_gdd),
       };
-      console.log(typeof updated.end_gdd, "cropsloadinggggggg");
       createVarietyStage(
         { data: updated, token },
         {

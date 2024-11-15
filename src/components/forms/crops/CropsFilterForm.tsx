@@ -2,15 +2,14 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { debounce } from "lodash";
-import { Search, Trash, X } from "lucide-react";
+import { Search, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DataTable from "@/components/Table/DataTable";
-import { cropsData } from "@/constant/data";
 import AddSeedToSimulatorModal from "@/components/forms-modals/seeds/AddSeedToSimulator";
 import {
   useDeleteCrop,
+  useDeleteCropStage,
   useGetAllCrops,
-  useGetAllSeeds,
   useGetCrop,
   useGetCropStage,
 } from "@/hooks/useDataFetch";
@@ -18,16 +17,20 @@ import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import NoData from "@/components/alerts/NoData";
 import { SweetAlert } from "@/components/alerts/SweetAlert";
+import AddNewStageModal from "@/components/forms-modals/crop/AddNewStage";
 
 const CropsFilterForm = () => {
   const { token } = useContextConsumer();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCropToView, setSelectedCropToView] = useState({});
+  const [selectedCropStageToView, setSelectedCropStageToView] = useState({});
   const [isViewCropsModalOpen, setViewCropsModalOpen] =
     useState<boolean>(false);
   const [viewStageAgainstCrop, setViewStageAgainstCrop] =
     useState<boolean>(false);
   const [currentCropName, setCurrentCropName] = useState<string | null>(null);
+  const [isAddNewStageCropModalOpen, setAddNewStageCropModalOpen] =
+    useState<boolean>(false);
 
   const handleSearchChange = debounce((value: string) => {
     setSearchQuery(value);
@@ -45,8 +48,8 @@ const CropsFilterForm = () => {
     refetch,
   } = useGetCropStage(currentCropName!, token);
   const { mutate: deleteCrop, isPending: deleting } = useDeleteCrop(token);
-
-  console.log(cropStage, "cropStagecropStagecropStage");
+  const { mutate: deleteCropStage, isPending: deletingStage } =
+    useDeleteCropStage(token);
 
   const filteredCrops = useMemo(() => {
     if (!crops || !crops.message) return [];
@@ -73,6 +76,11 @@ const CropsFilterForm = () => {
     refetch();
   };
 
+  const handleCropStageView = (stage: any) => {
+    setSelectedCropStageToView(stage);
+    setAddNewStageCropModalOpen(true);
+  };
+
   const handleDeleteCrop = async (name: any) => {
     const isConfirmed = await SweetAlert(
       "Delete Crop?",
@@ -83,6 +91,19 @@ const CropsFilterForm = () => {
     );
     if (isConfirmed) {
       deleteCrop(name);
+    }
+  };
+
+  const handleDeleteCropStage = async (stageId: any) => {
+    const isConfirmed = await SweetAlert(
+      "Delete Crop Stage?",
+      "",
+      "warning",
+      "Yes, delete it!",
+      "#15803D"
+    );
+    if (isConfirmed) {
+      deleteCropStage(stageId);
     }
   };
 
@@ -140,7 +161,7 @@ const CropsFilterForm = () => {
     accessor: keyof CropTrailsStages;
     Cell?: ({ row }: any) => JSX.Element;
   }[] = [
-    { Header: "Crop Name", accessor: "crop_name" },
+    // { Header: "Crop Name", accessor: "crop_name" },
     {
       Header: "Stage",
       accessor: "stage",
@@ -160,16 +181,16 @@ const CropsFilterForm = () => {
           <Button
             size="sm"
             variant="outline"
-            // onClick={() => handleView(row.original)}
+            onClick={() => handleCropStageView(row.original)}
             className="border-primary bg-primary/10 w-20 text-primary tracking-wider hover:text-primary/80"
           >
             View
           </Button>
           <Button
             size="icon"
-            // onClick={() => handleDelete(row.original.uuid)}
+            onClick={() => handleDeleteCropStage(row.original.uuid)}
             className="bg-red-400 hover:bg-red-500 text-black"
-            // disabled={deletingSeed}
+            disabled={deletingStage}
           >
             <Trash className="w-4 h-4" />
           </Button>
@@ -192,6 +213,15 @@ const CropsFilterForm = () => {
               />
               <Search className="absolute left-3.5 -translate-y-1/2 bottom-0.5 w-5 h-5 text-gray-400" />
             </div>
+            {viewStageAgainstCrop && (
+              <Button
+                className="text-farmacieWhite font-medium"
+                type="button"
+                onClick={() => setAddNewStageCropModalOpen((prev) => !prev)}
+              >
+                Add New Stage
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -221,12 +251,18 @@ const CropsFilterForm = () => {
         ) : (
           <NoData message="No Data Available" />
         ))}
-      {/* {viewStageAgainstCrop && (
-        <DataTable
-          columns={stageColumns}
-          data={cropsData as CropTrailsStages[]}
-        />
-      )} */}
+      <AddNewStageModal
+        open={isAddNewStageCropModalOpen}
+        onOpenChange={setAddNewStageCropModalOpen}
+        mode="add"
+      />
+      <AddNewStageModal
+        open={isAddNewStageCropModalOpen}
+        onOpenChange={setAddNewStageCropModalOpen}
+        mode="view"
+        stage={selectedCropStageToView}
+        loading={cropLoading}
+      />
       <AddSeedToSimulatorModal
         open={isViewCropsModalOpen}
         onOpenChange={setViewCropsModalOpen}

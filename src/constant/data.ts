@@ -67,43 +67,6 @@ export const cropsData = [
   },
 ];
 
-//variety
-export const varietyData: Variety[] = [
-  {
-    id: 1,
-    variety_name: "Disease",
-    variety_urdu: "Electronics",
-    crop: "Audio Devices",
-    in_farmacie: true,
-  },
-  {
-    id: 2,
-    variety_name: "New",
-    variety_urdu: "Electronics",
-    crop: "Televisions",
-    in_farmacie: false,
-  },
-];
-
-export const stagesData: Stages[] = [
-  {
-    id: 1,
-    stage: "Disease",
-    sub_stage: "Electronics",
-    BBCH_scale: "Audio Devices",
-    start_gdd: "Audio Devices",
-    end_gdd: "Audio Devices",
-  },
-  {
-    id: 2,
-    stage: "Disease",
-    sub_stage: "Electronics",
-    BBCH_scale: "Audio Devices",
-    start_gdd: "Audio Devices",
-    end_gdd: "Audio Devices",
-  },
-];
-
 //companies
 export const companiesData: Companies[] = [
   {
@@ -182,7 +145,7 @@ export const ManagersData = [
 ];
 
 export const productCategory = [
-  { value: "fertilizer", label: "Fertilizer" },
+  { value: "variety 3", label: "variety 3" },
   { value: "pesticide", label: "Pesticide" },
   { value: "crop_nutrition", label: "Crop Nutrition" },
 ];

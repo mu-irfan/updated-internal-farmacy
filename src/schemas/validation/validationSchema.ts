@@ -209,6 +209,11 @@ const filterSeedFormSchema = z.object({
   }),
 });
 
+const filterVarietyFormSchema = z.object({
+  crop: z.string().optional(),
+  in_farmacie: z.string().optional(),
+});
+
 // add seed trial data
 const AddCropToSimulatorFormSchema = z.object({
   crop_name: z.string().nonempty({
@@ -290,6 +295,18 @@ const addSeedTrailDataFormSchema = z.object({
   }),
 });
 
+const addCropStageFormSchema = z.object({
+  crop_fk: z.string().nonempty({ message: "Crop Name is required." }),
+  stage: z.string().nonempty({ message: "Stage is required." }),
+  sub_stage: z.string().nonempty({ message: "Sub Stage is required." }),
+  bbch_scale: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "BBCH Scale is required.",
+    }),
+});
+
 // filter subscribed product
 const filterSubscribedProduct = z.object({
   category: z.string().optional(),
@@ -341,12 +358,8 @@ const addIngredientListFormSchema = z.object({
 
 // crops
 const filterCropVarietyFormSchema = z.object({
-  crop: z.string().nonempty({
-    message: "Crop is required.",
-  }),
-  variety: z.string().nonempty({
-    message: "Variety is required.",
-  }),
+  crop: z.string().optional(),
+  variety_eng: z.string().optional(),
 });
 
 // add seed trail data
@@ -504,5 +517,7 @@ export {
   profileFormSchema,
   AddCropToSimulatorFormSchema,
   AddStageToSimulatorFormSchema,
+  addCropStageFormSchema,
   filterCropVarietyFormSchema,
+  filterVarietyFormSchema,
 };

@@ -26,10 +26,10 @@ import {
 import { productCategory } from "@/constant/data";
 
 const AddVarietyToSimulatorForm = ({
-  crop,
+  variety,
   mode,
 }: {
-  crop?: any;
+  variety?: any;
   mode?: "add" | "view" | "edit";
 }) => {
   console.log(mode, "modee");
@@ -49,16 +49,16 @@ const AddVarietyToSimulatorForm = ({
   const { reset } = form;
 
   useEffect(() => {
-    if (crop) {
+    if (variety) {
       reset({
-        variety_name: crop.variety_name || "",
-        crop_category: crop.crop_category || "",
-        source: crop.crop_name || "",
-        seed_sowing_depth: crop.seed_sowing_depth || "",
-        root_depth: crop.root_depth || "",
+        variety_name: variety.variety_name || "",
+        crop_category: variety.crop_category || "",
+        source: variety.crop_name || "",
+        seed_sowing_depth: variety.seed_sowing_depth || "",
+        root_depth: variety.root_depth || "",
       });
     }
-  }, [crop, reset]);
+  }, [variety, reset]);
 
   const onSubmit = (
     data: z.infer<typeof addSeedVarietyTrailDataFormSchema>

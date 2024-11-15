@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -20,41 +20,90 @@ import {
 } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
 import LabelInputContainer from "../LabelInputContainer";
-import { productCategory, stagesData } from "@/constant/data";
+import { productCategory } from "@/constant/data";
 import { Button } from "@/components/ui/button";
 import { filterCropVarietyFormSchema } from "@/schemas/validation/validationSchema";
 import DataTable from "@/components/Table/DataTable";
-import { Check, Trash, X } from "lucide-react";
+import { Trash } from "lucide-react";
 import AddSeedToSimulatorModal from "@/components/forms-modals/seeds/AddSeedToSimulator";
+import {
+  useDeleteVarietyStage,
+  useGetCropAllStages,
+  useGetVarietyStage,
+} from "@/hooks/useDataFetch";
+import { useContextConsumer } from "@/context/Context";
+import NoData from "@/components/alerts/NoData";
+import { SkeletonCard } from "@/components/SkeletonLoader";
+import { SweetAlert } from "@/components/alerts/SweetAlert";
 
 const StagesFilterForm = () => {
+  const { token } = useContextConsumer();
   const [isCropStagesFilterModalOpen, setCropStagesFilterModalOpen] =
-    useState<boolean>(false); // will be repaced with add new staged modal
+    useState<boolean>(false);
   const [selectedStageToView, setSelectedStageToView] = useState({});
   const [isViewStageModalOpen, setViewStageModalOpen] =
     useState<boolean>(false);
+  const [currentVarietyUuid, setCurrentVarietyUuid] = useState<string | null>(
+    null
+  );
 
   const form = useForm<z.infer<typeof filterCropVarietyFormSchema>>({
     resolver: zodResolver(filterCropVarietyFormSchema),
     defaultValues: {
       crop: "",
-      variety: "",
+      variety_eng: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof filterCropVarietyFormSchema>) => {
-    console.log("Submitting form data:", data);
+  const [filterCriteria, setFilterCriteria] = useState({
+    crop: "",
+    variety_eng: "",
+  });
+
+  const {
+    data: cropStages,
+    isLoading: loading,
+    refetch,
+  } = useGetCropAllStages(token, filterCriteria);
+  const { data: varietyStage, isLoading: varietyStageLoading } =
+    useGetVarietyStage(currentVarietyUuid!, token);
+  const { mutate: deleteVarietyStage, isPending: deleting } =
+    useDeleteVarietyStage(token);
+
+  const handleFilterSubmit = (criteria: {
+    crop?: string;
+    variety_eng?: string;
+  }) => {
+    setFilterCriteria({
+      crop: criteria.crop || "",
+      variety_eng: criteria.variety_eng || "",
+    });
+    refetch();
   };
 
-  const handleView = (crop: any) => {
-    setSelectedStageToView(crop);
+  const handleView = (stage: any) => {
     setViewStageModalOpen(true);
-    // setCurrentSeedUuid(seed.uuid);
+    setCurrentVarietyUuid(stage.uuid);
   };
 
-  const handleDelete = (stagesId: string) => {
-    // deleteSeed(seedId);
+  const handleDelete = async (stageId: any) => {
+    const isConfirmed = await SweetAlert(
+      "Delete Crop Variety?",
+      "",
+      "warning",
+      "Yes, delete it!",
+      "#15803D"
+    );
+    if (isConfirmed) {
+      deleteVarietyStage(stageId);
+    }
   };
+
+  useEffect(() => {
+    if (varietyStage?.success && varietyStage.message) {
+      setSelectedStageToView(varietyStage.message);
+    }
+  }, [varietyStage]);
 
   const stagesColoums: {
     Header: string;
@@ -63,7 +112,7 @@ const StagesFilterForm = () => {
   }[] = [
     { Header: "Stage", accessor: "stage" },
     { Header: "Sub Stage", accessor: "sub_stage" },
-    { Header: "BBCH scale", accessor: "BBCH_scale" },
+    { Header: "BBCH scale", accessor: "bbch_scale" },
     { Header: "Start GDD", accessor: "start_gdd" },
     { Header: "End GDD", accessor: "end_gdd" },
     {
@@ -83,7 +132,7 @@ const StagesFilterForm = () => {
             size="icon"
             onClick={() => handleDelete(row.original.uuid)}
             className="bg-red-400 hover:bg-red-500 text-black"
-            // disabled={deletingSeed}
+            disabled={deleting}
           >
             <Trash className="w-4 h-4" />
           </Button>
@@ -97,7 +146,7 @@ const StagesFilterForm = () => {
       <Card className="w-full py-6 rounded-xl text-center bg-primary/10 mb-6">
         <CardContent className="p-0 px-6">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form onSubmit={form.handleSubmit(handleFilterSubmit)}>
               <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 items-center">
                 <LabelInputContainer className="lg:col-span-1">
                   <FormField
@@ -135,7 +184,7 @@ const StagesFilterForm = () => {
                 <LabelInputContainer className="lg:col-span-1">
                   <FormField
                     control={form.control}
-                    name="variety"
+                    name="variety_eng"
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
@@ -172,7 +221,7 @@ const StagesFilterForm = () => {
                   >
                     Get Stages
                   </Button>
-                  <Button
+                  {/* <Button
                     variant="outline"
                     className="dark:text-farmacieWhite font-medium border border-primary"
                     type="button"
@@ -181,21 +230,30 @@ const StagesFilterForm = () => {
                     }
                   >
                     Add New Stage
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </form>
           </Form>
         </CardContent>
       </Card>
-      <DataTable
-        columns={stagesColoums}
-        data={stagesData as StagesTableRow[]}
-      />
+      {loading ? (
+        <SkeletonCard className="w-full h-80" />
+      ) : cropStages.data && cropStages?.data?.length > 0 ? (
+        <DataTable
+          columns={stagesColoums}
+          data={cropStages.data as StagesTableRow[]}
+          paginate
+          extendWidth
+        />
+      ) : (
+        <NoData message="No Data Available, Please Select Category, sub category to view products" />
+      )}
       <AddSeedToSimulatorModal
         open={isViewStageModalOpen}
         onOpenChange={setViewStageModalOpen}
         selectedItem={selectedStageToView}
+        loading={varietyStageLoading}
         viewStage
       />
     </>

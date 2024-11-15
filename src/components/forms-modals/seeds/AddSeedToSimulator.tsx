@@ -79,11 +79,15 @@ const AddSeedToSimulatorModal = ({
                   loading={loading}
                 />
               )}
-              {viewVariety && <AddVarietyToSimulatorForm crop={selectedItem} />}
+              {viewVariety && (
+                <AddVarietyToSimulatorForm variety={selectedItem} />
+              )}
               {viewStage && (
                 <AddStagesToSimulatorForm
+                  mode={currentMode}
                   stage={selectedItem}
                   onClose={onOpenChange}
+                  loading={loading}
                 />
               )}
             </DialogDescription>

@@ -174,9 +174,9 @@ interface Crop {
 
 interface Variety {
   id: number;
-  variety_name: string;
+  variety_eng: string;
   variety_urdu: string;
-  crop: string;
+  crop_fk: string;
   in_farmacie: boolean;
 }
 
@@ -184,7 +184,7 @@ interface Stages {
   id: number;
   stage: string;
   sub_stage: string;
-  BBCH_scale: string;
+  bbch_scale: string;
   start_gdd: string;
   end_gdd: string;
 }
