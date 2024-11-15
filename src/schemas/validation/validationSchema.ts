@@ -228,6 +228,69 @@ const AddCropToSimulatorFormSchema = z.object({
   }),
 });
 
+const addSeedVarietyDataFormSchema = z.object({
+  variety_eng: z.string().nonempty({ message: "Variety Name (English) is required." }),
+  variety_urdu: z.string().nonempty({ message: "Variety Name (Urdu) is required." }),
+  variety_type: z.string().nonempty({ message: "Variety Type is required." }),
+  brand: z.string().nonempty({ message: "Brand is required." }),
+  crop_fk: z.string().nonempty({ message: "Crop is required." }),
+  crop_season: z.string().nonempty({ message: "Crop Season is required." }),
+  season: z.string().nonempty({ message: "Season is required." }),
+  seed_weight_mg: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", { message: "Seed weight is required." }),
+  irrigation_source: z.string().nonempty({ message: "Irrigation Source is required." }),
+  germination_percentage: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", { message: "Germination Percentage is required." }),
+  maturity_percentage: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", { message: "Maturity Percentage is required." }),
+  min_harvesting_days: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", { message: "Min Harvesting Days are required." }),
+  max_harvesting_days: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", { message: "Max Harvesting Days are required." }),
+  suitable_region: z.string().nonempty({ message: "Suitable Region is required." }),
+  mad_percentage: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", { message: "MAD Percentage is required." }),
+  crop_min_water_requirement: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", { message: "Minimum Water Requirement is required." }),
+  crop_max_water_requirement: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", { message: "Maximum Water Requirement is required." }),
+  height_class: z.string().nonempty({ message: "Height Class is required." }),
+  nutrient_content: z.string().optional(),
+  common_disease_tolerance: z.string().optional(),
+  env_resilience_fators: z.string().optional(),
+  unique_features: z.string().optional(),
+
+  sand: z.boolean().optional(),
+  loamy_sand: z.boolean().optional(),
+  sandy_loam: z.boolean().optional(),
+  loam: z.boolean().optional(),
+  sandy_clay_loam: z.boolean().optional(),
+  clay_loam: z.boolean().optional(),
+  silt_loam: z.boolean().optional(),
+  silt: z.boolean().optional(),
+  silty_clay_loam: z.boolean().optional(),
+  silty_clay: z.boolean().optional(),
+  clay: z.boolean().optional(),
+  sandy_clay: z.boolean().optional(),
+});
+
+
 // add seed trial data
 
 const AddStageToSimulatorFormSchema = z.object({
@@ -500,4 +563,5 @@ export {
   AddCropToSimulatorFormSchema,
   AddStageToSimulatorFormSchema,
   filterCropVarietyFormSchema,
+  addSeedVarietyDataFormSchema
 };
