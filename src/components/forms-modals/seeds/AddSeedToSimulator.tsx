@@ -12,7 +12,7 @@ import AddStagesToSimulatorForm from "@/components/forms/seeds/AddStagesToSimula
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
-import AddVarietyToSimulatorForm from "@/components/forms/seeds/AddVarietyToSimulator";
+import AddVarietyToSimulatorForm from "@/components/forms/seeds/AddVarietyToSimulatorForm";
 
 const AddSeedToSimulatorModal = ({
   open,
@@ -80,7 +80,12 @@ const AddSeedToSimulatorModal = ({
                 />
               )}
               {viewVariety && (
-                <AddVarietyToSimulatorForm variety={selectedItem} />
+                <AddVarietyToSimulatorForm
+                  variety={selectedItem}
+                  mode={currentMode}
+                  onClose={onOpenChange}
+                  loading={loading}
+                />
               )}
               {viewStage && (
                 <AddStagesToSimulatorForm
@@ -116,8 +121,8 @@ const AddSeedToSimulatorModal = ({
                         Add variety details
                       </h3>
                       <AddVarietyToSimulatorForm
-                      // mode={currentMode}
-                      // onClose={onOpenChange}
+                        mode={currentMode}
+                        onClose={onOpenChange}
                       />
                     </div>
                   </TabsContent>

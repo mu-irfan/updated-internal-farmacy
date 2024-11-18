@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LabelInputContainer from "../LabelInputContainer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CirclePlus, CircleX, Info } from "lucide-react";
+import { CirclePlus, CircleX } from "lucide-react";
 import { Textarea } from "../../ui/textarea";
 import {
   Select,
@@ -42,20 +42,16 @@ import {
   useCreateSeed,
   useDeleteSeedImage,
   useGetAllCompaniesUsers,
-  useGetCompanyProfile,
   useInSimulator,
-  useSubscribeSeed,
   useUpdateSeed,
 } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
-import { SweetAlert } from "@/components/alerts/SweetAlert";
 import { baseUrl } from "@/lib/utils";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import toast from "react-hot-toast";
 
-import NutrientContentModal from "@/components/forms-modals/seeds/NutrientContent";
 import {
   MultiSelector,
   MultiSelectorContent,
@@ -99,7 +95,6 @@ const AddSeedForm = ({
     useState<boolean>(false);
 
   //
-  const { mutate: subscribeSeed, isPending: subscribing } = useSubscribeSeed();
   const { mutate: addSeed, isPending: loading } = useCreateSeed();
   const { mutate: deleteSeedImage, isPending: deletingImage } =
     useDeleteSeedImage(token);

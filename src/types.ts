@@ -91,19 +91,6 @@ interface TrailData {
   kc: string;
 }
 
-interface Franchise {
-  id: number;
-  full_name: string;
-  franchiseName: string;
-  contact: string;
-  address: string;
-  province: string;
-  district: string;
-  tehsil: string;
-  active: boolean;
-  remainingDays: number;
-}
-
 interface SeedTrails {
   id: number;
   seed_variety_name: string;
@@ -209,10 +196,6 @@ interface ingredientListTableRow extends IngredientList {
   actions?: never;
 }
 
-interface FranchiseTableRow extends Franchise {
-  actions?: never;
-}
-
 interface SeedTrailTableRow extends SeedTrails {
   actions?: never;
 }
@@ -261,8 +244,6 @@ type VarietyColumnAccessor = keyof Variety | "actions";
 type StagesColumnAccessor = keyof Stages | "actions";
 
 type TrailDataColumnAccessor = keyof TrailData;
-
-type FranchiseColumnAccessor = keyof Franchise | "actions" | "active";
 
 type CompaniesColumnAccessor = keyof Companies | "actions" | "verified";
 

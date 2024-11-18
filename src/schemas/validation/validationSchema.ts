@@ -97,12 +97,7 @@ const addProductFormSchema = z.object({
   company_fk: z.string().nonempty({ message: "Brand Name is required." }),
   category: z.string().nonempty({ message: "Category is required." }),
   sub_category: z.string().nonempty({ message: "Subcategory is required." }),
-  // active_ingredients: z
-  //   .string()
-  //   .nonempty({ message: "ActiveIngredient is required." }),
   type: z.string().nonempty({ message: "ActiveIngredient is required." }),
-  // concentration: z.string().nonempty({ message: "Concentration is required." }),
-  // units: z.string().nonempty({ message: "Unit is required." }),
   package_weight: z
     .union([z.string(), z.number()])
     .transform((val) => String(val))
@@ -295,6 +290,91 @@ const AddStageToSimulatorFormSchema = z.object({
     }),
 });
 
+const addVarietyDataFormSchema = z.object({
+  variety_eng: z
+    .string()
+    .nonempty({ message: "Variety Name (English) is required." }),
+  variety_urdu: z
+    .string()
+    .nonempty({ message: "Variety Name (Urdu) is required." }),
+  variety_type: z.string().nonempty({ message: "Variety Type is required." }),
+  company: z.string().nonempty({ message: "Company is required." }),
+  crop_fk: z.string().nonempty({ message: "Crop is required." }),
+  crop_season: z.string().nonempty({ message: "Crop Season is required." }),
+  season: z.string().nonempty({ message: "Season is required." }),
+  seed_weight_mg: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Seed weight is required.",
+    }),
+  irrigation_source: z
+    .string()
+    .nonempty({ message: "Irrigation Source is required." }),
+  germination_percentage: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Germination Percentage is required.",
+    }),
+  maturity_percentage: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Maturity Percentage is required.",
+    }),
+  crop_min_days: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Min Harvesting Days are required.",
+    }),
+  crop_max_days: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Max Harvesting Days are required.",
+    }),
+  suitable_region: z
+    .string()
+    .nonempty({ message: "Suitable Region is required." }),
+  mad_percentage: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "MAD Percentage is required.",
+    }),
+  cwr_min_mm: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Minimum Water Requirement is required.",
+    }),
+  cwr_max_mm: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Maximum Water Requirement is required.",
+    }),
+  height_class: z.string().nonempty({ message: "Height Class is required." }),
+  nutrient_content: z.string().optional(),
+  common_disease_tolerance: z.string().optional(),
+  env_resilience_fators: z.string().optional(),
+  unique_features: z.string().optional(),
+  sand: z.boolean().optional(),
+  loamy_sand: z.boolean().optional(),
+  sandy_loam: z.boolean().optional(),
+  loam: z.boolean().optional(),
+  sandy_clay_loam: z.boolean().optional(),
+  clay_loam: z.boolean().optional(),
+  silt_loam: z.boolean().optional(),
+  silt: z.boolean().optional(),
+  silty_clay_loam: z.boolean().optional(),
+  silty_clay: z.boolean().optional(),
+  clay: z.boolean().optional(),
+  sandy_clay: z.boolean().optional(),
+});
+
 //seed
 const addSeedTrailDataFormSchema = z.object({
   sowingDate: z.string().nonempty({
@@ -321,47 +401,6 @@ const addCropStageFormSchema = z.object({
     .refine((val) => val.trim() !== "", {
       message: "BBCH Scale is required.",
     }),
-});
-
-// filter subscribed product
-const filterSubscribedProduct = z.object({
-  category: z.string().optional(),
-  subCategory: z.string().optional(),
-  subscribed: z.string().optional(),
-});
-
-// add franchise
-const addFranchiseFormSchema = z.object({
-  full_name: z.string().nonempty({
-    message: "Manager Name is required.",
-  }),
-  franchise_name: z.string().nonempty({
-    message: "Franchise Name is required.",
-  }),
-  contact: z.string().optional(),
-  address: z.string().nonempty({
-    message: "Address is required.",
-  }),
-  province: z.string().nonempty({
-    message: "Select Province",
-  }),
-  district: z.string().nonempty({
-    message: "Select District",
-  }),
-  tehsil: z.string().nonempty({
-    message: "Select Tehil",
-  }),
-  managerUuid: z.string().optional(),
-});
-
-// add manager
-const addManagerFormSchema = z.object({
-  full_name: z.string().nonempty({
-    message: "Manager Name is required.",
-  }),
-  contact: z.string({
-    required_error: "Phone number is required.",
-  }),
 });
 
 const addCompanyToGlobalListFormSchema = z.object({
@@ -401,7 +440,6 @@ const addTrailDataFormSchema = z.object({
   estimated_yield: z.string().nonempty({
     message: "Yield percentage is required.",
   }),
-
   seed_trial_form: z.array(
     z.object({
       start_day: z
@@ -496,16 +534,6 @@ const profileFormSchema = z.object({
     .email(),
 });
 
-// payment
-const addPaymentFormSchema = z.object({
-  phone: z.string({
-    required_error: "Phone number is required.",
-  }),
-  cnic_last6: z.string().nonempty({
-    message: "Enter CNIC last 6 digits",
-  }),
-});
-
 export {
   createAccountFormSchema,
   loginAccountFormSchema,
@@ -519,16 +547,12 @@ export {
   filterProductsFormSchema,
   addSeedFormSchema,
   addCompanyToGlobalListFormSchema,
-  addPaymentFormSchema,
   filterSeedFormSchema,
-  filterSubscribedProduct,
-  addFranchiseFormSchema,
   filterFranchiceFormSchema,
   addSeedTrailDataFormSchema,
   addIngredientListFormSchema,
   addQueryFormSchema,
   queryResponseSchema,
-  addManagerFormSchema,
   verifyCompanyFormSchema,
   profileFormSchema,
   AddCropToSimulatorFormSchema,
@@ -536,4 +560,5 @@ export {
   addCropStageFormSchema,
   filterCropVarietyFormSchema,
   filterVarietyFormSchema,
+  addVarietyDataFormSchema,
 };
