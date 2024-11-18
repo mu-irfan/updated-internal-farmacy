@@ -67,55 +67,6 @@ export const cropsData = [
   },
 ];
 
-//companies
-export const companiesData: Companies[] = [
-  {
-    id: 1,
-    managerName: "Wireless Headphones",
-    email: "company@gmail.com",
-    franchiseName: "Wireless Headphones",
-    phoneNo: "0310-000 0000",
-    ntn: "Liquid fertilizer",
-    verified: false,
-  },
-  {
-    id: 2,
-    managerName: "4K Smart TV",
-    email: "company@gmail.com",
-    franchiseName: "Wireless Headphones",
-    phoneNo: "0310-000 0000",
-    ntn: "Liquid fertilizer",
-    verified: true,
-  },
-  {
-    id: 3,
-    managerName: "Running Shoes",
-    email: "company@gmail.com",
-    franchiseName: "Wireless Headphones",
-    phoneNo: "0310-000 0000",
-    ntn: "Liquid fertilizer",
-    verified: false,
-  },
-  {
-    id: 4,
-    managerName: "Gaming Laptop",
-    email: "company@gmail.com",
-    franchiseName: "Wireless Headphones",
-    phoneNo: "0310-000 0000",
-    ntn: "Liquid fertilizer",
-    verified: true,
-  },
-  {
-    id: 5,
-    managerName: "Smartwatch",
-    email: "company@gmail.com",
-    franchiseName: "Wireless Headphones",
-    phoneNo: "0310-000 0000",
-    ntn: "Liquid fertilizer",
-    verified: true,
-  },
-];
-
 export const ManagersData = [
   {
     id: 1,

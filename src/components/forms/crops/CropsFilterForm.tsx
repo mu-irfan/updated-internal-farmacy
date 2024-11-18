@@ -31,6 +31,8 @@ const CropsFilterForm = () => {
   const [currentCropName, setCurrentCropName] = useState<string | null>(null);
   const [isAddNewStageCropModalOpen, setAddNewStageCropModalOpen] =
     useState<boolean>(false);
+  const [isViewStageCropModalOpen, setViewStageCropModalOpen] =
+    useState<boolean>(false);
 
   const handleSearchChange = debounce((value: string) => {
     setSearchQuery(value);
@@ -78,7 +80,7 @@ const CropsFilterForm = () => {
 
   const handleCropStageView = (stage: any) => {
     setSelectedCropStageToView(stage);
-    setAddNewStageCropModalOpen(true);
+    setViewStageCropModalOpen(true);
   };
 
   const handleDeleteCrop = async (name: any) => {
@@ -257,8 +259,8 @@ const CropsFilterForm = () => {
         mode="add"
       />
       <AddNewStageModal
-        open={isAddNewStageCropModalOpen}
-        onOpenChange={setAddNewStageCropModalOpen}
+        open={isViewStageCropModalOpen}
+        onOpenChange={setViewStageCropModalOpen}
         mode="view"
         stage={selectedCropStageToView}
         loading={cropLoading}

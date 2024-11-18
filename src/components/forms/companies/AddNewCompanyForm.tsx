@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LabelInputContainer from "../LabelInputContainer";
-import { useCreateCompany } from "@/hooks/useDataFetch";
+import { useCreateCompany, useUpdateCompany } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { Plus, Trash } from "lucide-react";
 import { addCompanyToGlobalListFormSchema } from "@/schemas/validation/validationSchema";
@@ -31,6 +31,8 @@ const AddCompanyForm = ({
 
   //
   const { mutate: addCompany, isPending: loading } = useCreateCompany();
+  const { mutate: updateCompany, isPending: updating } =
+    useUpdateCompany(token);
 
   const form = useForm<AddCompanyGlobalListFormData>({
     resolver: zodResolver(addCompanyToGlobalListFormSchema),
@@ -40,6 +42,11 @@ const AddCompanyForm = ({
 
   const { reset } = form;
 
+  const { fields, append, remove } = useFieldArray({
+    name: "companies",
+    control: form.control,
+  });
+
   useEffect(() => {
     if (company) {
       reset({
@@ -48,14 +55,9 @@ const AddCompanyForm = ({
     }
   }, [company, reset]);
 
-  const { fields, append, remove } = useFieldArray({
-    name: "companies",
-    control: form.control,
-  });
-
   useEffect(() => {
-    if (fields.length === 0) append("");
-  }, [fields, append]);
+    if (mode === "add" && fields.length === 0) append("");
+  }, [fields, append, mode]);
 
   const onSubmit = (data: AddCompanyGlobalListFormData) => {
     if (mode === "add") {
@@ -65,6 +67,21 @@ const AddCompanyForm = ({
         {
           onSuccess: (log) => {
             if (log?.success) onClose();
+          },
+        }
+      );
+    } else if (mode === "edit") {
+      const updatedData = {
+        company: company.company,
+        updatedCompany: data.companies[0],
+      };
+      updateCompany(
+        { data: updatedData },
+        {
+          onSuccess: (log) => {
+            if (log?.success) {
+              onClose();
+            }
           },
         }
       );
@@ -135,7 +152,13 @@ const AddCompanyForm = ({
             type="submit"
             disabled={isViewMode || loading}
           >
-            {mode === "add" ? "Submit" : "Update"}
+            {mode === "add"
+              ? "Submit"
+              : loading
+              ? "Creating..."
+              : updating
+              ? "Updating..."
+              : "Update"}
           </Button>
         </form>
       </Form>

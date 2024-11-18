@@ -20,8 +20,6 @@ export default function Dashboard() {
   //stats data
   const { data: stats, isLoading: loading } = useGetProductStats(token);
 
-  console.log(stats, "sytass");
-
   const reportsWithStats = useMemo(() => {
     return productsReportsTitles.map((report) => ({
       title: report.title,

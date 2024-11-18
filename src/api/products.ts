@@ -114,24 +114,8 @@ export const deleteProduct = async (uuid: any, token: string) => {
   }
 };
 
-// get all active ingredient
-export const getAlActiveIngredient = async (token: string) => {
-  try {
-    const res = await axios.get(`${baseUrl}/ingredient/global-list`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
-
 // verify product
 export const verifyProduct = async (uuid: any, token: string) => {
-  console.log(uuid, token, "verifyProductverifyProduct");
-
   try {
     const res = await axios.post(`${baseUrl}/product/verify?uuid=${uuid}`, "", {
       headers: {

@@ -42,6 +42,21 @@ export const createCompany = async (data: any, token: any) => {
   }
 };
 
+// update company
+export const updateCompany = async (data: any, token: string) => {
+  try {
+    const res = await axios.put(`${baseUrl}/company/global-list`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // delete coompany
 export const deleteCompany = async (name: any, token: string) => {
   try {

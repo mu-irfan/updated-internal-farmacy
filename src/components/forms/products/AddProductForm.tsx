@@ -39,10 +39,8 @@ import useDynamicFields from "@/hooks/useDynamicFields";
 import {
   useCreateProduct,
   useDeleteProductImage,
-  useGetAllActiveIngredients,
   useGetAllCompaniesUsers,
-  useGetCompanyProfile,
-  useSubscribeProduct,
+  useGetAllIngredients,
   useUpdateProduct,
   useVerifyProduct,
 } from "@/hooks/useDataFetch";
@@ -60,7 +58,6 @@ const AddProductForm = ({
   mode,
   productData,
   subscribe,
-  currentFranchiseUuid,
   onClose,
   loading: productDataLoading,
 }: {
@@ -85,8 +82,6 @@ const AddProductForm = ({
     useDynamicFields(initialInputData);
 
   //
-  const { mutate: subscribeProduct, isPending: subscribing } =
-    useSubscribeProduct();
   const { mutate: addProduct, isPending: loading } = useCreateProduct();
   const { mutate: updateProduct, isPending: updating } =
     useUpdateProduct(token);
@@ -95,9 +90,7 @@ const AddProductForm = ({
   const { mutate: deleteProductImage, isPending: deletingImage } =
     useDeleteProductImage(token);
   const { data: activeIngredientsList, isLoading: loadingActiveIngredients } =
-    useGetAllActiveIngredients(token);
-  const { data: companyProfile, isLoading: profileDataLoading } =
-    useGetCompanyProfile(token);
+    useGetAllIngredients(token);
   const { data: companiesUsersList, isLoading: companiesListLoading } =
     useGetAllCompaniesUsers(token);
 
@@ -850,6 +843,7 @@ const AddProductForm = ({
                         onClick={() => deleteProductImage(image.uuid)}
                         type="button"
                         className="absolute top-0 right-0 p-1.5 bg-white rounded-full shadow-lg"
+                        disabled={deletingImage}
                       >
                         <CircleX className="h-4 w-4 text-red-600" />
                       </button>
@@ -868,16 +862,22 @@ const AddProductForm = ({
           />
           <Button
             className="w-full text-white font-medium"
-            type={!productData.verified ? "button" : "submit"}
-            disabled={isViewMode && productData.verified}
+            type={!productData?.verified ? "button" : "submit"}
+            disabled={isViewMode && productData?.verified}
             onClick={
-              !productData.verified ? verifyToSubscribeProduct : undefined
+              !productData?.verified ? verifyToSubscribeProduct : undefined
             }
           >
             {mode === "edit"
               ? "Update Product"
-              : !productData.verified
+              : !productData?.verified && isViewMode
               ? "Mark As Verified"
+              : loading
+              ? "Creating..."
+              : updating
+              ? "Updating..."
+              : verifying
+              ? "Verifying..."
               : "Submit"}
           </Button>
           <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent mt-6 h-[1px] w-full" />

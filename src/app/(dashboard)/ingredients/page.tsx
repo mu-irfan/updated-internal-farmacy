@@ -166,7 +166,7 @@ const Ingredients = () => {
         open={isViewIngredientModalOpen}
         onOpenChange={setViewIngredientModalOpen}
         mode="view"
-        manager={selectedIngredientToView}
+        ingredient={selectedIngredientToView}
       />
     </>
   );

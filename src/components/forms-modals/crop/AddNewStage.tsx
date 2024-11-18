@@ -39,7 +39,7 @@ const AddNewStageModal = ({
               )}
             >
               <DialogTitle className="text-primary text-xl font-bold">
-                {currentMode === "add" ? "Add Crop Stage" : "Update company"}
+                {currentMode === "add" ? "Add Crop Stage" : "Update Crop Stage"}
               </DialogTitle>
               {currentMode === "view" && (
                 <Button size="sm" onClick={() => setCurrentMode("edit")}>

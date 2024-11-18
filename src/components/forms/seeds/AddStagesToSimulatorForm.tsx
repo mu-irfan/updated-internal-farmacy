@@ -24,7 +24,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { bbchCategory, productCategory } from "@/constant/data";
-import { useCreateVarietyStage } from "@/hooks/useDataFetch";
+import {
+  useCreateVarietyStage,
+  useUpdateVarietyStage,
+} from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 
 const AddStagesToSimulatorForm = ({
@@ -38,13 +41,14 @@ const AddStagesToSimulatorForm = ({
   onClose: () => void;
   loading?: boolean;
 }) => {
+  const isViewMode = mode === "view";
   const { token } = useContextConsumer();
-
-  console.log(stage, "stagestagestagestage");
 
   //
   const { mutate: createVarietyStage, isPending: creating } =
     useCreateVarietyStage();
+  const { mutate: updateVarietyStage, isPending: updating } =
+    useUpdateVarietyStage(token);
 
   const form = useForm<z.infer<typeof AddStageToSimulatorFormSchema>>({
     resolver: zodResolver(AddStageToSimulatorFormSchema),
@@ -102,6 +106,26 @@ const AddStagesToSimulatorForm = ({
           },
         }
       );
+    } else if (mode === "edit") {
+      const updated = {
+        ...data,
+        bbch_scale: Number(data.bbch_scale),
+        kc: Number(data.kc),
+        min_temp: Number(data.min_temp),
+        max_temp: Number(data.max_temp),
+        start_gdd: Number(data.start_gdd),
+        end_gdd: Number(data.end_gdd),
+      };
+      updateVarietyStage(
+        { data: updated, uid: stage.uid },
+        {
+          onSuccess: (log) => {
+            if (log?.success) {
+              onClose();
+            }
+          },
+        }
+      );
     }
   };
 
@@ -127,9 +151,14 @@ const AddStagesToSimulatorForm = ({
                         onValueChange={(value) => {
                           field.onChange(value);
                         }}
+                        disabled={isViewMode}
                       >
                         <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
-                          <SelectValue placeholder="Select Variety" />
+                          <SelectValue
+                            placeholder={
+                              stage?.crop_variety_fk || "Select Variety"
+                            }
+                          />
                         </SelectTrigger>
                         <SelectContent className="rounded-xl">
                           <SelectGroup>
@@ -162,9 +191,12 @@ const AddStagesToSimulatorForm = ({
                         onValueChange={(value) => {
                           field.onChange(value);
                         }}
+                        disabled={isViewMode}
                       >
                         <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
-                          <SelectValue placeholder="Select Stage" />
+                          <SelectValue
+                            placeholder={stage?.stage || "Select Stage"}
+                          />
                         </SelectTrigger>
                         <SelectContent className="rounded-xl">
                           <SelectGroup>
@@ -199,9 +231,14 @@ const AddStagesToSimulatorForm = ({
                         onValueChange={(value) => {
                           field.onChange(value);
                         }}
+                        disabled={isViewMode}
                       >
                         <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
-                          <SelectValue placeholder="Select Principle Stage" />
+                          <SelectValue
+                            placeholder={
+                              stage?.sub_stage || "Select Principle Stage"
+                            }
+                          />
                         </SelectTrigger>
                         <SelectContent className="rounded-xl">
                           <SelectGroup>
@@ -234,9 +271,14 @@ const AddStagesToSimulatorForm = ({
                         onValueChange={(value) => {
                           field.onChange(value);
                         }}
+                        disabled={isViewMode}
                       >
                         <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
-                          <SelectValue placeholder="Select BBCH Scale" />
+                          <SelectValue
+                            placeholder={
+                              stage?.bbch_scale || "Select BBCH Scale"
+                            }
+                          />
                         </SelectTrigger>
                         <SelectContent className="rounded-xl">
                           <SelectGroup>
@@ -272,6 +314,7 @@ const AddStagesToSimulatorForm = ({
                         type="number"
                         id="kc"
                         className="outline-none focus:border-primary disabled:bg-primary/20"
+                        disabled={isViewMode}
                         {...field}
                       />
                     </FormControl>
@@ -295,6 +338,7 @@ const AddStagesToSimulatorForm = ({
                         type="text"
                         id="base_temp"
                         className="outline-none focus:border-primary disabled:bg-primary/20"
+                        disabled={isViewMode}
                         {...field}
                       />
                     </FormControl>
@@ -320,6 +364,7 @@ const AddStagesToSimulatorForm = ({
                         type="text"
                         id="min_temp"
                         className="outline-none focus:border-primary disabled:bg-primary/20"
+                        disabled={isViewMode}
                         {...field}
                       />
                     </FormControl>
@@ -343,6 +388,7 @@ const AddStagesToSimulatorForm = ({
                         type="text"
                         id="max_temp"
                         className="outline-none focus:border-primary disabled:bg-primary/20"
+                        disabled={isViewMode}
                         {...field}
                       />
                     </FormControl>
@@ -368,6 +414,7 @@ const AddStagesToSimulatorForm = ({
                         type="text"
                         id="start_gdd"
                         className="outline-none focus:border-primary disabled:bg-primary/20"
+                        disabled={isViewMode}
                         {...field}
                       />
                     </FormControl>
@@ -391,6 +438,7 @@ const AddStagesToSimulatorForm = ({
                         type="text"
                         id="end_gdd"
                         className="outline-none focus:border-primary disabled:bg-primary/20"
+                        disabled={isViewMode}
                         {...field}
                       />
                     </FormControl>
@@ -401,7 +449,13 @@ const AddStagesToSimulatorForm = ({
             </LabelInputContainer>
           </div>
           <Button className="w-full text-white font-medium" type="submit">
-            {creating ? "Creating..." : "Add Stage In Simulator"}
+            {creating
+              ? "Creating..."
+              : updating
+              ? "Updating..."
+              : mode === "edit" || mode === "view"
+              ? "Update"
+              : "Add Stage In Simulator"}
           </Button>
         </form>
       </Form>

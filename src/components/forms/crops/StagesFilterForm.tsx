@@ -83,7 +83,7 @@ const StagesFilterForm = () => {
 
   const handleView = (stage: any) => {
     setViewStageModalOpen(true);
-    setCurrentVarietyUuid(stage.uuid);
+    setCurrentVarietyUuid(stage.uid);
   };
 
   const handleDelete = async (stageId: any) => {
@@ -254,6 +254,7 @@ const StagesFilterForm = () => {
         onOpenChange={setViewStageModalOpen}
         selectedItem={selectedStageToView}
         loading={varietyStageLoading}
+        mode="view"
         viewStage
       />
     </>

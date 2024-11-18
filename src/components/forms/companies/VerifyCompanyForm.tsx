@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,8 +12,6 @@ import {
 import { verifyCompanyFormSchema } from "@/schemas/validation/validationSchema";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-
-import { productCategory } from "@/constant/data";
 import LabelInputContainer from "../LabelInputContainer";
 import {
   Select,
@@ -24,10 +22,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetAllCompaniesUsers } from "@/hooks/useDataFetch";
+import {
+  useGetAllCompaniesUsers,
+  useVerifyCompany,
+} from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 
-const VerifyCompanyForm = () => {
+const VerifyCompanyForm = ({ onClose }: { onClose: () => void }) => {
   const { token } = useContextConsumer();
   const form = useForm<z.infer<typeof verifyCompanyFormSchema>>({
     resolver: zodResolver(verifyCompanyFormSchema),
@@ -38,9 +39,29 @@ const VerifyCompanyForm = () => {
 
   const { data: companiesUsersList, isLoading: companiesListLoading } =
     useGetAllCompaniesUsers(token);
+  const { mutate: verifyCompany, isPending: verifying } = useVerifyCompany();
 
   const onSubmit = (data: z.infer<typeof verifyCompanyFormSchema>) => {
-    console.log("heyyyyy", data);
+    const selectedCompany = companiesUsersList?.data?.find(
+      (company: any) => company.company_fk === data.name
+    );
+    if (!selectedCompany) {
+      console.error("Company not found.");
+      return;
+    }
+    const payload = {
+      company: selectedCompany.company_fk,
+      uuid: selectedCompany.uuid,
+    };
+
+    verifyCompany(
+      { data: payload, token },
+      {
+        onSuccess: (log) => {
+          if (log?.success) onClose();
+        },
+      }
+    );
   };
 
   return (
@@ -69,7 +90,10 @@ const VerifyCompanyForm = () => {
                         <SelectLabel>Company</SelectLabel>
                         {!companiesListLoading &&
                           companiesUsersList?.data?.map((company: any) => (
-                            <SelectItem key={company.uuid} value={company.uuid}>
+                            <SelectItem
+                              key={company.uuid}
+                              value={company.company_fk}
+                            >
                               {company.company_fk}
                             </SelectItem>
                           ))}
@@ -87,7 +111,7 @@ const VerifyCompanyForm = () => {
           company list.
         </p>
         <Button className="w-full text-white font-medium" type="submit">
-          Verify
+          {verifying ? "Verifying..." : "Verify"}
         </Button>
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent mt-6 h-[1px] w-full" />
       </form>

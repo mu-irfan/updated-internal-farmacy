@@ -77,6 +77,29 @@ export const deleteCropVariety = async (name: any, token: string) => {
   }
 };
 
+// update crop stage
+export const updateVarietyStage = async (
+  data: any,
+  uid: any,
+  token: string
+) => {
+  try {
+    const res = await axios.patch(
+      `${baseUrl}/crop/variety/stage?uid=${uid}`,
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // delete crop stage
 export const deleteVarietyStage = async (uuid: any, token: string) => {
   try {

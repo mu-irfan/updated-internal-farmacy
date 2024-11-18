@@ -6,15 +6,14 @@ import Stats from "@/components/forms-modals/ingredeints/Stats";
 import Header from "@/components/Header";
 import DataTable from "@/components/Table/DataTable";
 import { Button } from "@/components/ui/button";
-import { companiesData, franchiseData } from "@/constant/data";
 import { useContextConsumer } from "@/context/Context";
 import {
   useGetAllCompanyFranchises,
-  useGetCompanyFranchiseStats,
   useRegisterCompaniesUsers,
 } from "@/hooks/useDataFetch";
 import { Ban, Check } from "lucide-react";
 import React, { useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 const RegisterCompanyDetails = ({ params }: { params: { id: string } }) => {
   const { token } = useContextConsumer();
@@ -25,20 +24,16 @@ const RegisterCompanyDetails = ({ params }: { params: { id: string } }) => {
   >(null);
 
   //
-  const {
-    data: registeredCompaniesList,
-    isLoading: registeredCompaniesListLoading,
-  } = useRegisterCompaniesUsers(token);
+  const { data: registeredCompaniesList } = useRegisterCompaniesUsers(token);
 
   const selectedCompany = registeredCompaniesList?.data?.find(
     (franchise: any) => franchise.uuid === params.id
   );
 
-  const {
-    data: CompanyFranchises,
-    isLoading: franchisesLoading,
-    refetch,
-  } = useGetAllCompanyFranchises(selectedCompany?.company_fk, token);
+  const { data: CompanyFranchises, refetch } = useGetAllCompanyFranchises(
+    selectedCompany?.company_fk,
+    token
+  );
 
   if (!selectedCompany) {
     return <p>Register Company Not Found.</p>;
@@ -72,6 +67,7 @@ const RegisterCompanyDetails = ({ params }: { params: { id: string } }) => {
 
   return (
     <>
+      <Toaster />
       <DashboardLayout>
         <Header title="Company Details" />
         <Stats stats={selectedCompany} />

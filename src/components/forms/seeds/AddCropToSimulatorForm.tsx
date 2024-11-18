@@ -39,8 +39,6 @@ const AddCropToSimulatorForm = ({
   onClose: () => void;
   loading?: boolean;
 }) => {
-  console.log(mode, "modee");
-
   const isViewMode = mode === "view";
   const { token } = useContextConsumer();
 

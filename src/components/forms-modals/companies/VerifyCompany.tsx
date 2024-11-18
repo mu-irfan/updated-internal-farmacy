@@ -20,7 +20,7 @@ const VerifyCompanyModal = ({ open, onOpenChange }: any) => {
             Verify Company
           </DialogDescription>
         </DialogHeader>
-        <VerifyCompanyForm />
+        <VerifyCompanyForm onClose={onOpenChange} />
       </DialogContent>
     </Dialog>
   );

@@ -31,7 +31,8 @@ const ManageSeedTrailData = () => {
 
   // seed trails
   const { data: seedTrails, isLoading: loading } = useGetAllSeedTrails(token);
-  const { data: trailStages } = useGetAllSeedTrailsStages(trailUuid, token);
+  const { data: trailStages, isLoading: stagesLoading } =
+    useGetAllSeedTrailsStages(trailUuid, token);
 
   const handleSearchChange = debounce((value: string) => {
     setSearchQuery(value);
@@ -149,7 +150,7 @@ const ManageSeedTrailData = () => {
             <NoData message="No Data Available" />
           ))}
         {viewStageAgainstSeed &&
-          (loading ? (
+          (stagesLoading ? (
             <SkeletonCard className="w-full h-80" />
           ) : trailStages && trailStages.data.length > 0 ? (
             <div className="mt-8">

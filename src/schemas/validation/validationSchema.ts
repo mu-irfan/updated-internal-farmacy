@@ -250,33 +250,49 @@ const AddStageToSimulatorFormSchema = z.object({
   sub_stage: z.string().nonempty({
     message: "Sub Stage is required.",
   }),
-  bbch_scale: z.string().nonempty({
-    message: "bbch scale is required.",
-  }),
+  bbch_scale: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "bbch scale is required.",
+    }),
+
   kc: z
     .union([z.string(), z.number()])
     .transform((val) => String(val))
     .refine((val) => val.trim() !== "", {
       message: "kc is required.",
     }),
-  // kc: z.string().nonempty({
-  //   message: "kc is required.",
-  // }),
-  start_gdd: z.string().nonempty({
-    message: "Sub Stage is required.",
-  }),
-  end_gdd: z.string().nonempty({
-    message: "bbch scale is required.",
-  }),
-  base_temp: z.string().nonempty({
-    message: "kc is required.",
-  }),
-  min_temp: z.string().nonempty({
-    message: "Sub Stage is required.",
-  }),
-  max_temp: z.string().nonempty({
-    message: "bbch scale is required.",
-  }),
+  start_gdd: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Start GDD is required.",
+    }),
+  end_gdd: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "End GDD is required.",
+    }),
+  base_temp: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Base Temp is required.",
+    }),
+  min_temp: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Min Temp is required.",
+    }),
+  max_temp: z
+    .union([z.string(), z.number()])
+    .transform((val) => String(val))
+    .refine((val) => val.trim() !== "", {
+      message: "Max Temp is required.",
+    }),
 });
 
 //seed
@@ -349,7 +365,7 @@ const addManagerFormSchema = z.object({
 });
 
 const addCompanyToGlobalListFormSchema = z.object({
-  companies: z.array(z.string().min(1, "Company name is required")),
+  companies: z.array(z.string()).nonempty("One company is required."),
 });
 
 const addIngredientListFormSchema = z.object({

@@ -11,7 +11,7 @@ import { Pencil } from "lucide-react";
 import { cn } from "@/lib/utils";
 import AddIngredientForm from "@/components/forms/ingredients/AddNewIngredientForm";
 
-const AddIngredientModal = ({ open, onOpenChange, mode, manager }: any) => {
+const AddIngredientModal = ({ open, onOpenChange, mode, ingredient }: any) => {
   const [currentMode, setCurrentMode] = useState(mode);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const AddIngredientModal = ({ open, onOpenChange, mode, manager }: any) => {
           </DialogHeader>
           <AddIngredientForm
             mode={currentMode}
-            company={manager}
+            ingredient={ingredient}
             onClose={onOpenChange}
           />
         </DialogContent>

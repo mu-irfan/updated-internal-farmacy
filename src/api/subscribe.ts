@@ -19,24 +19,6 @@ export const getSubsribedsStats = async (uuid: any, token: string) => {
 };
 
 // get subscribe products
-export const subscribeProducts = async (data: any, token: string) => {
-  try {
-    const res = await axios.post(
-      `${baseUrl}/franchise/subscribe/product`,
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return res.data;
-  } catch (error) {
-    return error;
-  }
-};
-
-// get subscribe products
 export const subscribeSeeds = async (data: any, token: string) => {
   try {
     const res = await axios.post(`${baseUrl}/franchise/subscribe/seed`, data, {

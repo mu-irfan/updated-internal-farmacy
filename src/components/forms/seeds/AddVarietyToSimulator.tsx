@@ -32,8 +32,6 @@ const AddVarietyToSimulatorForm = ({
   variety?: any;
   mode?: "add" | "view" | "edit";
 }) => {
-  console.log(mode, "modee");
-
   const isViewMode = mode === "view";
   const form = useForm<z.infer<typeof addSeedVarietyTrailDataFormSchema>>({
     resolver: zodResolver(addSeedVarietyTrailDataFormSchema),

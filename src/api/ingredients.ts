@@ -29,6 +29,21 @@ export const getAllIngredientsList = async (token: string) => {
   }
 };
 
+// update company
+export const updateIngredient = async (data: any, token: string) => {
+  try {
+    const res = await axios.put(`${baseUrl}/ingredient/global-list`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // delete ingredient
 export const deleteIngredient = async (name: any, token: string) => {
   try {

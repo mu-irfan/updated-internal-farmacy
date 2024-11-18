@@ -105,8 +105,6 @@ export const alreadyInSimulatorSeed = async (
   uuid: any,
   token: string
 ) => {
-  console.log(data, "simulator seed");
-
   try {
     const res = await axios.patch(
       `${baseUrl}/seed/already-in-simulator?uuid=${uuid}`,
