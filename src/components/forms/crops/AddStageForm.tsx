@@ -14,7 +14,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import { productCategory } from "@/constant/data";
 import LabelInputContainer from "../LabelInputContainer";
 import {
   Select,
@@ -28,11 +27,13 @@ import {
 import { useCreateCropStage, useUpdateCropStage } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
+import { stages } from "@/constant/data";
 
 const AddStageForm = ({
   mode,
   stage,
   onClose,
+  selectedCrop,
   loading: stageLoading,
 }: {
   mode: "add" | "view" | "edit";
@@ -40,10 +41,11 @@ const AddStageForm = ({
   subscribe?: boolean;
   currentFranchiseUuid?: string;
   onClose: any;
+  selectedCrop?: any;
   loading?: boolean;
 }) => {
-  const isViewMode = mode === "view";
   const { token } = useContextConsumer();
+  const isViewMode = mode === "view";
 
   //
   const { mutate: addCropStatge, isPending: loading } = useCreateCropStage();
@@ -53,7 +55,7 @@ const AddStageForm = ({
   const form = useForm<z.infer<typeof addCropStageFormSchema>>({
     resolver: zodResolver(addCropStageFormSchema),
     defaultValues: {
-      crop_fk: "",
+      crop_fk: selectedCrop,
       stage: "",
       sub_stage: "",
       bbch_scale: "",
@@ -65,7 +67,7 @@ const AddStageForm = ({
   useEffect(() => {
     if (stage) {
       reset({
-        crop_fk: stage.crop_fk || "",
+        crop_fk: stage?.currentCropName || "",
         stage: stage.stage || "",
         sub_stage: stage.sub_stage || "",
         bbch_scale: stage.bbch_scale || "",
@@ -122,7 +124,7 @@ const AddStageForm = ({
                         id="crop_fk"
                         className="outline-none focus:border-primary disabled:bg-primary/20"
                         {...field}
-                        disabled={isViewMode}
+                        disabled
                       />
                     </FormControl>
                     <FormMessage />
@@ -144,6 +146,7 @@ const AddStageForm = ({
                         onValueChange={(value) => {
                           field.onChange(value);
                         }}
+                        disabled={isViewMode}
                       >
                         <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
                           <SelectValue
@@ -153,7 +156,7 @@ const AddStageForm = ({
                         <SelectContent className="rounded-xl">
                           <SelectGroup>
                             <SelectLabel>stage</SelectLabel>
-                            {productCategory.map((item) => (
+                            {stages.map((item) => (
                               <SelectItem key={item.value} value={item.value}>
                                 {item.label}
                               </SelectItem>

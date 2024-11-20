@@ -57,7 +57,7 @@ export const getSeed = async (uuid: any, token: string) => {
   }
 };
 
-// delete seed
+// delete seed Image
 export const deleteSeedImage = async (uuid: any, token: string) => {
   try {
     const res = await axios.delete(`${baseUrl}/seed/image?imgUid=${uuid}`, {

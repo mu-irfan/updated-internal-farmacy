@@ -9,8 +9,9 @@ import { companiesReportsTitles } from "@/constant/data";
 import { useContextConsumer } from "@/context/Context";
 import { useGetCompaniesStats } from "@/hooks/useDataFetch";
 import { SkeletonCard } from "@/components/SkeletonLoader";
+import { Toaster } from "react-hot-toast";
 
-const Franchises = () => {
+const Companies = () => {
   const { token, setMode } = useContextConsumer();
 
   //
@@ -28,6 +29,7 @@ const Franchises = () => {
 
   return (
     <>
+      <Toaster />
       <DashboardLayout contentAtCenter>
         <div className="w-full grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 max-w-7xl mx-auto">
           {loading ? (
@@ -46,13 +48,7 @@ const Franchises = () => {
           href="/companies/companies-list"
           className="w-full mx-auto max-w-xl"
         >
-          <Card
-            className="w-full relative py-6 lg:py-8 max-w-xl lg:mt-4 rounded-xl text-center bg-muted/50 cards cursor-pointer"
-            // onClick={() => {
-            //   setAddFranchiseModalOpen((prev) => !prev);
-            //   setMode("add");
-            // }}
-          >
+          <Card className="w-full relative py-6 lg:py-8 max-w-xl lg:mt-4 rounded-xl text-center bg-muted/50 cards cursor-pointer">
             <CardHeader className="space-y-0 pb-2">
               <CardTitle className="text-3xl lg:text-4xl font-medium lg:py-4">
                 <Search className="h-8 w-8 mx-auto text-farmacieWhite" />
@@ -95,4 +91,4 @@ const Franchises = () => {
   );
 };
 
-export default Franchises;
+export default Companies;

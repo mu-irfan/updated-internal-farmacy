@@ -57,7 +57,7 @@ export const getQueriesChats = async (uuid: any, token: string) => {
   }
 };
 
-// create query
+// response viewed or not
 export const queryResponseViewed = async (uuid: any, token: any) => {
   try {
     const res = await axios.post(

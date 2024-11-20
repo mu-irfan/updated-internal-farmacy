@@ -396,7 +396,6 @@ const AllProducts = () => {
           onOpenChange={setViewProductModalOpen}
           mode="view"
           productData={selectedProductToView}
-          // subscribe={selectedProductToView?.verified}
           loading={productLoading}
         />
       </div>

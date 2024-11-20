@@ -37,21 +37,18 @@ import {
   suitahleRegion,
   uniqueFeatures,
 } from "@/constant/data";
-import AddSeedTrialDataInstructionModal from "@/components/forms-modals/seeds/AddSeedTrialDataInstr";
 import {
   useCreateSeed,
   useDeleteSeedImage,
-  useGetAllCompaniesUsers,
+  useGetAllCompanies,
   useInSimulator,
   useUpdateSeed,
 } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { baseUrl } from "@/lib/utils";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import toast from "react-hot-toast";
-
 import {
   MultiSelector,
   MultiSelectorContent,
@@ -69,7 +66,6 @@ const AddSeedForm = ({
   mode,
   seed,
   subscribe,
-  currentFranchiseUuid,
   onClose,
   loading: seedLoading,
 }: {
@@ -82,15 +78,10 @@ const AddSeedForm = ({
 }) => {
   const isViewMode = mode === "view";
   const { token } = useContextConsumer();
-  const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<SeedCategory | "">(
     seed?.category || ""
   );
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
-  const [
-    isAddSeedTrailDataInstructionModalOpen,
-    setAddSeedTrailDataInstructionModalOpen,
-  ] = useState<boolean>(false);
   const [isAddSeedToSimulatorModalOpen, setAddSeedToSimulatorModalOpen] =
     useState<boolean>(false);
 
@@ -100,8 +91,8 @@ const AddSeedForm = ({
     useDeleteSeedImage(token);
   const { mutate: updateSeed, isPending: updating } = useUpdateSeed(token);
   const { mutate: inSimulator, isPending: simulating } = useInSimulator(token);
-  const { data: companiesUsersList, isLoading: companiesListLoading } =
-    useGetAllCompaniesUsers(token);
+  const { data: companiesList, isLoading: companiesListLoading } =
+    useGetAllCompanies(token);
 
   const form = useForm<z.infer<typeof addSeedFormSchema>>({
     resolver: zodResolver(addSeedFormSchema),
@@ -169,7 +160,6 @@ const AddSeedForm = ({
   }, [seed, reset]);
 
   const onSubmit = (data: z.infer<typeof addSeedFormSchema>) => {
-    setAddSeedTrailDataInstructionModalOpen(true);
     const formData = new FormData();
     formData.append("seed_variety_name", data.seed_variety_name);
     formData.append("company_fk", data.company_fk);
@@ -334,13 +324,10 @@ const AddSeedForm = ({
                             <SelectGroup>
                               <SelectLabel>Brand Name</SelectLabel>
                               {!companiesListLoading &&
-                                companiesUsersList?.data?.map(
-                                  (company: any) => (
-                                    <SelectItem
-                                      key={company.uuid}
-                                      value={company.company_fk}
-                                    >
-                                      {company.company_fk}
+                                companiesList?.data?.companies?.map(
+                                  (company: any, index: number) => (
+                                    <SelectItem key={index} value={company}>
+                                      {company.company}
                                     </SelectItem>
                                   )
                                 )}
@@ -1037,6 +1024,7 @@ const AddSeedForm = ({
                           onClick={() => deleteSeedImage(image.uuid)}
                           type="button"
                           className="absolute top-0 right-0 p-1.5 bg-white rounded-full shadow-lg"
+                          disabled={deletingImage}
                         >
                           <CircleX className="h-4 w-4 text-red-600" />
                         </button>
@@ -1059,7 +1047,7 @@ const AddSeedForm = ({
                 variant="outline"
                 type="button"
                 onClick={handleInSimulator}
-                disabled={isViewMode && seed.in_simulator}
+                disabled={isViewMode || seed.in_simulator || simulating}
               >
                 Already in simulator
               </Button>
@@ -1080,6 +1068,10 @@ const AddSeedForm = ({
                 ? "Update Seed"
                 : mode === "view" && !seed.in_simulator
                 ? "Add in simulator"
+                : loading
+                ? "Creating..."
+                : updating
+                ? "Updating..."
                 : subscribe
                 ? "Subscribe"
                 : "Submit"}
@@ -1090,6 +1082,7 @@ const AddSeedForm = ({
       <AddSeedToSimulatorModal
         open={isAddSeedToSimulatorModalOpen}
         onOpenChange={setAddSeedToSimulatorModalOpen}
+        mode="add"
       />
     </>
   );

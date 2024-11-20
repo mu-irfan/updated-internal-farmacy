@@ -15,7 +15,7 @@ export const createIngredient = async (data: any, token: any) => {
   }
 };
 
-// get companies list
+// get ingredients list
 export const getAllIngredientsList = async (token: string) => {
   try {
     const res = await axios.get(`${baseUrl}/ingredient/global-list`, {
@@ -29,7 +29,7 @@ export const getAllIngredientsList = async (token: string) => {
   }
 };
 
-// update company
+// update ingredient
 export const updateIngredient = async (data: any, token: string) => {
   try {
     const res = await axios.put(`${baseUrl}/ingredient/global-list`, data, {

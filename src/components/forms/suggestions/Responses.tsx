@@ -66,7 +66,7 @@ const Responses = ({ currentQueryUuid }: { currentQueryUuid: string }) => {
           <div className="flex-1 overflow-y-auto space-y-4 max-h-[400px] scrollbar-custom px-4">
             {chats?.data?.map((chat: Chat) => (
               <div key={chat.uuid}>
-                {chat.is_query ? (
+                {!chat.is_query ? (
                   <div className="mb-4 flex justify-end">
                     <div className="max-w-[75%] bg-primary/10 dark:bg-farmacieLightSecondary p-3 rounded-lg shadow-sm text-sm">
                       <div className="dark:text-farmacieDarkSecondary">

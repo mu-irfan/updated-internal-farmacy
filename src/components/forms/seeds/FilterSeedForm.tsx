@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import {
   cropCategories,
   cropCategoriesOptions,
-  productCategory,
+  inSimulatorFilteringValues,
 } from "@/constant/data";
 import LabelInputContainer from "../LabelInputContainer";
 import {
@@ -34,7 +34,12 @@ type SeedCategory = keyof typeof cropCategoriesOptions;
 const FilterSeedForm = ({
   onSubmit,
 }: {
-  onSubmit: (data: { category: string; crop: string }) => void;
+  onSubmit: (data: {
+    crop_category: string;
+    crop: string;
+    in_simulator: boolean;
+    have_trail_data: boolean;
+  }) => void;
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<SeedCategory | "">(
     ""
@@ -43,10 +48,10 @@ const FilterSeedForm = ({
   const form = useForm<z.infer<typeof filterSeedFormSchema>>({
     resolver: zodResolver(filterSeedFormSchema),
     defaultValues: {
-      category: "",
+      crop_category: "",
       crop: "",
-      in_simulator: "",
-      have_trail_data: "",
+      in_simulator: undefined,
+      have_trail_data: undefined,
     },
   });
 
@@ -58,12 +63,12 @@ const FilterSeedForm = ({
       <form onSubmit={form.handleSubmit(handleSubmit)}>
         <div className="flex flex-col space-y-2 gap-3 mb-4">
           <LabelInputContainer>
-            <Label htmlFor="category" className="dark:text-farmacieGrey">
+            <Label htmlFor="crop_category" className="dark:text-farmacieGrey">
               Crop Category
             </Label>
             <FormField
               control={form.control}
-              name="category"
+              name="crop_category"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -143,7 +148,13 @@ const FilterSeedForm = ({
                   <FormControl>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(value);
+                        field.onChange(
+                          value === "true"
+                            ? true
+                            : value === "false"
+                            ? false
+                            : value
+                        );
                       }}
                     >
                       <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
@@ -151,8 +162,8 @@ const FilterSeedForm = ({
                       </SelectTrigger>
                       <SelectContent className="rounded-xl">
                         <SelectGroup>
-                          <SelectLabel>in simulator</SelectLabel>
-                          {productCategory.map((item) => (
+                          <SelectLabel>In simulator</SelectLabel>
+                          {inSimulatorFilteringValues.map((item) => (
                             <SelectItem key={item.value} value={item.value}>
                               {item.label}
                             </SelectItem>
@@ -178,7 +189,13 @@ const FilterSeedForm = ({
                   <FormControl>
                     <Select
                       onValueChange={(value) => {
-                        field.onChange(value);
+                        field.onChange(
+                          value === "true"
+                            ? true
+                            : value === "false"
+                            ? false
+                            : value
+                        );
                       }}
                     >
                       <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
@@ -186,8 +203,8 @@ const FilterSeedForm = ({
                       </SelectTrigger>
                       <SelectContent className="rounded-xl">
                         <SelectGroup>
-                          <SelectLabel>have trail data</SelectLabel>
-                          {productCategory.map((item) => (
+                          <SelectLabel>In simulator</SelectLabel>
+                          {inSimulatorFilteringValues.map((item) => (
                             <SelectItem key={item.value} value={item.value}>
                               {item.label}
                             </SelectItem>

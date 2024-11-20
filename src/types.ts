@@ -68,12 +68,6 @@ interface Seed {
   description: string;
 }
 
-interface Manager {
-  id: number;
-  full_name: string;
-  contact: string;
-}
-
 interface GlobalCompaniesList {
   company: string;
 }
@@ -184,15 +178,15 @@ interface SeedTableRow extends Seed {
   actions?: never;
 }
 
-interface ManagersTableRow extends Manager {
-  actions?: never;
-}
-
 interface GlobalCompaniesListTableRow extends GlobalCompaniesList {
   actions?: never;
 }
 
 interface ingredientListTableRow extends IngredientList {
+  actions?: never;
+}
+
+interface FranchiseTableRow extends Franchises {
   actions?: never;
 }
 
@@ -228,8 +222,6 @@ interface StagesTableRow extends Stages {
 type ProductColumnAccessor = keyof Product | "actions";
 
 type SeedColumnAccessor = keyof Seed | "actions";
-
-type ManagersColumnAccessor = keyof Manager | "actions";
 
 type GlobalCompaniesListColumnAccessor = keyof GlobalCompaniesList | "actions";
 

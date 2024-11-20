@@ -19,6 +19,7 @@ export const createCropStage = async (data: any, token: any) => {
   }
 };
 
+// get all crop stages
 export const getAllCropStages = async (
   token: string,
   filters: { crop?: string; variety_eng?: string }
@@ -42,7 +43,7 @@ export const getAllCropStages = async (
   }
 };
 
-// get crop
+// get crop stage
 export const getCropStage = async (name: any, token: string) => {
   try {
     const res = await axios.get(

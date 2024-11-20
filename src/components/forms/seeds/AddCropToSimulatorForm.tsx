@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { productCategory } from "@/constant/data";
+import { cropCategories, productCategory } from "@/constant/data";
 import { useCreateCrop, useUpdateCrop } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
@@ -157,8 +157,8 @@ const AddCropToSimulatorForm = ({
                           </SelectTrigger>
                           <SelectContent className="rounded-xl">
                             <SelectGroup>
-                              <SelectLabel>crop category</SelectLabel>
-                              {productCategory.map((item) => (
+                              <SelectLabel>Category</SelectLabel>
+                              {cropCategories.map((item) => (
                                 <SelectItem key={item.value} value={item.value}>
                                   {item.label}
                                 </SelectItem>

@@ -79,7 +79,7 @@ const CropsFilterForm = () => {
   };
 
   const handleCropStageView = (stage: any) => {
-    setSelectedCropStageToView(stage);
+    setSelectedCropStageToView({ ...stage, currentCropName });
     setViewStageCropModalOpen(true);
   };
 
@@ -256,6 +256,7 @@ const CropsFilterForm = () => {
       <AddNewStageModal
         open={isAddNewStageCropModalOpen}
         onOpenChange={setAddNewStageCropModalOpen}
+        selectedCrop={currentCropName}
         mode="add"
       />
       <AddNewStageModal

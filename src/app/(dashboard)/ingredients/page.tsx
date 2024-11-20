@@ -46,9 +46,9 @@ const Ingredients = () => {
     );
   }, [ingredeintsList, searchQuery]);
 
-  const handleView = (manager: any) => {
+  const handleView = (ingredient: any) => {
     setViewIngredientModalOpen(true);
-    setSelectedIngredientToView(manager);
+    setSelectedIngredientToView(ingredient);
   };
 
   const handleDelete = async (ingredient: any) => {

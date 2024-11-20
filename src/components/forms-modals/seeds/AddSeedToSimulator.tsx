@@ -38,7 +38,7 @@ const AddSeedToSimulatorModal = ({
         <DialogContent
           className={cn(
             "max-w-[80vw] md:max-w-xl lg:max-w-2xl h-[90vh] lg:h-[95vh] overflow-y-auto scrollbar-custom",
-            viewCrop && "h-[90vh] lg:h-fit"
+            viewCrop && "h-[50vh] !lg:h-fit"
           )}
         >
           <DialogHeader className="pt-8">

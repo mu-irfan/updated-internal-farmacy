@@ -43,6 +43,20 @@ export const getAllCrops = async (token: string) => {
   }
 };
 
+// get crops list
+export const getAllCropsList = async (token: string) => {
+  try {
+    const res = await axios.get(`${baseUrl}/crop/list`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    return error;
+  }
+};
+
 // get crop
 export const getCrop = async (name: any, token: string) => {
   try {

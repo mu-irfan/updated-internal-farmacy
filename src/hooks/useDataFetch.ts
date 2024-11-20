@@ -4,7 +4,7 @@ import {
   forgotPasswordResetPassword,
   loginCompany,
   registerCompany,
-} from "@/api/auth";
+} from "@/api/auth/auth";
 import {
   useMutation,
   useQuery,
@@ -42,14 +42,11 @@ import {
   getSeedsStats,
   updateSeed,
 } from "@/api/seeds";
-import { getCompanyProfile, updateCompanyProfile } from "@/api/companyProfile";
 import {
-  createSeedTrail,
-  getAllSeedTrail,
-  getSeedTrailStages,
-  getSeedTrailStagesFormFields,
-  updateSeedTrailStages,
-} from "@/api/seedTrail";
+  getCompanyProfile,
+  updateCompanyProfile,
+} from "@/api/auth/companyProfile";
+import { getAllSeedTrail, getSeedTrailStages } from "@/api/seedTrail";
 import {
   createCompany,
   deleteCompany,
@@ -60,8 +57,6 @@ import {
 import {
   deleteRegisterCompany,
   getAllCompaniesUserList,
-  getCompaniesFranchiseStats,
-  getCompanyFranchises,
   getRegisterCompaniesList,
   verifyCompany,
 } from "@/api/company/companiesUser";
@@ -75,15 +70,14 @@ import {
   createCrop,
   deleteCrop,
   getAllCrops,
+  getAllCropsList,
   getCrop,
   getCropStats,
   updateCrop,
 } from "@/api/crop/crop";
 import {
   createVarietyStage,
-  deleteCropVariety,
   deleteVarietyStage,
-  getAllCropVarieties,
   getCropVariety,
   getVarietyStage,
   updateVarietyStage,
@@ -93,8 +87,20 @@ import {
   deleteCropStage,
   getAllCropStages,
   getCropStage,
+  updateCropStage,
 } from "@/api/crop/cropStages";
-import { createCropVariety, updateCropVariety } from "@/api/crop/cropVariety";
+import {
+  alreadyInSimulatorCropVariety,
+  createCropVariety,
+  deleteCropVariety,
+  getAllCropVarieties,
+  getAllCropVarietyList,
+  updateCropVariety,
+} from "@/api/crop/cropVariety";
+import {
+  getCompaniesFranchiseStats,
+  getCompanyFranchises,
+} from "@/api/company/franchises";
 
 export const useRegisterCompany = () => {
   const router = useRouter();
@@ -642,29 +648,7 @@ export const useUpdateCompanyProfile = () => {
   });
 };
 
-// seed trail
-export const useCreateSeedTrail = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({ data, token }: { data: any; token: string }) =>
-      createSeedTrail(data, token),
-    onSuccess: (data: any, variables: { data: any; token: string }) => {
-      if (data?.success) {
-        toast.success(data?.message);
-        queryClient.invalidateQueries([
-          "allSeedTrails",
-          variables.token,
-        ] as any);
-      } else {
-        toast.error(data?.response?.data?.message);
-      }
-    },
-    onError: (error: any) => {
-      toast.error(error.response?.data?.message);
-    },
-  });
-};
-
+// seed trails functions
 export const useGetAllSeedTrails = (token: string) => {
   return useQuery<any, Error>({
     queryKey: ["allSeedTrails", token],
@@ -702,60 +686,6 @@ export const useGetAllSeedTrailsStages = (uuid: string, token: string) => {
     refetchOnWindowFocus: false,
     enabled: !!uuid,
   } as UseQueryOptions);
-};
-
-export const useGetAllSeedTrailsStagesFormFields = (
-  crop_name: string,
-  token: string
-) => {
-  return useQuery<any, Error>({
-    queryKey: ["allSeedTrails", crop_name, token],
-    queryFn: () => getSeedTrailStagesFormFields(crop_name, token),
-    onSuccess: (data: any) => {
-      if (data?.success) {
-        toast.success(data?.message);
-      } else {
-        toast.error(data?.message);
-      }
-    },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message);
-    },
-    staleTime: 0,
-    refetchOnWindowFocus: false,
-  } as UseQueryOptions);
-};
-
-export const useUpdateSeedTrail = () => {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: ({
-      data,
-      token,
-      uuid,
-    }: {
-      data: any;
-      token: string;
-      uuid: string;
-    }) => updateSeedTrailStages(data, token, uuid),
-    onSuccess: (
-      data: any,
-      variables: { data: any; token: string; uuid: string }
-    ) => {
-      if (data?.success) {
-        toast.success(data.message);
-        queryClient.invalidateQueries([
-          "allSeedTrailsStages",
-          variables.token,
-        ] as any);
-      } else {
-        toast.error(data?.message);
-      }
-    },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message);
-    },
-  });
 };
 
 // companies
@@ -877,6 +807,7 @@ export const useDeleteCompany = (token: string) => {
   });
 };
 
+// ingredients
 export const useGetAllIngredients = (token: string) => {
   return useQuery<any, Error>({
     queryKey: ["allIngredientsList", token],
@@ -1116,6 +1047,25 @@ export const useGetAllCrops = (token: string) => {
   } as UseQueryOptions);
 };
 
+export const useGetAllCropsList = (token: string) => {
+  return useQuery<any, Error>({
+    queryKey: ["allCropsList", token],
+    queryFn: () => getAllCropsList(token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+  } as UseQueryOptions);
+};
+
 export const useGetCrop = (crop_name: string, token: string) => {
   return useQuery<any, Error>({
     queryKey: ["crop", crop_name, token],
@@ -1259,7 +1209,7 @@ export const useUpdateCropStage = (token: string) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ data, uuid }: { data: any; uuid: any }) =>
-      updateCrop(data, uuid, token),
+      updateCropStage(data, uuid, token),
     onSuccess: (data: any) => {
       if (data?.success) {
         toast.success(data.message);
@@ -1333,7 +1283,6 @@ export const useDeleteCropStage = (token: string) => {
 };
 
 // varaiteis API's Functions
-
 export const useGetAllCropsVaritites = (token: string) => {
   return useQuery<any, Error>({
     queryKey: ["allCropVaraities", token],
@@ -1437,11 +1386,49 @@ export const useCreateCropVariety = () => {
   });
 };
 
+export const useGetAllCropsVarititesList = (token: string) => {
+  return useQuery<any, Error>({
+    queryKey: ["allCropVarieties", token],
+    queryFn: () => getAllCropVarietyList(token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+    staleTime: 60000,
+    refetchOnWindowFocus: false,
+  } as UseQueryOptions);
+};
+
 export const useUpdateCropVariety = (token: string) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ data, variety_eng }: { data: any; variety_eng: any }) =>
       updateCropVariety(data, variety_eng, token),
+    onSuccess: (data: any) => {
+      if (data?.success) {
+        toast.success(data.message);
+        queryClient.invalidateQueries(["allCropVarieties", token] as any);
+      } else {
+        toast.error(data?.message);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message);
+    },
+  });
+};
+
+export const useCropVarietyInSimulator = (token: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ data, variety_eng }: { data: any; variety_eng: any }) =>
+      alreadyInSimulatorCropVariety(data, variety_eng, token),
     onSuccess: (data: any) => {
       if (data?.success) {
         toast.success(data.message);

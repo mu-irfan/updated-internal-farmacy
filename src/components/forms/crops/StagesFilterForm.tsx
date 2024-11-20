@@ -20,7 +20,6 @@ import {
 } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
 import LabelInputContainer from "../LabelInputContainer";
-import { productCategory } from "@/constant/data";
 import { Button } from "@/components/ui/button";
 import { filterCropVarietyFormSchema } from "@/schemas/validation/validationSchema";
 import DataTable from "@/components/Table/DataTable";
@@ -28,6 +27,7 @@ import { Trash } from "lucide-react";
 import AddSeedToSimulatorModal from "@/components/forms-modals/seeds/AddSeedToSimulator";
 import {
   useDeleteVarietyStage,
+  useGetAllCropsVaritites,
   useGetCropAllStages,
   useGetVarietyStage,
 } from "@/hooks/useDataFetch";
@@ -38,8 +38,6 @@ import { SweetAlert } from "@/components/alerts/SweetAlert";
 
 const StagesFilterForm = () => {
   const { token } = useContextConsumer();
-  const [isCropStagesFilterModalOpen, setCropStagesFilterModalOpen] =
-    useState<boolean>(false);
   const [selectedStageToView, setSelectedStageToView] = useState({});
   const [isViewStageModalOpen, setViewStageModalOpen] =
     useState<boolean>(false);
@@ -69,6 +67,8 @@ const StagesFilterForm = () => {
     useGetVarietyStage(currentVarietyUuid!, token);
   const { mutate: deleteVarietyStage, isPending: deleting } =
     useDeleteVarietyStage(token);
+  const { data: cropVarities, isLoading: varitiesLoading } =
+    useGetAllCropsVaritites(token);
 
   const handleFilterSubmit = (criteria: {
     crop?: string;
@@ -164,14 +164,17 @@ const StagesFilterForm = () => {
                             <SelectContent className="rounded-xl">
                               <SelectGroup>
                                 <SelectLabel>Crop</SelectLabel>
-                                {productCategory.map((item) => (
-                                  <SelectItem
-                                    key={item.value}
-                                    value={item.value}
-                                  >
-                                    {item.label}
-                                  </SelectItem>
-                                ))}
+                                {!varitiesLoading &&
+                                  cropVarities?.message?.map(
+                                    (variety: any, index: number) => (
+                                      <SelectItem
+                                        key={index}
+                                        value={variety?.crop_fk}
+                                      >
+                                        {variety.crop_fk}
+                                      </SelectItem>
+                                    )
+                                  )}
                               </SelectGroup>
                             </SelectContent>
                           </Select>
@@ -197,14 +200,17 @@ const StagesFilterForm = () => {
                             <SelectContent className="rounded-xl">
                               <SelectGroup>
                                 <SelectLabel>Variety</SelectLabel>
-                                {productCategory.map((item) => (
-                                  <SelectItem
-                                    key={item.value}
-                                    value={item.value}
-                                  >
-                                    {item.label}
-                                  </SelectItem>
-                                ))}
+                                {!varitiesLoading &&
+                                  cropVarities?.message?.map(
+                                    (variety: any, index: number) => (
+                                      <SelectItem
+                                        key={index}
+                                        value={variety?.variety_eng}
+                                      >
+                                        {variety.variety_eng}
+                                      </SelectItem>
+                                    )
+                                  )}
                               </SelectGroup>
                             </SelectContent>
                           </Select>

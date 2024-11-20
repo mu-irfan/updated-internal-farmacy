@@ -14,6 +14,7 @@ import AddStageForm from "@/components/forms/crops/AddStageForm";
 const AddNewStageModal = ({
   open,
   onOpenChange,
+  selectedCrop,
   mode,
   stage,
   loading,
@@ -58,6 +59,7 @@ const AddNewStageModal = ({
             stage={stage}
             onClose={onOpenChange}
             loading={loading}
+            selectedCrop={selectedCrop}
           />
         </DialogContent>
       </Dialog>

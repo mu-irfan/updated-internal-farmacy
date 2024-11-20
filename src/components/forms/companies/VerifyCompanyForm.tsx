@@ -46,7 +46,6 @@ const VerifyCompanyForm = ({ onClose }: { onClose: () => void }) => {
       (company: any) => company.company_fk === data.name
     );
     if (!selectedCompany) {
-      console.error("Company not found.");
       return;
     }
     const payload = {

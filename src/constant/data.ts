@@ -13,104 +13,37 @@ export const seedsReportsTitles = [
   { title: "Total seeds in simulator", key: "seedInSimulatorCount" },
 ];
 
-export const franchiseReports = [
-  { title: "Total Franchises", key: "totalFranchises" },
-  { title: "Activated Franchises", key: "activeFranchises" },
-  { title: "In-Active Franchises", key: "inactiveFranchises" },
-];
-
 export const cropsReportsTitles = [
   { title: "Total Crops", key: "cropsCount" },
   { title: "Total Varieties", key: "varietiesCount" },
 ];
 
-//franchsie
-export const franchiseData = [
-  {
-    id: 1,
-    address: "Wireless Headphones",
-    tehsil: "PAK",
-    district: "Kohat",
-    contact: "0310-000 0000",
-    province: "KPK",
-    active: false,
-  },
-  {
-    id: 1,
-    address: "Wireless Headphones",
-    tehsil: "PAK",
-    district: "Kohat",
-    contact: "0310-000 0000",
-    province: "KPK",
-    active: true,
-  },
-];
-
-export const cropsData = [
-  {
-    id: 1,
-    crop_name: "Disease",
-    crop_category: "Electronics",
-    stages_count: 1,
-    source: "Audio Devices",
-    seed_sowing_depth: 12,
-    root_depth: 12,
-  },
-  {
-    id: 2,
-    crop_name: "New",
-    crop_category: "Electronics",
-    stages_count: 4,
-    source: "Televisions",
-    seed_sowing_depth: 12,
-    root_depth: 12,
-  },
-];
-
-export const ManagersData = [
-  {
-    id: 1,
-    full_name: "Inam Ullah",
-    contact: "03334859488",
-  },
-  {
-    id: 2,
-    full_name: "Irfan",
-    contact: "03334859485",
-  },
-  {
-    id: 3,
-    full_name: "Noman",
-    contact: "03334859485",
-  },
-  {
-    id: 4,
-    full_name: "Khan",
-    contact: "03334859485",
-  },
-  {
-    id: 4,
-    full_name: "Khans",
-    contact: "03334859489",
-  },
-];
-
 export const productCategory = [
-  { value: "variety 3", label: "variety 3" },
+  { value: "fertilizer", label: "Fertilizer" },
   { value: "pesticide", label: "Pesticide" },
   { value: "crop_nutrition", label: "Crop Nutrition" },
 ];
 
-export const bbchCategory = [
-  { value: "1", label: "Fertilizer" },
-  { value: "2", label: "Pesticide" },
-  { value: "3", label: "Crop Nutrition" },
+export const cropSeasons = [
+  { value: "rabi", label: "Rabi" },
+  { value: "kharif", label: "Kharif" },
+];
+
+export const seasons = [
+  { value: "summer", label: "Summer" },
+  { value: "winter", label: "Winter" },
 ];
 
 export const companiesReportsTitles = [
   { title: "Total Companies in List", key: "globalListCompanies" },
   { title: "Registered Companies", key: "registeredCompanies" },
   { title: "Verified Companies", key: "verifiedCompanies" },
+];
+
+export const inSimulatorFilteringValues = [
+  { value: "true", label: "Yes" },
+  { value: "false", label: "No" },
+  { value: "both", label: "Neutral" },
 ];
 
 //
@@ -142,6 +75,45 @@ export const provinces = [
   {
     value: "islamabad",
     label: "Islamabad",
+  },
+];
+
+export const bbchScale = [
+  {
+    value: "1",
+    label: "1",
+  },
+  {
+    value: "2",
+    label: "2",
+  },
+  {
+    value: "3",
+    label: "3",
+  },
+  {
+    value: "4",
+    label: "4",
+  },
+  {
+    value: "5",
+    label: "5",
+  },
+  {
+    value: "6",
+    label: "6",
+  },
+  {
+    value: "7",
+    label: "7",
+  },
+  {
+    value: "8",
+    label: "8",
+  },
+  {
+    value: "9",
+    label: "9",
   },
 ];
 
@@ -2408,6 +2380,29 @@ export const seedTrailTableHeaders = [
   { label: "Start Day", accessor: "start_day" },
   { label: "End Day", accessor: "end_day" },
   { label: "Kc", accessor: "kc" },
+];
+
+export const stages = [
+  {
+    value: "transplant",
+    label: "Transplant",
+  },
+  {
+    value: "vegetative",
+    label: "Vegetative",
+  },
+  {
+    value: "germination",
+    label: "Germination",
+  },
+  {
+    value: "reproductive",
+    label: "Reproductive",
+  },
+  {
+    value: "ripening",
+    label: "Ripening",
+  },
 ];
 
 export const nutrientsContent = [

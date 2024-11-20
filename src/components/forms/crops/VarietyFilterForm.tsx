@@ -29,8 +29,8 @@ const VarietyFilterForm = () => {
     string | null
   >(null);
   const [filterCriteria, setFilterCriteria] = useState({
-    crop: "",
-    in_farmacie: "",
+    crop_fk: "",
+    in_farmacie: false,
   });
 
   //
@@ -46,11 +46,11 @@ const VarietyFilterForm = () => {
   }, 300);
 
   const handleFilterSubmit = (criteria: {
-    crop: string;
-    in_farmacie: string;
+    crop_fk: string;
+    in_farmacie: boolean;
   }) => {
     setFilterCriteria(criteria);
-    // setAddProductModalOpen(false);
+    setCropVarieyFilterModalOpen(false);
   };
 
   const filteredVarieties = useMemo(() => {
@@ -60,7 +60,10 @@ const VarietyFilterForm = () => {
         variety.variety_eng.toLowerCase().includes(searchQuery.toLowerCase())
       )
       .filter((variety: any) => {
-        if (filterCriteria.crop && variety.crop !== filterCriteria.crop)
+        if (
+          filterCriteria.crop_fk &&
+          variety.crop_fk !== filterCriteria.crop_fk
+        )
           return false;
         if (
           filterCriteria.in_farmacie &&
@@ -178,7 +181,9 @@ const VarietyFilterForm = () => {
         open={isViewVarietyModalOpen}
         onOpenChange={setViewVarietyModalOpen}
         selectedItem={selectedVarietyToView}
+        mode="view"
         viewVariety
+        loading={cropVarietyLoading}
       />
       <FilterVarityModal
         open={isCropVarieyFilterModalOpen}

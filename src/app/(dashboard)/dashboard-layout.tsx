@@ -9,7 +9,6 @@ import {
   FileQuestion,
   LayoutGrid,
   PanelsTopLeft,
-  UserRoundCheck,
   Wheat,
 } from "lucide-react";
 import { ToggleTheme } from "@/components/theme/theme-provider";

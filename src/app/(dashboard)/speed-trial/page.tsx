@@ -1,7 +1,6 @@
 "use client";
 import React, { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import FilterFranchiceModal from "@/components/forms-modals/franchice/FilterFranchice";
 import DataTable from "@/components/Table/DataTable";
 import Header from "@/components/Header";
 import {
@@ -11,7 +10,6 @@ import {
 import { useContextConsumer } from "@/context/Context";
 import NoData from "@/components/alerts/NoData";
 import { SkeletonCard } from "@/components/SkeletonLoader";
-import AddSeedTrailDataModal from "@/components/forms-modals/seed-trail-data/AddSeedTrailData";
 import DashboardLayout from "../dashboard-layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,10 +18,6 @@ import { debounce } from "lodash";
 
 const ManageSeedTrailData = () => {
   const { token } = useContextConsumer();
-  const [isAddFranchiceModalOpen, setAddFranchiceModalOpen] =
-    useState<boolean>(false);
-  const [isUpdateFranchiceModalOpen, setUpdateFranchiceModalOpen] =
-    useState<boolean>(false);
   const [viewStageAgainstSeed, setViewStageAgainstSeed] =
     useState<boolean>(false);
   const [trailUuid, setTrailUuid] = useState<string>("");
@@ -118,63 +112,50 @@ const ManageSeedTrailData = () => {
   ];
 
   return (
-    <>
-      <DashboardLayout>
-        <Header title="Seed Trials" />
-        <Card className="w-full py-6 rounded-xl text-center bg-primary/10 mb-8">
-          <CardContent className="p-0 px-6">
-            <div className="flex justify-between items-center gap-2">
-              <div className="relative max-w-md lg:max-w-lg w-full">
-                <Input
-                  placeholder="Search crop by name ..."
-                  type="text"
-                  className="outline-none border py-5 border-primary rounded-full pl-12 w-full"
-                  onChange={(e) => handleSearchChange(e.target.value)}
-                />
-                <Search className="absolute left-3.5 -translate-y-1/2 bottom-0.5 w-5 h-5 text-gray-400" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        {!viewStageAgainstSeed &&
-          (loading ? (
-            <SkeletonCard className="w-full h-80" />
-          ) : seedTrails && seedTrails.data.length > 0 ? (
-            <div className="mt-8">
-              <DataTable
-                columns={SeedTrailColoumn}
-                data={filteredSeedTrails as SeedTrailTableRow[]}
+    <DashboardLayout>
+      <Header title="Seed Trials" />
+      <Card className="w-full py-6 rounded-xl text-center bg-primary/10 mb-8">
+        <CardContent className="p-0 px-6">
+          <div className="flex justify-between items-center gap-2">
+            <div className="relative max-w-md lg:max-w-lg w-full">
+              <Input
+                placeholder="Search crop by name ..."
+                type="text"
+                className="outline-none border py-5 border-primary rounded-full pl-12 w-full"
+                onChange={(e) => handleSearchChange(e.target.value)}
               />
+              <Search className="absolute left-3.5 -translate-y-1/2 bottom-0.5 w-5 h-5 text-gray-400" />
             </div>
-          ) : (
-            <NoData message="No Data Available" />
-          ))}
-        {viewStageAgainstSeed &&
-          (stagesLoading ? (
-            <SkeletonCard className="w-full h-80" />
-          ) : trailStages && trailStages.data.length > 0 ? (
-            <div className="mt-8">
-              <DataTable
-                columns={stageColumns}
-                data={filteredSeedTrailsStages as SeedTrailsStages[]}
-              />
-            </div>
-          ) : (
-            <NoData message="No Data Available" />
-          ))}
-      </DashboardLayout>
-      <FilterFranchiceModal
-        open={isAddFranchiceModalOpen}
-        onOpenChange={setAddFranchiceModalOpen}
-      />
-      <AddSeedTrailDataModal
-        open={isUpdateFranchiceModalOpen}
-        onOpenChange={setUpdateFranchiceModalOpen}
-        selectedTrailStages={trailStages?.data}
-        trailUuid={trailUuid}
-        mode="view"
-      />
-    </>
+          </div>
+        </CardContent>
+      </Card>
+      {!viewStageAgainstSeed &&
+        (loading ? (
+          <SkeletonCard className="w-full h-80" />
+        ) : seedTrails && seedTrails?.data?.length > 0 ? (
+          <div className="mt-8">
+            <DataTable
+              columns={SeedTrailColoumn}
+              data={filteredSeedTrails as SeedTrailTableRow[]}
+            />
+          </div>
+        ) : (
+          <NoData message="No Data Available" />
+        ))}
+      {viewStageAgainstSeed &&
+        (stagesLoading ? (
+          <SkeletonCard className="w-full h-80" />
+        ) : trailStages && trailStages?.data?.length > 0 ? (
+          <div className="mt-8">
+            <DataTable
+              columns={stageColumns}
+              data={filteredSeedTrailsStages as SeedTrailsStages[]}
+            />
+          </div>
+        ) : (
+          <NoData message="No Data Available" />
+        ))}
+    </DashboardLayout>
   );
 };
 

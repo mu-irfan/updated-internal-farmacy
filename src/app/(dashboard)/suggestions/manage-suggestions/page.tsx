@@ -20,8 +20,7 @@ const ManageSuggestions = () => {
 
   //
   const { data: queries, isLoading: loading } = useGetAllTickets(token);
-  const { mutate: responseViewed, isPending: viewing } =
-    useQueryResponseViewed(token);
+  const { mutate: responseViewed } = useQueryResponseViewed(token);
 
   const handleView = (suggestion: any) => {
     setQueryResponsesModalOpen(true);

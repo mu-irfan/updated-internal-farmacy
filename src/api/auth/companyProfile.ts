@@ -1,7 +1,7 @@
 import { baseUrl } from "@/lib/utils";
 import axios from "axios";
 
-// get suggestions stats
+// get company profile
 export const getCompanyProfile = async (token: string) => {
   try {
     const res = await axios.get(`${baseUrl}/auth/profile`, {

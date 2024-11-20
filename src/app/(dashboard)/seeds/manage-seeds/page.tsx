@@ -31,8 +31,10 @@ const ManageSeeds = () => {
   const [selectedSeedToView, setSelectedSeedToView] = useState({});
   const [currentSeedUuid, setCurrentSeedUuid] = useState<string | null>(null);
   const [filterCriteria, setFilterCriteria] = useState({
-    category: "",
+    crop_category: "",
     crop: "",
+    in_simulator: false,
+    have_trail_data: false,
   });
 
   // seeds data
@@ -47,7 +49,12 @@ const ManageSeeds = () => {
     setSearchQuery(value);
   }, 300);
 
-  const handleFilterSubmit = (criteria: { category: string; crop: string }) => {
+  const handleFilterSubmit = (criteria: {
+    crop_category: string;
+    crop: string;
+    in_simulator: boolean;
+    have_trail_data: boolean;
+  }) => {
     setFilterCriteria(criteria);
     setAddProductModalOpen(false);
   };
@@ -60,11 +67,21 @@ const ManageSeeds = () => {
       )
       .filter((seed: any) => {
         if (
-          filterCriteria.category &&
-          seed.crop_category !== filterCriteria.category
+          filterCriteria.crop_category &&
+          seed.crop_category !== filterCriteria.crop_category
         )
           return false;
         if (filterCriteria.crop && seed.crop !== filterCriteria.crop)
+          return false;
+        if (
+          filterCriteria.in_simulator &&
+          seed.in_simulator !== filterCriteria.in_simulator
+        )
+          return false;
+        if (
+          filterCriteria.have_trail_data &&
+          seed.have_trail_data !== filterCriteria.have_trail_data
+        )
           return false;
         return true;
       });

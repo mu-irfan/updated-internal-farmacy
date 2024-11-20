@@ -15,7 +15,7 @@ export const getProductStats = async (token: string) => {
   }
 };
 
-// create seed
+// create product
 export const createProduct = async (data: any, token: string) => {
   try {
     const res = await axios.post(`${baseUrl}/product`, data, {
@@ -86,7 +86,7 @@ export const updateProduct = async (data: any, uuid: any, token: string) => {
   }
 };
 
-// delete product
+// delete product Image
 export const deleteProductImage = async (uuid: any, token: string) => {
   try {
     const res = await axios.delete(`${baseUrl}/product/image?imgUid=${uuid}`, {

@@ -190,23 +190,15 @@ const addSeedFormSchema = z.object({
 
 // filter seed
 const filterSeedFormSchema = z.object({
-  category: z.string().nonempty({
-    message: "Category is required.",
-  }),
-  crop: z.string().nonempty({
-    message: "Crop is required.",
-  }),
-  in_simulator: z.string().nonempty({
-    message: "In simulator is required.",
-  }),
-  have_trail_data: z.string().nonempty({
-    message: "In simulator is required.",
-  }),
+  crop_category: z.string().optional(),
+  crop: z.string().optional(),
+  in_simulator: z.boolean().optional(),
+  have_trail_data: z.boolean().optional(),
 });
 
 const filterVarietyFormSchema = z.object({
-  crop: z.string().optional(),
-  in_farmacie: z.string().optional(),
+  crop_fk: z.string().optional(),
+  in_farmacie: z.boolean().optional(),
 });
 
 // add seed trial data
@@ -357,10 +349,10 @@ const addVarietyDataFormSchema = z.object({
       message: "Maximum Water Requirement is required.",
     }),
   height_class: z.string().nonempty({ message: "Height Class is required." }),
-  nutrient_content: z.string().optional(),
-  common_disease_tolerance: z.string().optional(),
-  env_resilience_fators: z.string().optional(),
-  unique_features: z.string().optional(),
+  nutrient_content: z.array(z.string()).optional(),
+  common_disease_tolerance: z.array(z.string()).optional(),
+  env_resilience_fators: z.array(z.string()).optional(),
+  unique_features: z.array(z.string()).optional(),
   sand: z.boolean().optional(),
   loamy_sand: z.boolean().optional(),
   sandy_loam: z.boolean().optional(),
@@ -373,22 +365,6 @@ const addVarietyDataFormSchema = z.object({
   silty_clay: z.boolean().optional(),
   clay: z.boolean().optional(),
   sandy_clay: z.boolean().optional(),
-});
-
-//seed
-const addSeedTrailDataFormSchema = z.object({
-  sowingDate: z.string().nonempty({
-    message: "Sowing Date is required.",
-  }),
-  city: z.string().nonempty({
-    message: "City is required.",
-  }),
-  category: z.string().nonempty({
-    message: "Category is required.",
-  }),
-  crop: z.string().nonempty({
-    message: "Crop is required.",
-  }),
 });
 
 const addCropStageFormSchema = z.object({
@@ -415,94 +391,6 @@ const addIngredientListFormSchema = z.object({
 const filterCropVarietyFormSchema = z.object({
   crop: z.string().optional(),
   variety_eng: z.string().optional(),
-});
-
-// add seed trail data
-const addTrailDataFormSchema = z.object({
-  seed_variety: z.string().nonempty({
-    message: "Variety is required.",
-  }),
-  sowing_date: z.string().nonempty({
-    message: "Sowing date is required.",
-  }),
-  city: z.string().nonempty({
-    message: "City is required.",
-  }),
-  tehsil: z.string().nonempty({
-    message: "Tehsil is required.",
-  }),
-  min_irrigation: z.string().nonempty({
-    message: "Min irrigation is required.",
-  }),
-  max_irrigation: z.string().nonempty({
-    message: "Max irrigation is required.",
-  }),
-  estimated_yield: z.string().nonempty({
-    message: "Yield percentage is required.",
-  }),
-  seed_trial_form: z.array(
-    z.object({
-      start_day: z
-        .union([z.string(), z.number()])
-        .transform((val) => String(val))
-        .refine((val) => val.trim() !== "", {
-          message: "Start day is required.",
-        }),
-      end_day: z
-        .union([z.string(), z.number()])
-        .transform((val) => String(val))
-        .refine((val) => val.trim() !== "", {
-          message: "End day is required.",
-        }),
-      kc: z
-        .union([z.string(), z.number()])
-        .transform((val) => String(val))
-        .refine((val) => val.trim() !== "", {
-          message: "Kc is required.",
-        }),
-    })
-  ),
-});
-
-const updateTrailDataFormSchema = z.object({
-  seed_trial_form: z.array(
-    z.object({
-      stage: z.string(),
-      sub_stage: z.string(),
-      bbch_scale: z.union([z.string(), z.number()]),
-      start_day: z
-        .union([z.string(), z.number()])
-        .transform((val) => String(val))
-        .refine((val) => val.trim() !== "", {
-          message: "Start day is required.",
-        }),
-      end_day: z
-        .union([z.string(), z.number()])
-        .transform((val) => String(val))
-        .refine((val) => val.trim() !== "", {
-          message: "End day is required.",
-        }),
-      kc: z
-        .union([z.string(), z.number()])
-        .transform((val) => String(val))
-        .refine((val) => val.trim() !== "", {
-          message: "Kc is required.",
-        }),
-    })
-  ),
-});
-
-const addCropSelectionFormSchema = z.object({
-  crop: z.string().nonempty({
-    message: "Crop is required.",
-  }),
-});
-
-// filter franchice
-const filterFranchiceFormSchema = z.object({
-  province: z.string().optional(),
-  district: z.string().optional(),
-  tehsil: z.string().optional(),
 });
 
 const addQueryFormSchema = z.object({
@@ -540,16 +428,11 @@ export {
   emailSchema,
   otpSchema,
   resetPasswordSchema,
-  addCropSelectionFormSchema,
-  addTrailDataFormSchema,
-  updateTrailDataFormSchema,
   addProductFormSchema,
   filterProductsFormSchema,
   addSeedFormSchema,
   addCompanyToGlobalListFormSchema,
   filterSeedFormSchema,
-  filterFranchiceFormSchema,
-  addSeedTrailDataFormSchema,
   addIngredientListFormSchema,
   addQueryFormSchema,
   queryResponseSchema,

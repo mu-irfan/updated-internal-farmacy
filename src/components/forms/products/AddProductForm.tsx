@@ -39,7 +39,7 @@ import useDynamicFields from "@/hooks/useDynamicFields";
 import {
   useCreateProduct,
   useDeleteProductImage,
-  useGetAllCompaniesUsers,
+  useGetAllCompanies,
   useGetAllIngredients,
   useUpdateProduct,
   useVerifyProduct,
@@ -91,8 +91,8 @@ const AddProductForm = ({
     useDeleteProductImage(token);
   const { data: activeIngredientsList, isLoading: loadingActiveIngredients } =
     useGetAllIngredients(token);
-  const { data: companiesUsersList, isLoading: companiesListLoading } =
-    useGetAllCompaniesUsers(token);
+  const { data: companiesList, isLoading: companiesListLoading } =
+    useGetAllCompanies(token);
 
   const form = useForm<z.infer<typeof addProductFormSchema>>({
     resolver: zodResolver(addProductFormSchema),
@@ -313,14 +313,13 @@ const AddProductForm = ({
                           <SelectGroup>
                             <SelectLabel>Brand Name</SelectLabel>
                             {!companiesListLoading &&
-                              companiesUsersList?.data?.map((company: any) => (
-                                <SelectItem
-                                  key={company.uuid}
-                                  value={company.company_fk}
-                                >
-                                  {company.company_fk}
-                                </SelectItem>
-                              ))}
+                              companiesList?.data?.companies?.map(
+                                (company: any, index: number) => (
+                                  <SelectItem key={index} value={company}>
+                                    {company.company}
+                                  </SelectItem>
+                                )
+                              )}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
