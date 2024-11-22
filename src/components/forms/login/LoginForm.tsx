@@ -17,9 +17,9 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 import { MoveRight } from "lucide-react";
-import { useLoginCompany } from "@/hooks/useDataFetch";
 import { Toaster } from "react-hot-toast";
 import ForgotPasswordModal from "@/components/forms-modals/auth/ForgotPassword";
+import { useLoginCompany } from "@/hooks/apis/useUserAuth";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);

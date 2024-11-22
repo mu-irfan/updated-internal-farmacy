@@ -4,13 +4,13 @@ import DashboardLayout from "../dashboard-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CirclePlus, Search } from "lucide-react";
 import Link from "next/link";
-import { useGetCropStats } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import ReportCard from "@/components/ReportCard";
 import { cropsReportsTitles } from "@/constant/data";
 import AddSeedToSimulatorModal from "@/components/forms-modals/seeds/AddSeedToSimulator";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import { Toaster } from "react-hot-toast";
+import { useGetCropStats } from "@/hooks/apis/crop/useCrop";
 
 const Crops = () => {
   const { token } = useContextConsumer();

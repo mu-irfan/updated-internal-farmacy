@@ -37,13 +37,6 @@ import {
   suitahleRegion,
   uniqueFeatures,
 } from "@/constant/data";
-import {
-  useCreateSeed,
-  useDeleteSeedImage,
-  useGetAllCompanies,
-  useInSimulator,
-  useUpdateSeed,
-} from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { baseUrl } from "@/lib/utils";
 import Image from "next/image";
@@ -57,8 +50,15 @@ import {
   MultiSelectorList,
   MultiSelectorTrigger,
 } from "@/components/ui/multi-select";
-import { formatPackageType } from "@/lib/helper";
+import { formatKey } from "@/lib/helper";
 import AddSeedToSimulatorModal from "@/components/forms-modals/seeds/AddSeedToSimulator";
+import {
+  useCreateSeed,
+  useDeleteSeedImage,
+  useInSimulator,
+  useUpdateSeed,
+} from "@/hooks/apis/useSeed";
+import { useGetAllCompanies } from "@/hooks/apis/useCompany";
 
 type SeedCategory = keyof typeof cropCategoriesOptions;
 
@@ -660,7 +660,7 @@ const AddSeedForm = ({
                           <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
                             <SelectValue
                               placeholder={
-                                formatPackageType(seed?.package_type) ||
+                                formatKey(seed?.package_type) ||
                                 "Select package type"
                               }
                             />
@@ -1047,7 +1047,7 @@ const AddSeedForm = ({
                 variant="outline"
                 type="button"
                 onClick={handleInSimulator}
-                disabled={isViewMode || seed.in_simulator || simulating}
+                disabled={seed.in_simulator || simulating}
               >
                 Already in simulator
               </Button>

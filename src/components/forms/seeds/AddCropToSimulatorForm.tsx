@@ -23,10 +23,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cropCategories, productCategory } from "@/constant/data";
-import { useCreateCrop, useUpdateCrop } from "@/hooks/useDataFetch";
+import { cropCategories, cropSources } from "@/constant/data";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
+import { useCreateCrop, useUpdateCrop } from "@/hooks/apis/crop/useCrop";
 
 const AddCropToSimulatorForm = ({
   crop,
@@ -196,7 +196,7 @@ const AddCropToSimulatorForm = ({
                           <SelectContent className="rounded-xl">
                             <SelectGroup>
                               <SelectLabel>Source</SelectLabel>
-                              {productCategory.map((item) => (
+                              {cropSources.map((item) => (
                                 <SelectItem key={item.value} value={item.value}>
                                   {item.label}
                                 </SelectItem>

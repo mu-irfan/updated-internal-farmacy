@@ -25,16 +25,18 @@ import { filterCropVarietyFormSchema } from "@/schemas/validation/validationSche
 import DataTable from "@/components/Table/DataTable";
 import { Trash } from "lucide-react";
 import AddSeedToSimulatorModal from "@/components/forms-modals/seeds/AddSeedToSimulator";
-import {
-  useDeleteVarietyStage,
-  useGetAllCropsVaritites,
-  useGetCropAllStages,
-  useGetVarietyStage,
-} from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import NoData from "@/components/alerts/NoData";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import { SweetAlert } from "@/components/alerts/SweetAlert";
+import {
+  useDeleteVarietyStage,
+  useGetCropAllStages,
+} from "@/hooks/apis/crop/useStagesVarities";
+import {
+  useGetAllCropsVaritites,
+  useGetVarietyStage,
+} from "@/hooks/apis/crop/useCropVarities";
 
 const StagesFilterForm = () => {
   const { token } = useContextConsumer();
@@ -52,6 +54,8 @@ const StagesFilterForm = () => {
       variety_eng: "",
     },
   });
+
+  const selectedCrop = form.watch("crop");
 
   const [filterCriteria, setFilterCriteria] = useState({
     crop: "",
@@ -81,6 +85,11 @@ const StagesFilterForm = () => {
     refetch();
   };
 
+  const filteredVarieties =
+    cropVarities?.data?.filter(
+      (variety: any) => variety.crop_fk === selectedCrop
+    ) || [];
+
   const handleView = (stage: any) => {
     setViewStageModalOpen(true);
     setCurrentVarietyUuid(stage.uid);
@@ -100,8 +109,8 @@ const StagesFilterForm = () => {
   };
 
   useEffect(() => {
-    if (varietyStage?.success && varietyStage.message) {
-      setSelectedStageToView(varietyStage.message);
+    if (varietyStage?.success && varietyStage?.data) {
+      setSelectedStageToView(varietyStage?.data);
     }
   }, [varietyStage]);
 
@@ -130,7 +139,7 @@ const StagesFilterForm = () => {
           </Button>
           <Button
             size="icon"
-            onClick={() => handleDelete(row.original.uuid)}
+            onClick={() => handleDelete(row.original.uid)}
             className="bg-red-400 hover:bg-red-500 text-black"
             disabled={deleting}
           >
@@ -165,16 +174,17 @@ const StagesFilterForm = () => {
                               <SelectGroup>
                                 <SelectLabel>Crop</SelectLabel>
                                 {!varitiesLoading &&
-                                  cropVarities?.message?.map(
-                                    (variety: any, index: number) => (
-                                      <SelectItem
-                                        key={index}
-                                        value={variety?.crop_fk}
-                                      >
-                                        {variety.crop_fk}
-                                      </SelectItem>
+                                  Array.from(
+                                    new Set(
+                                      cropVarities?.data?.map(
+                                        (variety: any) => variety.crop_fk
+                                      )
                                     )
-                                  )}
+                                  ).map((uniqueCrop: any, index: number) => (
+                                    <SelectItem key={index} value={uniqueCrop}>
+                                      {uniqueCrop}
+                                    </SelectItem>
+                                  ))}
                               </SelectGroup>
                             </SelectContent>
                           </Select>
@@ -201,11 +211,11 @@ const StagesFilterForm = () => {
                               <SelectGroup>
                                 <SelectLabel>Variety</SelectLabel>
                                 {!varitiesLoading &&
-                                  cropVarities?.message?.map(
+                                  filteredVarieties.map(
                                     (variety: any, index: number) => (
                                       <SelectItem
                                         key={index}
-                                        value={variety?.variety_eng}
+                                        value={variety.variety_eng}
                                       >
                                         {variety.variety_eng}
                                       </SelectItem>
@@ -253,7 +263,7 @@ const StagesFilterForm = () => {
           extendWidth
         />
       ) : (
-        <NoData message="No Data Available, Please Select Category, sub category to view products" />
+        <NoData message="No Data Available, Please Select Crop and variety  to view stages" />
       )}
       <AddSeedToSimulatorModal
         open={isViewStageModalOpen}

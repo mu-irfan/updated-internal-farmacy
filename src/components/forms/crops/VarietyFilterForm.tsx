@@ -6,16 +6,16 @@ import { Check, Filter, Search, Trash, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DataTable from "@/components/Table/DataTable";
 import AddSeedToSimulatorModal from "@/components/forms-modals/seeds/AddSeedToSimulator";
-import {
-  useDeleteCropVariety,
-  useGetAllCropsVaritites,
-  useGetCropVariety,
-} from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import FilterVarityModal from "@/components/forms-modals/crop/VarietyFilter";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import NoData from "@/components/alerts/NoData";
 import { SweetAlert } from "@/components/alerts/SweetAlert";
+import {
+  useDeleteCropVariety,
+  useGetAllCropsVaritites,
+  useGetCropVariety,
+} from "@/hooks/apis/crop/useCropVarities";
 
 const VarietyFilterForm = () => {
   const { token } = useContextConsumer();
@@ -54,8 +54,8 @@ const VarietyFilterForm = () => {
   };
 
   const filteredVarieties = useMemo(() => {
-    if (!cropVarities || !cropVarities.message) return [];
-    return cropVarities.message
+    if (!cropVarities || !cropVarities.data) return [];
+    return cropVarities.data
       .filter((variety: any) =>
         variety.variety_eng.toLowerCase().includes(searchQuery.toLowerCase())
       )
@@ -93,8 +93,8 @@ const VarietyFilterForm = () => {
   };
 
   useEffect(() => {
-    if (cropVariety?.success && cropVariety.message) {
-      setSelectedVarietyToView(cropVariety.message);
+    if (cropVariety?.success && cropVariety.data) {
+      setSelectedVarietyToView(cropVariety.data);
     }
   }, [cropVariety]);
 

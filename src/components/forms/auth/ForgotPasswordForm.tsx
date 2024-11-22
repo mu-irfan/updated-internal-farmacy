@@ -15,15 +15,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MoveRight } from "lucide-react";
 import {
-  useForgotPassword,
-  useForgotPasswordOtpVerify,
-  useForgotPasswordResetPassword,
-} from "@/hooks/useDataFetch";
-import {
   emailSchema,
   otpSchema,
   resetPasswordSchema,
 } from "@/schemas/validation/validationSchema";
+import {
+  useForgotPassword,
+  useForgotPasswordOtpVerify,
+  useForgotPasswordResetPassword,
+} from "@/hooks/apis/useUserAuth";
 
 const ForgotPasswordForm = ({ onClose }: any) => {
   const [stage, setStage] = useState<"email" | "otp" | "reset">("email");

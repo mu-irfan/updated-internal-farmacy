@@ -9,12 +9,7 @@ import { Check, Search, Trash, X } from "lucide-react";
 import DataTable from "@/components/Table/DataTable";
 import Header from "@/components/Header";
 import { Input } from "@/components/ui/input";
-import {
-  useDeleteProduct,
-  useGetAllCompanies,
-  useGetAllProducts,
-  useGetProduct,
-} from "@/hooks/useDataFetch";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -42,6 +37,12 @@ import { cn } from "@/lib/utils";
 import { filterProductsFormSchema } from "@/schemas/validation/validationSchema";
 import LabelInputContainer from "@/components/forms/LabelInputContainer";
 import { productCategory, productsList } from "@/constant/data";
+import {
+  useDeleteProduct,
+  useGetAllProducts,
+  useGetProduct,
+} from "@/hooks/apis/useProduct";
+import { useGetAllCompanies } from "@/hooks/apis/useCompany";
 
 type ProductCategory = keyof typeof productsList;
 

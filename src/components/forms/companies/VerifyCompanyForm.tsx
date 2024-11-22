@@ -22,11 +22,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  useGetAllCompaniesUsers,
-  useVerifyCompany,
-} from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
+import { useGetAllCompaniesUsers } from "@/hooks/apis/useCompany";
+import { useVerifyCompany } from "@/hooks/apis/useRegisteredCompanies";
 
 const VerifyCompanyForm = ({ onClose }: { onClose: () => void }) => {
   const { token } = useContextConsumer();
@@ -39,6 +37,7 @@ const VerifyCompanyForm = ({ onClose }: { onClose: () => void }) => {
 
   const { data: companiesUsersList, isLoading: companiesListLoading } =
     useGetAllCompaniesUsers(token);
+
   const { mutate: verifyCompany, isPending: verifying } = useVerifyCompany();
 
   const onSubmit = (data: z.infer<typeof verifyCompanyFormSchema>) => {

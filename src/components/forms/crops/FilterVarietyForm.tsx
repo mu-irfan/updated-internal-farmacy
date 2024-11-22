@@ -23,8 +23,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetAllCropsList } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
+import { useGetAllCropsList } from "@/hooks/apis/crop/useCrop";
 
 const FilterVarietyForm = ({
   onSubmit,
@@ -41,7 +41,7 @@ const FilterVarietyForm = ({
     resolver: zodResolver(filterVarietyFormSchema),
     defaultValues: {
       crop_fk: "",
-      in_farmacie: undefined,
+      in_farmacie: false,
     },
   });
 
@@ -74,13 +74,11 @@ const FilterVarietyForm = ({
                         <SelectGroup>
                           <SelectLabel>Crop</SelectLabel>
                           {!cropsLoading &&
-                            cropsList?.message?.map(
-                              (crop: any, index: number) => (
-                                <SelectItem key={index} value={crop?.crop_name}>
-                                  {crop.crop_name}
-                                </SelectItem>
-                              )
-                            )}
+                            cropsList?.data?.map((crop: any, index: number) => (
+                              <SelectItem key={index} value={crop?.crop_name}>
+                                {crop.crop_name}
+                              </SelectItem>
+                            ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>

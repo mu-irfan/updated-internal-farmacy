@@ -14,12 +14,12 @@ import { Button } from "@/components/ui/button";
 import LabelInputContainer from "../LabelInputContainer";
 import { Input } from "@/components/ui/input";
 import { CornerDownLeft } from "lucide-react";
+import { useContextConsumer } from "@/context/Context";
+import { SkeletonCard } from "@/components/SkeletonLoader";
 import {
   useCreateFurtherQuery,
   useGetTicketsChats,
-} from "@/hooks/useDataFetch";
-import { useContextConsumer } from "@/context/Context";
-import { SkeletonCard } from "@/components/SkeletonLoader";
+} from "@/hooks/apis/useSuggestions";
 
 const Responses = ({ currentQueryUuid }: { currentQueryUuid: string }) => {
   const { token } = useContextConsumer();

@@ -9,15 +9,15 @@ import { Input } from "@/components/ui/input";
 import DataTable from "@/components/Table/DataTable";
 import Header from "@/components/Header";
 import { debounce } from "lodash";
-import {
-  useDeleteRegisterCompany,
-  useRegisterCompaniesUsers,
-} from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import NoData from "@/components/alerts/NoData";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import { SweetAlert } from "@/components/alerts/SweetAlert";
 import { Toaster } from "react-hot-toast";
+import {
+  useDeleteRegisterCompany,
+  useRegisterCompaniesUsers,
+} from "@/hooks/apis/useRegisteredCompanies";
 
 const ManageRegisterCompanies = () => {
   const { token } = useContextConsumer();

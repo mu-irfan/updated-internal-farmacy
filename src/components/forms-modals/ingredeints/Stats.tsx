@@ -1,13 +1,16 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { useGetCompanyFranchiseStats } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
+import { useGetCompanyFranchiseStats } from "@/hooks/apis/useRegisteredCompanies";
+import { formatKey } from "@/lib/helper";
 
 const Stats = ({ stats }: any) => {
   const { token } = useContextConsumer();
-  const franchiseEntries = Object.entries(stats);
+  const franchiseEntries = Object.entries(stats).filter(
+    ([key]) => key !== "uuid" && key !== "company_fk"
+  );
 
   const { data: franchiseStats, isLoading: loading } =
     useGetCompanyFranchiseStats(stats.company_fk, token);
@@ -28,7 +31,7 @@ const Stats = ({ stats }: any) => {
                       className="grid grid-cols-[150px_1fr] gap-8"
                     >
                       <span className="dark:text-farmacieGrey capitalize">
-                        {key}:
+                        {formatKey(key)}:
                       </span>
                       <span
                         className={cn(
@@ -40,7 +43,7 @@ const Stats = ({ stats }: any) => {
                             : ""
                         )}
                       >
-                        {value.toString()}
+                        {value?.toString()}
                       </span>
                     </li>
                   )

@@ -10,7 +10,7 @@ import { useContextConsumer } from "@/context/Context";
 import {
   useGetAllCompanyFranchises,
   useRegisterCompaniesUsers,
-} from "@/hooks/useDataFetch";
+} from "@/hooks/apis/useRegisteredCompanies";
 import { Ban, Check } from "lucide-react";
 import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";

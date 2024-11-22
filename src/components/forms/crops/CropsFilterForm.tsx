@@ -6,18 +6,20 @@ import { Search, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DataTable from "@/components/Table/DataTable";
 import AddSeedToSimulatorModal from "@/components/forms-modals/seeds/AddSeedToSimulator";
-import {
-  useDeleteCrop,
-  useDeleteCropStage,
-  useGetAllCrops,
-  useGetCrop,
-  useGetCropStage,
-} from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import NoData from "@/components/alerts/NoData";
 import { SweetAlert } from "@/components/alerts/SweetAlert";
 import AddNewStageModal from "@/components/forms-modals/crop/AddNewStage";
+import {
+  useDeleteCrop,
+  useGetAllCrops,
+  useGetCrop,
+} from "@/hooks/apis/crop/useCrop";
+import {
+  useDeleteCropStage,
+  useGetCropStage,
+} from "@/hooks/apis/crop/useStagesVarities";
 
 const CropsFilterForm = () => {
   const { token } = useContextConsumer();
@@ -40,10 +42,12 @@ const CropsFilterForm = () => {
 
   // crop apis
   const { data: crops, isLoading: cropsLoading } = useGetAllCrops(token);
+
   const { data: cropDetails, isLoading: cropLoading } = useGetCrop(
     currentCropName!,
     token
   );
+
   const {
     data: cropStage,
     isLoading: cropStageLoading,
@@ -54,15 +58,15 @@ const CropsFilterForm = () => {
     useDeleteCropStage(token);
 
   const filteredCrops = useMemo(() => {
-    if (!crops || !crops.message) return [];
-    return crops?.message?.filter((crop: any) =>
+    if (!crops || !crops.data) return [];
+    return crops?.data?.filter((crop: any) =>
       crop.crop_name.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [crops, searchQuery]);
 
   const filteredCropStages = useMemo(() => {
-    if (!cropStage || !cropStage.message) return [];
-    return cropStage?.message?.filter((crop: any) =>
+    if (!cropStage || !cropStage.data) return [];
+    return cropStage?.data?.filter((crop: any) =>
       crop?.stage?.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [cropStage, searchQuery]);
@@ -110,8 +114,8 @@ const CropsFilterForm = () => {
   };
 
   useEffect(() => {
-    if (cropDetails?.success && cropDetails.message) {
-      setSelectedCropToView(cropDetails.message);
+    if (cropDetails?.success && cropDetails.data) {
+      setSelectedCropToView(cropDetails.data);
     }
   }, [cropDetails]);
 
@@ -230,7 +234,7 @@ const CropsFilterForm = () => {
       {!viewStageAgainstCrop &&
         (cropsLoading ? (
           <SkeletonCard className="w-full h-80" />
-        ) : crops?.message && crops?.message?.length > 0 ? (
+        ) : crops?.data && crops?.data?.length > 0 ? (
           <div className="mt-8">
             <DataTable
               columns={cropColoums}
@@ -243,7 +247,7 @@ const CropsFilterForm = () => {
       {viewStageAgainstCrop &&
         (cropStageLoading ? (
           <SkeletonCard className="w-full h-80" />
-        ) : cropStage?.message && cropStage?.message?.length > 0 ? (
+        ) : cropStage?.data && cropStage?.data?.length > 0 ? (
           <div className="mt-8">
             <DataTable
               columns={stageColumns}

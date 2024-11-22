@@ -3,10 +3,6 @@ import React, { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import DataTable from "@/components/Table/DataTable";
 import Header from "@/components/Header";
-import {
-  useGetAllSeedTrails,
-  useGetAllSeedTrailsStages,
-} from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import NoData from "@/components/alerts/NoData";
 import { SkeletonCard } from "@/components/SkeletonLoader";
@@ -15,6 +11,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { debounce } from "lodash";
+import {
+  useGetAllSeedTrails,
+  useGetAllSeedTrailsStages,
+} from "@/hooks/apis/useSeedTrails";
 
 const ManageSeedTrailData = () => {
   const { token } = useContextConsumer();

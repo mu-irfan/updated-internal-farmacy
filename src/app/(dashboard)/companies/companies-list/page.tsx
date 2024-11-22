@@ -8,13 +8,13 @@ import DataTable from "@/components/Table/DataTable";
 import { Button } from "@/components/ui/button";
 import DashboardLayout from "../../dashboard-layout";
 import AddCompanyModal from "@/components/forms-modals/companies/AddNewCompany";
-import { useDeleteCompany, useGetAllCompanies } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import NoData from "@/components/alerts/NoData";
 import { SweetAlert } from "@/components/alerts/SweetAlert";
 import { Toaster } from "react-hot-toast";
 import { debounce } from "lodash";
+import { useDeleteCompany, useGetAllCompanies } from "@/hooks/apis/useCompany";
 
 const CompaniesList = () => {
   const { token } = useContextConsumer();

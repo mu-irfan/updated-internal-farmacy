@@ -227,60 +227,69 @@ const AddCropToSimulatorFormSchema = z.object({
 });
 
 // add seed trial data
-const AddStageToSimulatorFormSchema = z.object({
-  crop_variety_fk: z.string().nonempty({
-    message: "Variety is required.",
-  }),
-  stage: z.string().nonempty({
-    message: "Stage is required.",
-  }),
-  sub_stage: z.string().nonempty({
-    message: "Sub Stage is required.",
-  }),
-  bbch_scale: z
-    .union([z.string(), z.number()])
-    .transform((val) => String(val))
-    .refine((val) => val.trim() !== "", {
-      message: "bbch scale is required.",
+const AddStageToSimulatorFormSchema = z
+  .object({
+    crop_variety_fk: z.string().nonempty({
+      message: "Variety is required.",
     }),
+    stage: z.string().nonempty({
+      message: "Stage is required.",
+    }),
+    sub_stage: z.string().nonempty({
+      message: "Sub Stage is required.",
+    }),
+    bbch_scale: z
+      .union([z.string(), z.number()])
+      .transform((val) => String(val))
+      .refine((val) => val.trim() !== "", {
+        message: "bbch scale is required.",
+      }),
 
-  kc: z
-    .union([z.string(), z.number()])
-    .transform((val) => String(val))
-    .refine((val) => val.trim() !== "", {
-      message: "kc is required.",
-    }),
-  start_gdd: z
-    .union([z.string(), z.number()])
-    .transform((val) => String(val))
-    .refine((val) => val.trim() !== "", {
-      message: "Start GDD is required.",
-    }),
-  end_gdd: z
-    .union([z.string(), z.number()])
-    .transform((val) => String(val))
-    .refine((val) => val.trim() !== "", {
-      message: "End GDD is required.",
-    }),
-  base_temp: z
-    .union([z.string(), z.number()])
-    .transform((val) => String(val))
-    .refine((val) => val.trim() !== "", {
-      message: "Base Temp is required.",
-    }),
-  min_temp: z
-    .union([z.string(), z.number()])
-    .transform((val) => String(val))
-    .refine((val) => val.trim() !== "", {
-      message: "Min Temp is required.",
-    }),
-  max_temp: z
-    .union([z.string(), z.number()])
-    .transform((val) => String(val))
-    .refine((val) => val.trim() !== "", {
-      message: "Max Temp is required.",
-    }),
-});
+    kc: z
+      .union([z.string(), z.number()])
+      .transform((val) => String(val))
+      .refine((val) => val.trim() !== "", {
+        message: "kc is required.",
+      }),
+    start_gdd: z
+      .union([z.string(), z.number()])
+      .transform((val) => String(val))
+      .refine((val) => val.trim() !== "", {
+        message: "Start GDD is required.",
+      }),
+    end_gdd: z
+      .union([z.string(), z.number()])
+      .transform((val) => String(val))
+      .refine((val) => val.trim() !== "", {
+        message: "End GDD is required.",
+      }),
+    base_temp: z
+      .union([z.string(), z.number()])
+      .transform((val) => String(val))
+      .refine((val) => val.trim() !== "", {
+        message: "Base Temp is required.",
+      }),
+    min_temp: z
+      .union([z.string(), z.number()])
+      .transform((val) => String(val))
+      .refine((val) => val.trim() !== "", {
+        message: "Min Temp is required.",
+      }),
+    max_temp: z
+      .union([z.string(), z.number()])
+      .transform((val) => String(val))
+      .refine((val) => val.trim() !== "", {
+        message: "Max Temp is required.",
+      }),
+  })
+  .refine((data) => data.end_gdd > data.start_gdd, {
+    message: "End GDD must be greater than Start GDD.",
+    path: ["end_gdd"],
+  })
+  .refine((data) => data.max_temp > data.min_temp, {
+    message: "Max Temp must be greater than Min Temp.",
+    path: ["max_temp"],
+  });
 
 const addVarietyDataFormSchema = z.object({
   variety_eng: z

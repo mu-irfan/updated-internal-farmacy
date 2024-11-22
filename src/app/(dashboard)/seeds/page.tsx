@@ -5,12 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CirclePlus, Search } from "lucide-react";
 import Link from "next/link";
 import AddSeedModal from "@/components/forms-modals/seeds/AddSeed";
-import { useGetSeedsStats } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import { Toaster } from "react-hot-toast";
 import { seedsReportsTitles } from "@/constant/data";
 import ReportCard from "@/components/ReportCard";
+import { useGetSeedsStats } from "@/hooks/apis/useSeed";
 
 const Seeds = () => {
   const { token } = useContextConsumer();

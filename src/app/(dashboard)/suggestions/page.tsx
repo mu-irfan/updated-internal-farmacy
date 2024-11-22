@@ -5,9 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CirclePlus, Search } from "lucide-react";
 import AddQueryModal from "@/components/forms-modals/suggestions/AddQuery";
 import Link from "next/link";
-import { useGetSuggestionsStats } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
+import { useGetSuggestionsStats } from "@/hooks/apis/useSuggestions";
 
 const Suggestions = () => {
   const { token } = useContextConsumer();

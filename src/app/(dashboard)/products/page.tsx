@@ -8,10 +8,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AddProductModal from "@/components/forms-modals/products/AddProduct";
 import DashboardLayout from "../dashboard-layout";
 import Link from "next/link";
-import { useGetProductStats } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import { Toaster } from "react-hot-toast";
+import { useGetProductStats } from "@/hooks/apis/useProduct";
 
 export default function Dashboard() {
   const { token } = useContextConsumer();

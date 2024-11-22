@@ -8,16 +8,16 @@ import { Input } from "@/components/ui/input";
 import DataTable from "@/components/Table/DataTable";
 import { Button } from "@/components/ui/button";
 import AddIngredientModal from "@/components/forms-modals/ingredeints/AddNewIngredient";
-import {
-  useDeleteIngredient,
-  useGetAllIngredients,
-} from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { debounce } from "lodash";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import NoData from "@/components/alerts/NoData";
 import { SweetAlert } from "@/components/alerts/SweetAlert";
 import { Toaster } from "react-hot-toast";
+import {
+  useDeleteIngredient,
+  useGetAllIngredients,
+} from "@/hooks/apis/useIngredients";
 
 const Ingredients = () => {
   const { token } = useContextConsumer();

@@ -7,9 +7,9 @@ import Link from "next/link";
 import ReportCard from "@/components/ReportCard";
 import { companiesReportsTitles } from "@/constant/data";
 import { useContextConsumer } from "@/context/Context";
-import { useGetCompaniesStats } from "@/hooks/useDataFetch";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import { Toaster } from "react-hot-toast";
+import { useGetCompaniesStats } from "@/hooks/apis/useCompany";
 
 const Companies = () => {
   const { token, setMode } = useContextConsumer();

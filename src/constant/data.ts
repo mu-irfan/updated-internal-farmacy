@@ -24,6 +24,21 @@ export const productCategory = [
   { value: "crop_nutrition", label: "Crop Nutrition" },
 ];
 
+export const varietyTypes = [
+  { value: "hybrid", label: "Hybrid" },
+  { value: "synthetic", label: "Synthetic" },
+  { value: "genetically_modified", label: "Genetically Modified (GMO)" },
+  { value: "bt-cotton", label: "BT-Cotton" },
+  { value: "non_bt_cotton", label: "Non BT cotton" },
+  { value: "tripple_gene", label: "Tripple gene" },
+];
+
+export const cropSources = [
+  { value: "seed", label: "Seed" },
+  { value: "irrigated", label: "Irrigated" },
+  { value: "seedling", label: "Seedling" },
+];
+
 export const cropSeasons = [
   { value: "rabi", label: "Rabi" },
   { value: "kharif", label: "Kharif" },

@@ -37,21 +37,21 @@ import {
   diseaseResistanceTraits,
   heightClass,
   nutrientsContent,
-  productCategory,
   resistanceTraits,
   seasons,
   suitahleRegion,
   uniqueFeatures,
+  varietyTypes,
 } from "@/constant/data";
 import {
   useCreateCropVariety,
   useCropVarietyInSimulator,
-  useGetAllCompanies,
-  useGetAllCropsList,
   useUpdateCropVariety,
-} from "@/hooks/useDataFetch";
+} from "@/hooks/apis/crop/useVarities";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
+import { useGetAllCompanies } from "@/hooks/apis/useCompany";
+import { useGetAllCropsList } from "@/hooks/apis/crop/useCrop";
 
 const AddVarietyToSimulatorForm = ({
   variety,
@@ -124,7 +124,7 @@ const AddVarietyToSimulatorForm = ({
   useEffect(() => {
     if (variety) {
       reset({
-        variety_eng: variety.variety_name || "",
+        variety_eng: variety.variety_eng || "",
         variety_urdu: variety.variety_urdu || "",
         variety_type: variety.variety_type || "",
         company: variety.company || "",
@@ -373,7 +373,7 @@ const AddVarietyToSimulatorForm = ({
                           <SelectContent className="rounded-xl">
                             <SelectGroup>
                               <SelectLabel>Variety type</SelectLabel>
-                              {productCategory.map((item) => (
+                              {varietyTypes.map((item) => (
                                 <SelectItem key={item.value} value={item.value}>
                                   {item.label}
                                 </SelectItem>
@@ -412,7 +412,7 @@ const AddVarietyToSimulatorForm = ({
                             <SelectGroup>
                               <SelectLabel>Crop</SelectLabel>
                               {!cropsLoading &&
-                                cropsList?.message?.map(
+                                cropsList?.data?.map(
                                   (crop: any, index: number) => (
                                     <SelectItem
                                       key={index}

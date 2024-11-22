@@ -24,13 +24,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { bbchScale, stages } from "@/constant/data";
-import {
-  useCreateVarietyStage,
-  useGetAllCropsVarititesList,
-  useUpdateVarietyStage,
-} from "@/hooks/useDataFetch";
+import { useGetAllCropsVarititesList } from "@/hooks/apis/crop/useVarities";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
+import {
+  useCreateVarietyStage,
+  useUpdateVarietyStage,
+} from "@/hooks/apis/crop/useStagesVarities";
 
 const AddStagesToSimulatorForm = ({
   stage,
@@ -171,7 +171,7 @@ const AddStagesToSimulatorForm = ({
                             <SelectGroup>
                               <SelectLabel>Variety Name</SelectLabel>
                               {!varitiesLoading &&
-                                cropVaritiesList?.message?.map(
+                                cropVaritiesList?.data?.map(
                                   (variety: any, index: number) => (
                                     <SelectItem
                                       key={index}
@@ -242,7 +242,7 @@ const AddStagesToSimulatorForm = ({
                       <FormControl>
                         <Input
                           placeholder="Enter Principal Stage"
-                          type="number"
+                          type="text"
                           id="sub_stage"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
                           disabled={isViewMode}

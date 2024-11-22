@@ -12,10 +12,10 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LabelInputContainer from "../LabelInputContainer";
-import { useCreateCompany, useUpdateCompany } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { Plus, Trash } from "lucide-react";
 import { addCompanyToGlobalListFormSchema } from "@/schemas/validation/validationSchema";
+import { useCreateCompany, useUpdateCompany } from "@/hooks/apis/useCompany";
 
 const AddCompanyForm = ({
   company,
@@ -34,9 +34,9 @@ const AddCompanyForm = ({
   const { mutate: updateCompany, isPending: updating } =
     useUpdateCompany(token);
 
-  const form = useForm<AddCompanyGlobalListFormData>({
+  const form = useForm({
     resolver: zodResolver(addCompanyToGlobalListFormSchema),
-    defaultValues: { companies: [""] },
+    // defaultValues: { companies: [""] },
     shouldUnregister: true,
   });
 
@@ -59,9 +59,11 @@ const AddCompanyForm = ({
     if (mode === "add" && fields.length === 0) append("");
   }, [fields, append, mode]);
 
-  const onSubmit = (data: AddCompanyGlobalListFormData) => {
+  const onSubmit = (data: any) => {
     if (mode === "add") {
-      const companies = data.companies.filter((name) => name.trim() !== "");
+      const companies = data.companies.filter(
+        (name: any) => name.trim() !== ""
+      );
       addCompany(
         { data: { companies }, token },
         {

@@ -9,17 +9,18 @@ import FilterSeedModal from "@/components/forms-modals/seeds/FilterSeeds";
 import DataTable from "@/components/Table/DataTable";
 import AddSeedModal from "@/components/forms-modals/seeds/AddSeed";
 import Header from "@/components/Header";
-import {
-  useDeleteSeed,
-  useGetAllSeeds,
-  useGetSeed,
-} from "@/hooks/useDataFetch";
+
 import { useContextConsumer } from "@/context/Context";
 import { debounce } from "lodash";
 import NoData from "@/components/alerts/NoData";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import { SweetAlert } from "@/components/alerts/SweetAlert";
 import { Toaster } from "react-hot-toast";
+import {
+  useDeleteSeed,
+  useGetAllSeeds,
+  useGetSeed,
+} from "@/hooks/apis/useSeed";
 
 const ManageSeeds = () => {
   const { token } = useContextConsumer();

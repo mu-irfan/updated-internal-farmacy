@@ -24,10 +24,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCreateCropStage, useUpdateCropStage } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
-import { stages } from "@/constant/data";
+import { bbchScale, stages } from "@/constant/data";
+import {
+  useCreateCropStage,
+  useUpdateCropStage,
+} from "@/hooks/apis/crop/useStagesVarities";
 
 const AddStageForm = ({
   mode,
@@ -206,14 +209,30 @@ const AddStageForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        placeholder="Enter Crop name"
-                        type="text"
-                        id="bbch_scale"
-                        className="outline-none focus:border-primary disabled:bg-primary/20"
-                        {...field}
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                        }}
                         disabled={isViewMode}
-                      />
+                      >
+                        <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
+                          <SelectValue
+                            placeholder={
+                              stage?.bbch_scale || "Select BBCH Scale"
+                            }
+                          />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-xl">
+                          <SelectGroup>
+                            <SelectLabel>BBCH Scale</SelectLabel>
+                            {bbchScale.map((item) => (
+                              <SelectItem key={item.value} value={item.value}>
+                                {item.label}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

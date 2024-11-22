@@ -23,9 +23,10 @@ import {
 } from "@/components/ui/select";
 import LabelInputContainer from "../LabelInputContainer";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateTicket, useGetAllCompaniesUsers } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { Toaster } from "react-hot-toast";
+import { useCreateTicket } from "@/hooks/apis/useSuggestions";
+import { useGetAllCompaniesUsers } from "@/hooks/apis/useCompany";
 
 const AddQueryForm = ({ onClose }: any) => {
   const { token } = useContextConsumer();

@@ -12,10 +12,13 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LabelInputContainer from "../LabelInputContainer";
-import { useCreateIngredient, useUpdateIngredient } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { Plus, Trash } from "lucide-react";
 import { addIngredientListFormSchema } from "@/schemas/validation/validationSchema";
+import {
+  useCreateIngredient,
+  useUpdateIngredient,
+} from "@/hooks/apis/useIngredients";
 
 const AddIngredientForm = ({
   ingredient,
@@ -34,9 +37,9 @@ const AddIngredientForm = ({
   const { mutate: updateIngredient, isPending: updating } =
     useUpdateIngredient(token);
 
-  const form = useForm<AddIngredientFormData>({
+  const form = useForm({
     resolver: zodResolver(addIngredientListFormSchema),
-    defaultValues: { ingredients: [""] },
+    // defaultValues: { ingredients: [""] },
     shouldUnregister: true,
   });
 
@@ -59,9 +62,11 @@ const AddIngredientForm = ({
     if (mode === "add" && fields.length === 0) append("");
   }, [fields, append, mode]);
 
-  const onSubmit = (data: AddIngredientFormData) => {
+  const onSubmit = (data: any) => {
     if (mode === "add") {
-      const ingredients = data.ingredients.filter((name) => name.trim() !== "");
+      const ingredients = data.ingredients.filter(
+        (name: any) => name.trim() !== ""
+      );
       addIngredient(
         { data: { ingredients }, token },
         {

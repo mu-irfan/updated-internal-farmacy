@@ -6,11 +6,14 @@ import { Ban, Check } from "lucide-react";
 import DataTable from "@/components/Table/DataTable";
 import Header from "@/components/Header";
 import QueryResponsesModal from "@/components/forms-modals/suggestions/QueryResponses";
-import { useGetAllTickets, useQueryResponseViewed } from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import NoData from "@/components/alerts/NoData";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import { Toaster } from "react-hot-toast";
+import {
+  useGetAllTickets,
+  useQueryResponseViewed,
+} from "@/hooks/apis/useSuggestions";
 
 const ManageSuggestions = () => {
   const { token } = useContextConsumer();

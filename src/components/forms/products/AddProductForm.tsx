@@ -36,21 +36,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useDynamicFields from "@/hooks/useDynamicFields";
-import {
-  useCreateProduct,
-  useDeleteProductImage,
-  useGetAllCompanies,
-  useGetAllIngredients,
-  useUpdateProduct,
-  useVerifyProduct,
-} from "@/hooks/useDataFetch";
 import { useContextConsumer } from "@/context/Context";
 import { SweetAlert } from "@/components/alerts/SweetAlert";
 import { baseUrl } from "@/lib/utils";
 import Image from "next/image";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import toast from "react-hot-toast";
-import { formatPackageType } from "@/lib/helper";
+import { formatKey } from "@/lib/helper";
+import {
+  useCreateProduct,
+  useDeleteProductImage,
+  useUpdateProduct,
+  useVerifyProduct,
+} from "@/hooks/apis/useProduct";
+import { useGetAllIngredients } from "@/hooks/apis/useIngredients";
+import { useGetAllCompanies } from "@/hooks/apis/useCompany";
 
 type ProductCategory = keyof typeof productsList;
 
@@ -631,7 +631,7 @@ const AddProductForm = ({
                         <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
                           <SelectValue
                             placeholder={
-                              formatPackageType(productData?.package_type) ||
+                              formatKey(productData?.package_type) ||
                               "Select Packaging type"
                             }
                           />
