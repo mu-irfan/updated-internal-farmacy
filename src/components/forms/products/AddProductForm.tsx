@@ -861,10 +861,12 @@ const AddProductForm = ({
           />
           <Button
             className="w-full text-white font-medium"
-            type={!productData?.verified ? "button" : "submit"}
+            type={isViewMode && !productData?.verified ? "button" : "submit"}
             disabled={isViewMode && productData?.verified}
             onClick={
-              !productData?.verified ? verifyToSubscribeProduct : undefined
+              productData && !productData?.verified
+                ? verifyToSubscribeProduct
+                : undefined
             }
           >
             {mode === "edit"
