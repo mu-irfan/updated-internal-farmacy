@@ -336,9 +336,6 @@ const addVarietyDataFormSchema = z.object({
     .refine((val) => val.trim() !== "", {
       message: "Max Harvesting Days are required.",
     }),
-  suitable_region: z
-    .string()
-    .nonempty({ message: "Suitable Region is required." }),
   mad_percentage: z
     .union([z.string(), z.number()])
     .transform((val) => String(val))

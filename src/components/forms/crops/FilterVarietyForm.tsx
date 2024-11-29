@@ -114,7 +114,7 @@ const FilterVarietyForm = ({
                       </SelectTrigger>
                       <SelectContent className="rounded-xl">
                         <SelectGroup>
-                          <SelectLabel>In simulator</SelectLabel>
+                          <SelectLabel>In Farmacie</SelectLabel>
                           {inSimulatorFilteringValues.map((item) => (
                             <SelectItem key={item.value} value={item.value}>
                               {item.label}

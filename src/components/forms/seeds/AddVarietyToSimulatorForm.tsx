@@ -95,7 +95,6 @@ const AddVarietyToSimulatorForm = ({
       maturity_percentage: "",
       crop_min_days: "",
       crop_max_days: "",
-      suitable_region: "",
       mad_percentage: "",
       cwr_min_mm: "",
       cwr_max_mm: "",
@@ -137,7 +136,6 @@ const AddVarietyToSimulatorForm = ({
         maturity_percentage: variety.maturity_percentage || "",
         crop_min_days: variety.crop_min_days || "",
         crop_max_days: variety.crop_max_days || "",
-        suitable_region: variety.suitable_region || "",
         mad_percentage: variety.mad_percentage || "",
         cwr_min_mm: variety.cwr_min_mm || "",
         cwr_max_mm: variety.cwr_max_mm || "",
@@ -183,7 +181,7 @@ const AddVarietyToSimulatorForm = ({
       unique_features: data.unique_features?.join(",") || "",
     };
     if (mode === "add") {
-      const payloadData = { ...transformedData, in_farmacie: true };
+      const payloadData = { ...transformedData, in_farmacie: false };
       createCropVariety(
         { data: payloadData, token },
         {
@@ -531,7 +529,7 @@ const AddVarietyToSimulatorForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="5"
+                          placeholder="Enter Seed weight"
                           type="text"
                           id="seed_weight_mg"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -604,7 +602,7 @@ const AddVarietyToSimulatorForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="90"
+                          placeholder="Enter  Germination percentage"
                           type="text"
                           id="germination_percentage"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -631,7 +629,7 @@ const AddVarietyToSimulatorForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="80"
+                          placeholder="Enter Maturity percentage"
                           type="text"
                           id="maturity_percentage"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -660,7 +658,7 @@ const AddVarietyToSimulatorForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="145"
+                          placeholder="Enter Min harvesting days"
                           type="text"
                           id="crop_min_days"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -688,7 +686,7 @@ const AddVarietyToSimulatorForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="156"
+                          placeholder="Enter Max harvesting days"
                           type="text"
                           id="crop_max_days"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -703,57 +701,12 @@ const AddVarietyToSimulatorForm = ({
               </LabelInputContainer>
             </div>
             <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
-              <LabelInputContainer>
-                <Label
-                  htmlFor="suitable_region"
-                  className="dark:text-farmacieGrey"
-                >
-                  Suitable region
-                </Label>
-                <FormField
-                  control={form.control}
-                  name="suitable_region"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Select
-                          onValueChange={(value) => {
-                            field.onChange(value);
-                          }}
-                          disabled={isViewMode}
-                        >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
-                            <SelectValue
-                              placeholder={
-                                variety?.suitable_region ||
-                                "Select Suitable Region"
-                              }
-                            />
-                          </SelectTrigger>
-                          <SelectContent className="rounded-xl">
-                            <SelectGroup>
-                              <SelectLabel>Suitable region</SelectLabel>
-                              {suitahleRegion.map((item) => (
-                                <SelectItem key={item.value} value={item.value}>
-                                  {item.label}
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </LabelInputContainer>
-
               <LabelInputContainer className="mb-4">
                 <Label
                   htmlFor="mad_percentage"
                   className="dark:text-farmacieGrey"
                 >
-                  Mad percentage
+                  MAD percentage
                 </Label>
                 <FormField
                   control={form.control}
@@ -762,7 +715,7 @@ const AddVarietyToSimulatorForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="67"
+                          placeholder="Enter MAD percentage"
                           type="text"
                           id="mad_percentage"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -788,7 +741,7 @@ const AddVarietyToSimulatorForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="12"
+                          placeholder="Enter Crop min water requirement"
                           type="text"
                           id="cwr_min_mm"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -813,7 +766,7 @@ const AddVarietyToSimulatorForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="12"
+                          placeholder="Enter Crop max water requirement"
                           type="text"
                           id="cwr_max_mm"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
