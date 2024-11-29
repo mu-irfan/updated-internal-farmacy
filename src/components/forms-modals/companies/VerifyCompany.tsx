@@ -8,7 +8,7 @@ import {
 import { DialogDescription } from "@radix-ui/react-dialog";
 import VerifyCompanyForm from "@/components/forms/companies/VerifyCompanyForm";
 
-const VerifyCompanyModal = ({ open, onOpenChange }: any) => {
+const VerifyCompanyModal = ({ open, onOpenChange, uid }: any) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[80vw] md:max-w-md lg:max-w-lg">
@@ -20,7 +20,7 @@ const VerifyCompanyModal = ({ open, onOpenChange }: any) => {
             Verify Company
           </DialogDescription>
         </DialogHeader>
-        <VerifyCompanyForm onClose={onOpenChange} />
+        <VerifyCompanyForm uid={uid} onClose={onOpenChange} />
       </DialogContent>
     </Dialog>
   );

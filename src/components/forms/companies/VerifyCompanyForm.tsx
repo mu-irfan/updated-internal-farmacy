@@ -23,10 +23,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useContextConsumer } from "@/context/Context";
-import { useGetAllCompaniesUsers } from "@/hooks/apis/useCompany";
+import { useGetAllCompanies } from "@/hooks/apis/useCompany";
 import { useVerifyCompany } from "@/hooks/apis/useRegisteredCompanies";
 
-const VerifyCompanyForm = ({ onClose }: { onClose: () => void }) => {
+const VerifyCompanyForm = ({
+  onClose,
+  uid,
+}: {
+  onClose: () => void;
+  uid?: string;
+}) => {
   const { token } = useContextConsumer();
   const form = useForm<z.infer<typeof verifyCompanyFormSchema>>({
     resolver: zodResolver(verifyCompanyFormSchema),
@@ -35,21 +41,22 @@ const VerifyCompanyForm = ({ onClose }: { onClose: () => void }) => {
     },
   });
 
-  const { data: companiesUsersList, isLoading: companiesListLoading } =
-    useGetAllCompaniesUsers(token);
+  const { data: companiesList, isLoading: companiesListLoading } =
+    useGetAllCompanies(token);
 
   const { mutate: verifyCompany, isPending: verifying } = useVerifyCompany();
 
   const onSubmit = (data: z.infer<typeof verifyCompanyFormSchema>) => {
-    const selectedCompany = companiesUsersList?.data?.find(
-      (company: any) => company.company_fk === data.name
+    const selectedCompany = companiesList?.data?.companies?.find(
+      (company: any) => company.company === data.name
     );
+
     if (!selectedCompany) {
       return;
     }
     const payload = {
-      company: selectedCompany.company_fk,
-      uuid: selectedCompany.uuid,
+      company: selectedCompany.company,
+      uuid: uid,
     };
 
     verifyCompany(
@@ -87,14 +94,16 @@ const VerifyCompanyForm = ({ onClose }: { onClose: () => void }) => {
                       <SelectGroup>
                         <SelectLabel>Company</SelectLabel>
                         {!companiesListLoading &&
-                          companiesUsersList?.data?.map((company: any) => (
-                            <SelectItem
-                              key={company.uuid}
-                              value={company.company_fk}
-                            >
-                              {company.company_fk}
-                            </SelectItem>
-                          ))}
+                          companiesList?.data?.companies?.map(
+                            (company: any) => (
+                              <SelectItem
+                                key={company.uuid}
+                                value={company.company}
+                              >
+                                {company.company}
+                              </SelectItem>
+                            )
+                          )}
                       </SelectGroup>
                     </SelectContent>
                   </Select>

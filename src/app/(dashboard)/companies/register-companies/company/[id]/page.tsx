@@ -112,6 +112,7 @@ const RegisterCompanyDetails = ({ params }: { params: { id: string } }) => {
         <VerifyCompanyModal
           open={isVerifyCompanyModalOpen}
           onOpenChange={setVerifyCompanyModalOpen}
+          uid={params.id}
         />
       )}
     </>
