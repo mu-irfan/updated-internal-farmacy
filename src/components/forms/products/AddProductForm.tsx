@@ -255,6 +255,8 @@ const AddProductForm = ({
     }
   };
 
+  console.log(companiesList, "companiesList");
+
   return (
     <Form {...form}>
       {productDataLoading ? (
@@ -315,7 +317,10 @@ const AddProductForm = ({
                             {!companiesListLoading &&
                               companiesList?.data?.companies?.map(
                                 (company: any, index: number) => (
-                                  <SelectItem key={index} value={company}>
+                                  <SelectItem
+                                    key={index}
+                                    value={company.company}
+                                  >
                                     {company.company}
                                   </SelectItem>
                                 )
