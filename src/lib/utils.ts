@@ -7,4 +7,4 @@ export function cn(...inputs: ClassValue[]) {
 
 //base url
 // export const baseUrl = "http://192.168.200.46:7003/api";
-export const baseUrl = "http://admin.agronomics.pk/internal/api";
+export const baseUrl = "https://admin.agronomics.pk/internal/api";
