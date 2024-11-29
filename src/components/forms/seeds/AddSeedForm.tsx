@@ -326,7 +326,10 @@ const AddSeedForm = ({
                               {!companiesListLoading &&
                                 companiesList?.data?.companies?.map(
                                   (company: any, index: number) => (
-                                    <SelectItem key={index} value={company}>
+                                    <SelectItem
+                                      key={index}
+                                      value={company.company}
+                                    >
                                       {company.company}
                                     </SelectItem>
                                   )

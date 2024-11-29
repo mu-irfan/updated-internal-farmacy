@@ -328,7 +328,10 @@ const AddVarietyToSimulatorForm = ({
                               {!companiesListLoading &&
                                 companiesList?.data?.companies?.map(
                                   (company: any, index: number) => (
-                                    <SelectItem key={index} value={company}>
+                                    <SelectItem
+                                      key={index}
+                                      value={company.company}
+                                    >
                                       {company.company}
                                     </SelectItem>
                                   )
@@ -720,7 +723,12 @@ const AddVarietyToSimulatorForm = ({
                           disabled={isViewMode}
                         >
                           <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
-                            <SelectValue placeholder="Irrigated" />
+                            <SelectValue
+                              placeholder={
+                                variety?.suitable_region ||
+                                "Select Suitable Region"
+                              }
+                            />
                           </SelectTrigger>
                           <SelectContent className="rounded-xl">
                             <SelectGroup>
