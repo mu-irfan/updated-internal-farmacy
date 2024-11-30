@@ -1079,7 +1079,7 @@ const AddVarietyToSimulatorForm = ({
                 ? "Updating..."
                 : mode === "edit"
                 ? "Update"
-                : " Add Crop For Simulator"}
+                : " Add Variety To Simulator"}
             </Button>
           </form>
         )}

@@ -341,3 +341,10 @@ type AddCompanyGlobalListFormData = {
 type AddIngredientFormData = {
   ingredients: string[];
 };
+
+type InputField = {
+  id: string;
+  ingredient: string;
+  concentration: string;
+  unit: string;
+};

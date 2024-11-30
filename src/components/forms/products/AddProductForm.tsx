@@ -167,7 +167,9 @@ const AddProductForm = ({
     formData.append("category", data.category);
     formData.append("sub_category", data.sub_category);
     formData.append("description", data.description);
-    formData.append("price", data.price);
+    if (data.price !== undefined) {
+      formData.append("price", data.price);
+    }
     formData.append("area_covered", data.area_covered);
     formData.append("disease_purpose", data.disease_purpose);
     formData.append("type", data.type);
@@ -424,7 +426,7 @@ const AddProductForm = ({
           </div>
           {inputFields?.map((field, index) => (
             <div
-              key={index}
+              key={field.id}
               className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4"
             >
               <LabelInputContainer>
@@ -436,7 +438,6 @@ const AddProductForm = ({
                 </Label>
                 <FormControl>
                   <Select
-                    defaultValue={field.ingredient}
                     name="ingredient"
                     onValueChange={(value) => {
                       const updatedFields = [...inputFields];
@@ -468,7 +469,7 @@ const AddProductForm = ({
 
               <LabelInputContainer>
                 <Label
-                  htmlFor={`concentration-${index}`}
+                  htmlFor={`concentration-${field.id}`}
                   className="dark:text-farmacieGrey"
                 >
                   Concentration
@@ -491,7 +492,7 @@ const AddProductForm = ({
 
               <LabelInputContainer>
                 <Label
-                  htmlFor={`units-${index}`}
+                  htmlFor={`units-${field.id}`}
                   className="dark:text-farmacieGrey"
                 >
                   Units
@@ -507,7 +508,7 @@ const AddProductForm = ({
                     disabled={isViewMode}
                   >
                     <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
-                      <SelectValue placeholder={field?.unit || "Select unit"} />
+                      <SelectValue placeholder={field.unit || "Select unit"} />
                     </SelectTrigger>
                     <SelectContent className="rounded-xl">
                       <SelectGroup>
@@ -524,15 +525,17 @@ const AddProductForm = ({
               </LabelInputContainer>
 
               <div className="flex items-center gap-2">
-                <Button
-                  size="icon"
-                  className="bg-primary text-farmacieWhite mt-5"
-                  type="button"
-                  onClick={handleAddField}
-                  disabled={isViewMode}
-                >
-                  <Plus className="w-4 h-4" />
-                </Button>
+                {index === 0 && (
+                  <Button
+                    size="icon"
+                    className="bg-primary text-farmacieWhite mt-5"
+                    type="button"
+                    onClick={handleAddField}
+                    disabled={isViewMode}
+                  >
+                    <Plus className="w-4 h-4" />
+                  </Button>
+                )}
                 {index > 0 && (
                   <Button
                     size="icon"
@@ -724,7 +727,7 @@ const AddProductForm = ({
           <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
             <LabelInputContainer>
               <Label htmlFor="price" className="dark:text-farmacieGrey">
-                Price
+                Price (Optional)
               </Label>
               <FormField
                 control={form.control}

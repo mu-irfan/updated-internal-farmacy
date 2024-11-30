@@ -1,25 +1,20 @@
 import { useState } from "react";
+import { nanoid } from "nanoid";
 
-type InputField = {
-  ingredient: string;
-  concentration: string;
-  unit: string;
-};
-
-const useDynamicFields = (initialFields: InputField[]) => {
-  const [inputFields, setInputFields] = useState<InputField[]>(initialFields);
+const useDynamicFields = (initialFields: Omit<InputField, "id">[]) => {
+  const [inputFields, setInputFields] = useState<InputField[]>(
+    initialFields?.map((field) => ({ ...field, id: nanoid() }))
+  );
 
   const handleAddField = () => {
-    setInputFields([
-      ...inputFields,
-      { ingredient: "", concentration: "", unit: "" },
+    setInputFields((prevFields) => [
+      ...prevFields,
+      { id: nanoid(), ingredient: "", concentration: "", unit: "" },
     ]);
   };
 
   const handleDeleteField = (index: number) => {
-    const updatedFields = [...inputFields];
-    updatedFields.splice(index, 1);
-    setInputFields(updatedFields);
+    setInputFields((prevFields) => prevFields.filter((_, i) => i !== index));
   };
 
   return {

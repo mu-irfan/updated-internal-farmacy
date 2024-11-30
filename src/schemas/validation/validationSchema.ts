@@ -116,9 +116,7 @@ const addProductFormSchema = z.object({
   price: z
     .union([z.string(), z.number()])
     .transform((val) => String(val))
-    .refine((val) => val.trim() !== "", {
-      message: "Price is required.",
-    }),
+    .optional(),
   description: z.string().nonempty({ message: "Packaging Type is required." }),
 });
 
@@ -183,8 +181,12 @@ const addSeedFormSchema = z.object({
   unique_features: z.array(z.string()).optional(),
   price: z
     .union([z.string(), z.number()])
-    .transform((val) => String(val))
-    .refine((val) => val.trim() !== "", { message: "Price is required." }),
+    .optional()
+    .transform((val) => (val === "" ? undefined : String(val)))
+    .refine((val) => val === undefined || !isNaN(Number(val)), {
+      message: "Price must be a valid number.",
+    }),
+
   description: z.string().nonempty({ message: "Description is required." }),
 });
 

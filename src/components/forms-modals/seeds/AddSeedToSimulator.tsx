@@ -53,7 +53,7 @@ const AddSeedToSimulatorModal = ({
                 {viewCrop
                   ? "Add Crop in Simulator"
                   : viewVariety
-                  ? "Add Crop in Simulator"
+                  ? "Add Variety in Simulator"
                   : viewStage
                   ? "Add Stage in Simulator"
                   : "Add To Simulator"}
@@ -123,6 +123,7 @@ const AddSeedToSimulatorModal = ({
                       <AddVarietyToSimulatorForm
                         mode={currentMode}
                         onClose={onOpenChange}
+                        variety={selectedItem}
                       />
                     </div>
                   </TabsContent>

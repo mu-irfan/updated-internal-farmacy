@@ -43,6 +43,8 @@ const StagesFilterForm = () => {
   const [selectedStageToView, setSelectedStageToView] = useState({});
   const [isViewStageModalOpen, setViewStageModalOpen] =
     useState<boolean>(false);
+  const [addNewStageModalOpen, setAddNewStageModalOpen] =
+    useState<boolean>(false);
   const [currentVarietyUuid, setCurrentVarietyUuid] = useState<string | null>(
     null
   );
@@ -237,16 +239,14 @@ const StagesFilterForm = () => {
                   >
                     Get Stages
                   </Button>
-                  {/* <Button
+                  <Button
                     variant="outline"
                     className="dark:text-farmacieWhite font-medium border border-primary"
                     type="button"
-                    onClick={() =>
-                      setCropStagesFilterModalOpen((prev) => !prev)
-                    }
+                    onClick={() => setAddNewStageModalOpen((prev) => !prev)}
                   >
                     Add New Stage
-                  </Button> */}
+                  </Button>
                 </div>
               </div>
             </form>
@@ -271,6 +271,12 @@ const StagesFilterForm = () => {
         selectedItem={selectedStageToView}
         loading={varietyStageLoading}
         mode="view"
+        viewStage
+      />
+      <AddSeedToSimulatorModal
+        open={addNewStageModalOpen}
+        onOpenChange={setAddNewStageModalOpen}
+        mode="add"
         viewStage
       />
     </>

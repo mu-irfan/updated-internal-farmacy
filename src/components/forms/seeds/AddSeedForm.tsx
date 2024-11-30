@@ -174,7 +174,9 @@ const AddSeedForm = ({
     formData.append("suitable_region", data.suitable_region);
     formData.append("package_type", data.package_type);
     formData.append("height_class", data.height_class);
-    formData.append("price", data.price);
+    if (data.price !== undefined) {
+      formData.append("price", data.price);
+    }
     formData.append("description", data.description);
 
     if (data.unique_features) {
@@ -883,7 +885,7 @@ const AddSeedForm = ({
             <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
               <LabelInputContainer className="mb-4">
                 <Label htmlFor="price" className="dark:text-farmacieGrey">
-                  Price
+                  Price (Optional)
                 </Label>
                 <FormField
                   control={form.control}
@@ -893,7 +895,7 @@ const AddSeedForm = ({
                       <FormControl>
                         <Input
                           placeholder="Enter Price"
-                          type="text"
+                          type="number"
                           id="price"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
                           {...field}
@@ -1086,6 +1088,8 @@ const AddSeedForm = ({
         open={isAddSeedToSimulatorModalOpen}
         onOpenChange={setAddSeedToSimulatorModalOpen}
         mode="add"
+        selectedItem={seed}
+        viewVariety
       />
     </>
   );
