@@ -23,6 +23,7 @@ const AddSeedToSimulatorModal = ({
   selectedItem,
   loading,
   mode,
+  inFarmacie,
 }: any) => {
   const [currentMode, setCurrentMode] = useState(mode);
 
@@ -85,6 +86,7 @@ const AddSeedToSimulatorModal = ({
                   mode={currentMode}
                   onClose={onOpenChange}
                   loading={loading}
+                  inFarmacie={inFarmacie}
                 />
               )}
               {viewStage && (

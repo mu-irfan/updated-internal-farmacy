@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { bbchScale, stages } from "@/constant/data";
+import { bbchScale, principalStages, stages } from "@/constant/data";
 import { useGetAllCropsVarititesList } from "@/hooks/apis/crop/useVarities";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
@@ -63,10 +63,10 @@ const AddStagesToSimulatorForm = ({
       bbch_scale: "",
       kc: "",
       base_temp: "",
-      min_temp: "",
-      max_temp: "",
-      start_gdd: "",
-      end_gdd: "",
+      min_temp: undefined,
+      max_temp: undefined,
+      start_gdd: undefined,
+      end_gdd: undefined,
     },
   });
 
@@ -230,7 +230,7 @@ const AddStagesToSimulatorForm = ({
               </LabelInputContainer>
             </div>
             <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
-              <LabelInputContainer className="mb-4">
+              <LabelInputContainer>
                 <Label htmlFor="sub_stage" className="dark:text-farmacieGrey">
                   Principle Stage
                 </Label>
@@ -240,14 +240,28 @@ const AddStagesToSimulatorForm = ({
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input
-                          placeholder="Enter Principal Stage"
-                          type="text"
-                          id="sub_stage"
-                          className="outline-none focus:border-primary disabled:bg-primary/20"
+                        <Select
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                          }}
                           disabled={isViewMode}
-                          {...field}
-                        />
+                        >
+                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
+                            <SelectValue
+                              placeholder={stage?.sub_stage || "Select Stage"}
+                            />
+                          </SelectTrigger>
+                          <SelectContent className="rounded-xl">
+                            <SelectGroup>
+                              <SelectLabel>Principle Stage</SelectLabel>
+                              {principalStages.map((item) => (
+                                <SelectItem key={item.value} value={item.value}>
+                                  {item.label}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

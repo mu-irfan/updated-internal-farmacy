@@ -170,7 +170,9 @@ const AddProductForm = ({
     if (data.price !== undefined) {
       formData.append("price", data.price);
     }
-    formData.append("area_covered", data.area_covered);
+    if (data.area_covered) {
+      formData.append("area_covered", data.area_covered);
+    }
     formData.append("disease_purpose", data.disease_purpose);
     formData.append("type", data.type);
     formData.append("package_type", data.package_type);
@@ -256,8 +258,6 @@ const AddProductForm = ({
       );
     }
   };
-
-  console.log(companiesList, "companiesList");
 
   return (
     <Form {...form}>

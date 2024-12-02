@@ -124,17 +124,19 @@ const AddSeedForm = ({
   useEffect(() => {
     if (seed) {
       reset({
-        seed_variety_name: seed.seed_variety_name || "",
-        company_fk: seed.company_fk || "",
+        seed_variety_name: seed.seed_variety_name || seed.variety_eng || "",
+        company_fk: seed.company_fk || seed.company || "",
         crop_category: seed.crop_category || "",
-        crop: seed.crop || "",
-        seed_weight: seed.seed_weight || "",
+        crop: seed.crop || seed.crop_fk || "",
+        seed_weight: seed.seed_weight || seed.seed_weight_mg || "",
         package_weight: seed.package_weight || "",
         germination_percentage: seed.germination_percentage || "",
         maturity_percentage: seed.maturity_percentage || "",
-        min_harvesting_days: seed.min_harvesting_days || "",
-        max_harvesting_days: seed.max_harvesting_days || "",
-        suitable_region: seed.suitable_region || "",
+        min_harvesting_days:
+          seed.min_harvesting_days || seed.crop_min_days || "",
+        max_harvesting_days:
+          seed.max_harvesting_days || seed.crop_max_days || "",
+        suitable_region: seed.suitable_region || seed.irrigation_source || "",
         package_type: seed.package_type || "",
         height_class: seed.height_class || "",
         nutrient_content:
@@ -177,7 +179,9 @@ const AddSeedForm = ({
     if (data.price !== undefined) {
       formData.append("price", data.price);
     }
-    formData.append("description", data.description);
+    if (data.description) {
+      formData.append("description", data.description);
+    }
 
     if (data.unique_features) {
       formData.append("unique_features", data.unique_features.join(","));
@@ -318,7 +322,9 @@ const AddSeedForm = ({
                           <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
                             <SelectValue
                               placeholder={
-                                seed?.company_fk || "Select Brand Company"
+                                seed?.company_fk ||
+                                seed?.company ||
+                                "Select Brand Company"
                               }
                             />
                           </SelectTrigger>
@@ -409,7 +415,9 @@ const AddSeedForm = ({
                         >
                           <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
                             <SelectValue
-                              placeholder={seed?.crop || "Select Crop"}
+                              placeholder={
+                                seed?.crop || seed?.crop_fk || "Select Crop"
+                              }
                             />
                           </SelectTrigger>
                           <SelectContent className="rounded-xl">
@@ -557,7 +565,7 @@ const AddSeedForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="Enter min days to reach harvesting"
+                          placeholder="Enter minimum days to reach harvesting"
                           type="text"
                           id="min_harvesting_days"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -584,7 +592,7 @@ const AddSeedForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="Enter max days to reach harvesting"
+                          placeholder="Enter maximum days to reach harvesting"
                           type="text"
                           id="max_harvesting_days"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -622,6 +630,7 @@ const AddSeedForm = ({
                             <SelectValue
                               placeholder={
                                 seed?.suitable_region ||
+                                seed?.irrigation_source ||
                                 "Select Suitable region"
                               }
                             />
@@ -1090,6 +1099,7 @@ const AddSeedForm = ({
         mode="add"
         selectedItem={seed}
         viewVariety
+        inFarmacie
       />
     </>
   );

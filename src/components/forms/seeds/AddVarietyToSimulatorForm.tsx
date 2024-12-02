@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -52,20 +52,26 @@ import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import { useGetAllCompanies } from "@/hooks/apis/useCompany";
 import { useGetAllCropsList } from "@/hooks/apis/crop/useCrop";
+import AddSeedModal from "@/components/forms-modals/seeds/AddSeed";
 
 const AddVarietyToSimulatorForm = ({
   variety,
   mode,
   onClose,
   loading: varietyLoading,
+  inFarmacie,
 }: {
   variety?: any;
   mode?: "add" | "view" | "edit";
   onClose: () => void;
   loading?: boolean;
+  inFarmacie?: boolean;
 }) => {
   const { token } = useContextConsumer();
   const isViewMode = mode === "view";
+  const in_farmacie = inFarmacie ? true : false;
+  const [isAddVarietyToSeedModalOpen, setAddVarietyToSeedModalOpen] =
+    useState<boolean>(false);
 
   //
   const { mutate: createCropVariety, isPending: creating } =
@@ -123,19 +129,22 @@ const AddVarietyToSimulatorForm = ({
   useEffect(() => {
     if (variety) {
       reset({
-        variety_eng: variety.variety_eng || "",
+        variety_eng: variety.variety_eng || variety.seed_variety_name || "",
         variety_urdu: variety.variety_urdu || "",
         variety_type: variety.variety_type || "",
-        company: variety.company || "",
-        crop_fk: variety.crop_fk || "",
+        company: variety.company || variety.company_fk || "",
+        crop_fk: variety.crop_fk || variety.crop || "",
         crop_season: variety.crop_season || "",
         season: variety.season || "",
-        seed_weight_mg: variety.seed_weight_mg || "",
-        irrigation_source: variety.irrigation_source || "",
+        seed_weight_mg: variety.seed_weight_mg || variety.seed_weight || "",
+        irrigation_source:
+          variety.irrigation_source || variety.suitable_region || "",
         germination_percentage: variety.germination_percentage || "",
         maturity_percentage: variety.maturity_percentage || "",
-        crop_min_days: variety.crop_min_days || "",
-        crop_max_days: variety.crop_max_days || "",
+        crop_min_days:
+          variety.crop_min_days || variety.min_harvesting_days || "",
+        crop_max_days:
+          variety.crop_max_days || variety.max_harvesting_days || "",
         mad_percentage: variety.mad_percentage || "",
         cwr_min_mm: variety.cwr_min_mm || "",
         cwr_max_mm: variety.cwr_max_mm || "",
@@ -181,7 +190,7 @@ const AddVarietyToSimulatorForm = ({
       unique_features: data.unique_features?.join(",") || "",
     };
     if (mode === "add") {
-      const payloadData = { ...transformedData, in_farmacie: false };
+      const payloadData = { ...transformedData, in_farmacie: in_farmacie };
       createCropVariety(
         { data: payloadData, token },
         {
@@ -317,7 +326,11 @@ const AddVarietyToSimulatorForm = ({
                         >
                           <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
                             <SelectValue
-                              placeholder={variety?.company || "Select Company"}
+                              placeholder={
+                                variety?.company ||
+                                variety?.company_fk ||
+                                "Select Company"
+                              }
                             />
                           </SelectTrigger>
                           <SelectContent className="rounded-xl">
@@ -406,7 +419,11 @@ const AddVarietyToSimulatorForm = ({
                         >
                           <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
                             <SelectValue
-                              placeholder={variety?.crop_fk || "Select Crop"}
+                              placeholder={
+                                variety?.crop_fk ||
+                                variety?.crop ||
+                                "Select Crop"
+                              }
                             />
                           </SelectTrigger>
                           <SelectContent className="rounded-xl">
@@ -453,7 +470,7 @@ const AddVarietyToSimulatorForm = ({
                           <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
                             <SelectValue
                               placeholder={
-                                variety?.crop_season || "Select Crop"
+                                variety?.crop_season || "Select Crop Season"
                               }
                             />
                           </SelectTrigger>
@@ -565,6 +582,7 @@ const AddVarietyToSimulatorForm = ({
                             <SelectValue
                               placeholder={
                                 variety?.irrigation_source ||
+                                variety?.suitable_region ||
                                 "Select irrigation source"
                               }
                             />
@@ -658,7 +676,7 @@ const AddVarietyToSimulatorForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="Enter Min harvesting days"
+                          placeholder="Enter Minimum days to reach harvesting"
                           type="text"
                           id="crop_min_days"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -686,7 +704,7 @@ const AddVarietyToSimulatorForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="Enter Max harvesting days"
+                          placeholder="Enter Maximum days to reach harvesting"
                           type="text"
                           id="crop_max_days"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -1065,7 +1083,17 @@ const AddVarietyToSimulatorForm = ({
                 onClick={handleInSimulator}
                 disabled={isViewMode && variety?.in_farmacie}
               >
-                {simulating ? "Simulating..." : "Already in simulator"}
+                {simulating ? "Simulating..." : "Already on farmacie"}
+              </Button>
+            )}
+            {mode === "view" && !variety?.in_farmacie && (
+              <Button
+                className="w-full text-white font-medium mb-4"
+                type="button"
+                onClick={() => setAddVarietyToSeedModalOpen(true)}
+                disabled={isViewMode && variety?.in_farmacie}
+              >
+                {simulating ? "Simulating..." : "Add on farmacie"}
               </Button>
             )}
             <Button
@@ -1077,13 +1105,19 @@ const AddVarietyToSimulatorForm = ({
                 ? "Creating..."
                 : updating
                 ? "Updating..."
-                : mode === "edit"
+                : mode === "edit" || isViewMode
                 ? "Update"
-                : " Add Variety To Simulator"}
+                : "Submit"}
             </Button>
           </form>
         )}
       </Form>
+      <AddSeedModal
+        open={isAddVarietyToSeedModalOpen}
+        onOpenChange={setAddVarietyToSeedModalOpen}
+        mode="add"
+        seedData={variety}
+      />
     </>
   );
 };

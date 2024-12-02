@@ -25,6 +25,7 @@ export const productCategory = [
 ];
 
 export const varietyTypes = [
+  { value: "organic", label: "Organic" },
   { value: "hybrid", label: "Hybrid" },
   { value: "synthetic", label: "Synthetic" },
   { value: "genetically_modified", label: "Genetically Modified (GMO)" },
@@ -39,15 +40,158 @@ export const cropSources = [
   { value: "seedling", label: "Seedling" },
 ];
 
+export const principalStages = [
+  { value: "germination", label: "Germination" },
+  { value: "leaf_development", label: "Leaf Development" },
+  { value: "tillering", label: "Tillering" },
+  { value: "stem_elongation", label: "Stem Elongation" },
+  { value: "booting", label: "Booting" },
+  {
+    value: "inflorescence_emergence_heading",
+    label: "Inflorescence Emergence, Heading",
+  },
+  { value: "flowering_anthesis", label: "Flowering, Anthesis" },
+  { value: "development_of_fruit", label: "Development of Fruit" },
+  { value: "ripening", label: "Ripening" },
+  { value: "harvesting_senescence", label: "Harvesting/Senescence" },
+  {
+    value: "emergance_leaf_development",
+    label: "Emergance & Leaf Development",
+  },
+  {
+    value: "stem_elongation_3_internodes",
+    label: "Stem Elongation (3 Visibly Extended Internodes)",
+  },
+  {
+    value: "stem_elongation_9_internodes",
+    label: "Stem Elongation (9 Visibly Extended Internodes)",
+  },
+  {
+    value: "leaf_development_main_shoot",
+    label: "Leaf Development (Main Shoot)",
+  },
+  { value: "formation_of_side_shoots", label: "Formation of Side Shoots" },
+  {
+    value: "main_stem_elongation_3rd_leaf",
+    label: "Main Stem Elongation (3rd True Leaf Unfolded)",
+  },
+  {
+    value: "main_stem_elongation_9_leaves",
+    label: "Main Stem Elongation (9 or More True Leaves Unfolded)",
+  },
+  {
+    value: "inflorescence_emergence_main_shoot",
+    label: "Inflorescence Emergence (Main Shoot)",
+  },
+  { value: "flowering", label: "Flowering" },
+  {
+    value: "development_of_fruits_and_seeds",
+    label: "Development of Fruits and Seeds",
+  },
+  {
+    value: "ripening_of_fruits_and_seeds",
+    label: "Ripening of Fruits and Seeds",
+  },
+  {
+    value: "stem_elongation_rosette_growth",
+    label: "Stem Elongation of Rosette Growth",
+  },
+  {
+    value: "development_of_harvestable_parts",
+    label: "Development of Harvestable Vegetative Plant Parts",
+  },
+  { value: "ripening_of_fruit_and_seed", label: "Ripening of Fruit and Seed" },
+  {
+    value: "emergance_root_development",
+    label: "Emergance & Root Development",
+  },
+  { value: "seed_fill", label: "Seed Fill" },
+  { value: "dough_stage", label: "Dough Stage" },
+  { value: "maturity_complete", label: "Maturity Complete" },
+  { value: "harvesting", label: "Harvesting" },
+  { value: "transplant", label: "Transplant" },
+  {
+    value: "formation_of_side_shoots_primary",
+    label: "Formation of Side Shoots (Primary Side Shoots Visible)",
+  },
+  {
+    value: "formation_of_side_shoots_secondary",
+    label: "Formation of Side Shoots (Secondary Apical Side Shoot Visible)",
+  },
+  {
+    value: "formation_of_side_shoots_tertiary",
+    label: "Formation of Side Shoots (Tertiary Apical Side Shoots Visible)",
+  },
+  {
+    value: "formation_of_side_shoots_3_visible",
+    label: "Formation of Side Shoots (3 Shoots Visible)",
+  },
+  {
+    value: "formation_of_side_shoots_9_visible",
+    label: "Formation of Side Shoots (9 or More Side Shoots Visible)",
+  },
+  {
+    value: "main_stem_elongation_crop_cover",
+    label: "Main Stem Elongation (Crop Cover)",
+  },
+  { value: "senescence_harvesting", label: "Senescence/Harvesting" },
+  {
+    value: "formation_of_side_shoots_3rd_visible",
+    label: "Formation of Side Shoots (3rd Side Shoot Visible)",
+  },
+  {
+    value: "leaf_development_3rd_leaf",
+    label: "Leaf Development (3rd True Leaf Unfolded)",
+  },
+  {
+    value: "leaf_development_9th_leaf",
+    label: "Leaf Development (9 or More True Leaf Unfolded)",
+  },
+  { value: "ripening_of_fruit", label: "Ripening of Fruit and Seed" },
+  {
+    value: "leaf_development_3_leaves",
+    label: "Leaf Development (3 Leaves Unfolded)",
+  },
+  {
+    value: "leaf_development_9_leaves",
+    label: "Leaf Development (9 or More Leaves Unfolded)",
+  },
+  { value: "sprouting_germination", label: "Sprouting/Germination" },
+  {
+    value: "formation_of_basal_shoots",
+    label:
+      "Formation of Basal Side Shoots Below and Above Soil Surface (Main Stem)",
+  },
+  { value: "tuber_formation", label: "Tuber Formation" },
+  {
+    value: "inflorescence_cyme_emergence",
+    label: "Inflorescence (Cyme) Emergence",
+  },
+  { value: "flowering_continuation", label: "Flowering (Continuation)" },
+  { value: "rosette_growth", label: "Rosette Growth" },
+  {
+    value: "leaf_development_4_leaves",
+    label: "Leaf Development (4 Leaves Unfolded)",
+  },
+  {
+    value: "leaf_development_8_leaves",
+    label: "Leaf Development (8 Leaves Unfolded)",
+  },
+].sort((a, b) => a.label.localeCompare(b.label));
+
 export const cropSeasons = [
   { value: "rabi", label: "Rabi" },
   { value: "kharif", label: "Kharif" },
+  { value: "zaid_rabi", label: "Zaid Rabi" },
+  { value: "zaid_kharif", label: "Zaid Kharif" },
 ];
 
 export const seasons = [
   { value: "summer", label: "Summer" },
   { value: "winter", label: "Winter" },
-];
+  { value: "autumn", label: "Autumn" },
+  { value: "spring", label: "Spring" },
+].sort((a, b) => a.label.localeCompare(b.label));
 
 export const companiesReportsTitles = [
   { title: "Total Companies in List", key: "globalListCompanies" },
@@ -2329,6 +2473,7 @@ export const productsList = {
 
 export const packagingType = [
   { label: "Envelope Packet", value: "envelope_packet" },
+  { label: "Plastic Bottle", value: "plastic_bottle" },
   { label: "Foil Packet", value: "foil_packet" },
   { label: "Plastic Pouch", value: "plastic_pouch" },
   { label: "Glassine Bag", value: "glassine_bag" },

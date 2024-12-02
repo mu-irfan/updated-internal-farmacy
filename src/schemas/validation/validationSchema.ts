@@ -109,15 +109,13 @@ const addProductFormSchema = z.object({
   area_covered: z
     .union([z.string(), z.number()])
     .transform((val) => String(val))
-    .refine((val) => val.trim() !== "", {
-      message: "Area covered is required.",
-    }),
+    .optional(),
   disease_purpose: z.string().nonempty({ message: "Disease is required." }),
   price: z
     .union([z.string(), z.number()])
     .transform((val) => String(val))
     .optional(),
-  description: z.string().nonempty({ message: "Packaging Type is required." }),
+  description: z.string().nonempty({ message: "Description is required." }),
 });
 
 const filterProductsFormSchema = z.object({
@@ -187,7 +185,7 @@ const addSeedFormSchema = z.object({
       message: "Price must be a valid number.",
     }),
 
-  description: z.string().nonempty({ message: "Description is required." }),
+  description: z.string().optional(),
 });
 
 // filter seed
@@ -255,15 +253,15 @@ const AddStageToSimulatorFormSchema = z
       }),
     start_gdd: z
       .union([z.string(), z.number()])
-      .transform((val) => String(val))
-      .refine((val) => val.trim() !== "", {
-        message: "Start GDD is required.",
+      .transform((val) => parseFloat(String(val)))
+      .refine((val) => !isNaN(val), {
+        message: "Start GDD must be a valid number.",
       }),
     end_gdd: z
       .union([z.string(), z.number()])
-      .transform((val) => String(val))
-      .refine((val) => val.trim() !== "", {
-        message: "End GDD is required.",
+      .transform((val) => parseFloat(String(val)))
+      .refine((val) => !isNaN(val), {
+        message: "End GDD must be a valid number.",
       }),
     base_temp: z
       .union([z.string(), z.number()])
@@ -273,15 +271,15 @@ const AddStageToSimulatorFormSchema = z
       }),
     min_temp: z
       .union([z.string(), z.number()])
-      .transform((val) => String(val))
-      .refine((val) => val.trim() !== "", {
-        message: "Min Temp is required.",
+      .transform((val) => parseFloat(String(val)))
+      .refine((val) => !isNaN(val), {
+        message: "Min Temp must be a valid number.",
       }),
     max_temp: z
       .union([z.string(), z.number()])
-      .transform((val) => String(val))
-      .refine((val) => val.trim() !== "", {
-        message: "Max Temp is required.",
+      .transform((val) => parseFloat(String(val)))
+      .refine((val) => !isNaN(val), {
+        message: "Max Temp must be a valid number.",
       }),
   })
   .refine((data) => data.end_gdd > data.start_gdd, {
