@@ -133,7 +133,7 @@ const AddVarietyToSimulatorForm = ({
         variety_urdu: variety.variety_urdu || "",
         variety_type: variety.variety_type || "",
         company: variety.company || variety.company_fk || "",
-        crop_fk: variety.crop_fk || variety.crop || "",
+        crop_fk: variety.crop_fk || "",
         crop_season: variety.crop_season || "",
         season: variety.season || "",
         seed_weight_mg: variety.seed_weight_mg || variety.seed_weight || "",
@@ -419,11 +419,7 @@ const AddVarietyToSimulatorForm = ({
                         >
                           <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
                             <SelectValue
-                              placeholder={
-                                variety?.crop_fk ||
-                                variety?.crop ||
-                                "Select Crop"
-                              }
+                              placeholder={variety?.crop_fk || "Select Crop"}
                             />
                           </SelectTrigger>
                           <SelectContent className="rounded-xl">

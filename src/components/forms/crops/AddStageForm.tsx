@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/select";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
-import { bbchScale, stages } from "@/constant/data";
+import { bbchScale, principalStages, stages } from "@/constant/data";
 import {
   useCreateCropStage,
   useUpdateCropStage,
@@ -185,14 +185,28 @@ const AddStageForm = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        placeholder="Enter Crop name"
-                        type="text"
-                        id="sub_stage"
-                        className="outline-none focus:border-primary disabled:bg-primary/20"
-                        {...field}
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                        }}
                         disabled={isViewMode}
-                      />
+                      >
+                        <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
+                          <SelectValue
+                            placeholder={stage?.sub_stage || "Select Stage"}
+                          />
+                        </SelectTrigger>
+                        <SelectContent className="rounded-xl">
+                          <SelectGroup>
+                            <SelectLabel>Principle Stage</SelectLabel>
+                            {principalStages.map((item) => (
+                              <SelectItem key={item.value} value={item.value}>
+                                {item.label}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
