@@ -173,6 +173,7 @@ const VarietyFilterForm = () => {
         <DataTable
           columns={varietyColoums}
           data={filteredVarieties as VarietyTableRow[]}
+          paginate
         />
       ) : (
         <NoData message="No Data Available" />

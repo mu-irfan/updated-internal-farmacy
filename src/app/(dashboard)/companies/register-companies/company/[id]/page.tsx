@@ -101,6 +101,7 @@ const RegisterCompanyDetails = ({ params }: { params: { id: string } }) => {
           <DataTable
             columns={franchiseColumns}
             data={CompanyFranchises?.data as FranchiseTableRow[]}
+            paginate
           />
         ) : (
           visibleTable === "franchise" && (

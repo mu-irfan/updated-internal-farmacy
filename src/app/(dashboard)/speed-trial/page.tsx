@@ -137,6 +137,7 @@ const ManageSeedTrailData = () => {
             <DataTable
               columns={SeedTrailColoumn}
               data={filteredSeedTrails as SeedTrailTableRow[]}
+              paginate
             />
           </div>
         ) : (
@@ -150,6 +151,7 @@ const ManageSeedTrailData = () => {
             <DataTable
               columns={stageColumns}
               data={filteredSeedTrailsStages as SeedTrailsStages[]}
+              paginate
             />
           </div>
         ) : (
