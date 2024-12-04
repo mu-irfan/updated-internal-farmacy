@@ -165,6 +165,9 @@ export const SidebarLink = ({
   const pathname = usePathname();
 
   const { open, animate } = useSidebar();
+  const isActive =
+    (link.href === "/" && pathname === "/") || pathname.startsWith(link.href);
+
   return (
     <Link
       href={link.href}
@@ -175,14 +178,24 @@ export const SidebarLink = ({
       )}
       {...props}
     >
-      {link.icon}
-
+      {React.cloneElement(link.icon as React.ReactElement, {
+        className: cn("h-5 w-5 flex-shrink-0", {
+          farmacieWhite: isActive,
+          "text-neutral-700 dark:text-farmacieGrey": !isActive,
+        }),
+      })}
       <motion.span
         animate={{
           display: animate ? (open ? "inline-block" : "none") : "inline-block",
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
-        className="text-neutral-700 dark:text-neutral-200 text-base group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0"
+        className={cn(
+          "text-base group-hover/sidebar:translate-x-1 transition duration-150 whitespace-pre inline-block !p-0 !m-0",
+          {
+            "text-farmacieWhite": isActive,
+            "text-neutral-700 dark:text-farmacieGrey": !isActive,
+          }
+        )}
       >
         {link.label}
       </motion.span>

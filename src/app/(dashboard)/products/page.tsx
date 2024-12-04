@@ -57,7 +57,7 @@ export default function Dashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl lg:text-4xl font-bold text-farmacieWhite">
+            <div className="text-3xl lg:text-4xl font-medium text-farmacieWhite">
               Add New Product
             </div>
           </CardContent>
@@ -66,14 +66,14 @@ export default function Dashboard() {
           Add product to global list
         </p>
         <Link href="/products/all-products" className="w-full mx-auto max-w-xl">
-          <Card className="w-full py-6 lg:py-8 rounded-xl text-center bg-primary/10 border-2 border-primary">
+          <Card className="w-full py-6 lg:py-8 rounded-xl text-center bg-farmacieLightSecondary border-2 border-primary">
             <CardHeader className="space-y-0 pb-2">
               <CardTitle className="text-3xl lg:text-4xl font-medium lg:py-4">
                 <Search className="h-8 w-8 mx-auto dark:text-green-500" />
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl lg:text-4xl font-bold text-primary dark:text-green-500">
+              <div className="text-3xl lg:text-4xl font-medium text-primary dark:text-green-500">
                 Get Products
               </div>
             </CardContent>

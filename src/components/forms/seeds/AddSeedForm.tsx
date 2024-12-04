@@ -556,7 +556,7 @@ const AddSeedForm = ({
                   htmlFor="min_harvesting_days"
                   className="dark:text-farmacieGrey"
                 >
-                  Min harvesting days
+                  Minimum days to reach maturity
                 </Label>
                 <FormField
                   control={form.control}
@@ -565,7 +565,7 @@ const AddSeedForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="Enter minimum days to reach harvesting"
+                          placeholder="Enter minimum days to reach maturity"
                           type="text"
                           id="min_harvesting_days"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -583,7 +583,7 @@ const AddSeedForm = ({
                   htmlFor="max_harvesting_days"
                   className="dark:text-farmacieGrey"
                 >
-                  Max havesting days
+                  Maximum days to reach maturity
                 </Label>
                 <FormField
                   control={form.control}
@@ -592,7 +592,7 @@ const AddSeedForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="Enter maximum days to reach harvesting"
+                          placeholder="Enter maximum days to reach maturity"
                           type="text"
                           id="max_harvesting_days"
                           className="outline-none focus:border-primary disabled:bg-primary/20"

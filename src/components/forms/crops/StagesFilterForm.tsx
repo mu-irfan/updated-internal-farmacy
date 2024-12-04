@@ -130,7 +130,7 @@ const StagesFilterForm = () => {
       Header: "",
       accessor: "actions",
       Cell: ({ row }: any) => (
-        <div className="flex items-center gap-4">
+        <div className="flex justify-end gap-4">
           <Button
             size="sm"
             variant="outline"
@@ -169,7 +169,7 @@ const StagesFilterForm = () => {
                           <Select
                             onValueChange={(value) => field.onChange(value)}
                           >
-                            <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieGrey focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                            <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieLightGreen focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
                               <SelectValue placeholder="Select Crop" />
                             </SelectTrigger>
                             <SelectContent className="rounded-xl">
@@ -206,7 +206,7 @@ const StagesFilterForm = () => {
                           <Select
                             onValueChange={(value) => field.onChange(value)}
                           >
-                            <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieGrey focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                            <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieLightGreen focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
                               <SelectValue placeholder="Select Variety" />
                             </SelectTrigger>
                             <SelectContent className="rounded-xl">

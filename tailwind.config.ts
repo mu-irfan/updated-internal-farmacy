@@ -62,6 +62,7 @@ const config = {
         farmacieLightPrimary: "#111513",
         farmacieDarkGreen: "#51815D",
         farmacieDarkSecondary: "#9FADA2",
+        farmacieLightGreen: "#119933",
       },
       keyframes: {
         "accordion-down": {

@@ -91,8 +91,6 @@ interface SeedTrails {
   sowing_date: string;
   tehsil: string;
   city: string;
-  min_irrigation: string;
-  max_irrigation: string;
   estimated_yield: string;
 }
 

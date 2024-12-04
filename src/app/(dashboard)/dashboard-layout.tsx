@@ -127,7 +127,6 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({
           </div>
         </SidebarBody>
       </Sidebar>
-
       <main className="flex flex-1">
         <div
           className={cn(

@@ -71,21 +71,21 @@ const ManageSeedTrailData = () => {
     },
     { Header: "Tehsil", accessor: "tehsil" },
     { Header: "City", accessor: "city" },
-    { Header: "Min irrigation mm", accessor: "min_irrigation" },
-    { Header: "Max irrigation mm", accessor: "max_irrigation" },
     { Header: "Est yield", accessor: "estimated_yield" },
     {
       Header: "",
       accessor: "actions",
       Cell: ({ row }: any) => (
-        <Button
-          size="sm"
-          variant="outline"
-          onClick={() => handleView(row.original.uuid)}
-          className="border-primary bg-primary/10 w-20 text-primary tracking-wider hover:text-primary/80"
-        >
-          View
-        </Button>
+        <div className="flex justify-end gap-4">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => handleView(row.original.uuid)}
+            className="border-primary bg-primary/10 w-20 text-primary tracking-wider hover:text-primary/80 "
+          >
+            View
+          </Button>
+        </div>
       ),
     },
   ];

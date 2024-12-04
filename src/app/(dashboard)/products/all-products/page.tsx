@@ -239,7 +239,7 @@ const AllProducts = () => {
                                 field.onChange(value);
                               }}
                             >
-                              <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieGrey focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                              <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieLightGreen focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
                                 <SelectValue placeholder="Select Category" />
                               </SelectTrigger>
                               <SelectContent className="rounded-xl">
@@ -272,7 +272,7 @@ const AllProducts = () => {
                             <Select
                               onValueChange={(value) => field.onChange(value)}
                             >
-                              <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieGrey focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                              <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieLightGreen focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
                                 <SelectValue placeholder="All sub_category" />
                               </SelectTrigger>
                               <SelectContent className="rounded-xl">
@@ -308,7 +308,7 @@ const AllProducts = () => {
                             <Select
                               onValueChange={(value) => field.onChange(value)}
                             >
-                              <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieGrey focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                              <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieLightGreen focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
                                 <SelectValue placeholder="All Companies" />
                               </SelectTrigger>
                               <SelectContent className="rounded-xl">

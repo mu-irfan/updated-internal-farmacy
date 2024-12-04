@@ -426,16 +426,18 @@ const AddVarietyToSimulatorForm = ({
                             <SelectGroup>
                               <SelectLabel>Crop</SelectLabel>
                               {!cropsLoading &&
-                                cropsList?.data?.map(
-                                  (crop: any, index: number) => (
+                                cropsList?.data
+                                  ?.sort((a: any, b: any) =>
+                                    a.crop_name.localeCompare(b.crop_name)
+                                  )
+                                  .map((crop: any, index: number) => (
                                     <SelectItem
                                       key={index}
                                       value={crop?.crop_name}
                                     >
                                       {crop.crop_name}
                                     </SelectItem>
-                                  )
-                                )}
+                                  ))}
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -663,7 +665,7 @@ const AddVarietyToSimulatorForm = ({
                   htmlFor="crop_min_days"
                   className="dark:text-farmacieGrey"
                 >
-                  Min harvesting days
+                  Minimum days to reach maturity
                 </Label>
                 <FormField
                   control={form.control}
@@ -672,7 +674,7 @@ const AddVarietyToSimulatorForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="Enter Minimum days to reach harvesting"
+                          placeholder="Enter minimum days to reach maturity"
                           type="text"
                           id="crop_min_days"
                           className="outline-none focus:border-primary disabled:bg-primary/20"
@@ -691,7 +693,7 @@ const AddVarietyToSimulatorForm = ({
                   htmlFor="crop_max_days"
                   className="dark:text-farmacieGrey"
                 >
-                  Max harvesting days
+                  Maximum days to reach maturity
                 </Label>
                 <FormField
                   control={form.control}
@@ -700,7 +702,7 @@ const AddVarietyToSimulatorForm = ({
                     <FormItem>
                       <FormControl>
                         <Input
-                          placeholder="Enter Maximum days to reach harvesting"
+                          placeholder="Enter maximum days to reach maturity"
                           type="text"
                           id="crop_max_days"
                           className="outline-none focus:border-primary disabled:bg-primary/20"

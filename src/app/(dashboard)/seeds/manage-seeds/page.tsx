@@ -136,7 +136,7 @@ const ManageSeeds = () => {
       Header: "",
       accessor: "actions",
       Cell: ({ row }: any) => (
-        <div className="flex items-center gap-4">
+        <div className="flex justify-end gap-4">
           <Button
             size="sm"
             variant="outline"
@@ -196,6 +196,7 @@ const ManageSeeds = () => {
             columns={seedColumns}
             data={filteredSeeds as SeedTableRow[]}
             paginate
+            extendWidth
           />
         ) : (
           <NoData message="No Data Available" />
