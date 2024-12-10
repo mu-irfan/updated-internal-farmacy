@@ -90,7 +90,8 @@ interface SeedTrails {
   seed_variety_name: string;
   sowing_date: string;
   tehsil: string;
-  city: string;
+  lat: string;
+  lon: string;
   estimated_yield: string;
 }
 

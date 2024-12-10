@@ -70,7 +70,8 @@ const ManageSeedTrailData = () => {
         row.original.sowing_date.toString().split("T")[0] || "N/A",
     },
     { Header: "Tehsil", accessor: "tehsil" },
-    { Header: "City", accessor: "city" },
+    { Header: "Latitude", accessor: "lat" },
+    { Header: "Longitude", accessor: "lon" },
     { Header: "Est yield", accessor: "estimated_yield" },
     {
       Header: "",
