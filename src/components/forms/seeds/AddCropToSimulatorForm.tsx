@@ -174,7 +174,7 @@ const AddCropToSimulatorForm = ({
               </LabelInputContainer>
               <LabelInputContainer>
                 <Label htmlFor="source" className="dark:text-farmacieGrey">
-                  Source
+                  Sowing Mode
                 </Label>
                 <FormField
                   control={form.control}

@@ -492,7 +492,7 @@ const AddVarietyToSimulatorForm = ({
 
               <LabelInputContainer>
                 <Label htmlFor="season" className="dark:text-farmacieGrey">
-                  Season
+                  Crop Cycle
                 </Label>
                 <FormField
                   control={form.control}
@@ -513,7 +513,7 @@ const AddVarietyToSimulatorForm = ({
                           </SelectTrigger>
                           <SelectContent className="rounded-xl">
                             <SelectGroup>
-                              <SelectLabel>season</SelectLabel>
+                              <SelectLabel>Crop Cycle</SelectLabel>
                               {seasons.map((item) => (
                                 <SelectItem key={item.value} value={item.value}>
                                   {item.label}
@@ -562,7 +562,7 @@ const AddVarietyToSimulatorForm = ({
                   htmlFor="irrigation_source"
                   className="dark:text-farmacieGrey"
                 >
-                  Irrigation source
+                  Region
                 </Label>
                 <FormField
                   control={form.control}
@@ -581,13 +581,13 @@ const AddVarietyToSimulatorForm = ({
                               placeholder={
                                 variety?.irrigation_source ||
                                 variety?.suitable_region ||
-                                "Select irrigation source"
+                                "Select Region Type"
                               }
                             />
                           </SelectTrigger>
                           <SelectContent className="rounded-xl">
                             <SelectGroup>
-                              <SelectLabel>irrigation_source</SelectLabel>
+                              <SelectLabel>Region Type</SelectLabel>
                               {suitahleRegion.map((item) => (
                                 <SelectItem key={item.value} value={item.value}>
                                   {item.label}

@@ -35,8 +35,7 @@ export const varietyTypes = [
 ];
 
 export const cropSources = [
-  { value: "seed", label: "Seed" },
-  { value: "irrigated", label: "Irrigated" },
+  { value: "seed", label: "Direct Seed" },
   { value: "seedling", label: "Seedling" },
 ];
 
@@ -180,17 +179,16 @@ export const principalStages = [
 ].sort((a, b) => a.label.localeCompare(b.label));
 
 export const cropSeasons = [
-  { value: "rabi", label: "Rabi" },
-  { value: "kharif", label: "Kharif" },
-  { value: "zaid_rabi", label: "Zaid Rabi" },
-  { value: "zaid_kharif", label: "Zaid Kharif" },
+  { value: "rabi", label: "Rabi (Winter)" },
+  { value: "kharif", label: "Kharif (Mon Soon)" },
+  { value: "zaid_rabi", label: "Zaid Rabi (Winter)" },
+  { value: "zaid_kharif", label: "Zaid Kharif (Summer)" },
 ];
 
 export const seasons = [
-  { value: "summer", label: "Summer" },
-  { value: "winter", label: "Winter" },
-  { value: "autumn", label: "Autumn" },
-  { value: "spring", label: "Spring" },
+  { value: "annuals", label: "Annuals" },
+  { value: "bienniel", label: "Biennial" },
+  { value: "prennial", label: "Prennial" },
 ].sort((a, b) => a.label.localeCompare(b.label));
 
 export const companiesReportsTitles = [
@@ -2457,6 +2455,7 @@ export const productsList = {
     "Soil Conditioners",
   ],
   pesticide: [
+    "Bio Pesticides",
     "Adjuvants",
     "Fumigants",
     "Fungicides",
@@ -2493,9 +2492,8 @@ export const weightUnitType = [
   { label: "Liter", value: "liter" },
   { label: "Milliliter ", value: "milliliter " },
   { label: "Dozen", value: "dozen" },
-  { label: "Sankara", value: "sankara" },
   { label: "Percentage  ", value: "percentage" },
-  { label: "Mun", value: "mun" },
+  { label: "Maund", value: "mun" },
 ].sort((a, b) => a.label.localeCompare(b.label));
 
 export const productType = [
@@ -2512,30 +2510,40 @@ export const units = [
   { value: "percentage", label: "Percentage" },
   { value: "g_per_l", label: "g/L" },
   { value: "g_per_kg", label: "g/kg" },
-  { value: "dp", label: "DP" },
-  { value: "ds", label: "DS" },
-  { value: "eg", label: "EG" },
-  { value: "ep", label: "EP" },
-  { value: "gr", label: "GR" },
-  { value: "gw", label: "GW" },
-  { value: "sg", label: "SG" },
-  { value: "sp", label: "SP" },
-  { value: "wdg", label: "WDG" },
-  { value: "wp", label: "WP" },
-  { value: "ec", label: "EC" },
-  { value: "dc", label: "DC" },
-  { value: "es", label: "ES" },
-  { value: "me", label: "ME" },
-  { value: "ew", label: "EW" },
-  { value: "sc", label: "SC" },
-  { value: "od", label: "OD" },
-  { value: "fs", label: "FS" },
-  { value: "se", label: "SE" },
-  { value: "ae", label: "AE" },
-  { value: "zc", label: "ZC" },
-  { value: "zw", label: "ZW" },
-  { value: "ze", label: "ZE" },
-  { value: "df", label: "DF" },
+  { value: "dp", label: "DP Dustable Powders" },
+  { value: "ds", label: "DS Powders for dry seed treatment" },
+  { value: "eg", label: "EG Emulsifiable granules" },
+  { value: "ep", label: "EP Emulsifiable powders" },
+  { value: "gr", label: "GR Granules" },
+  { value: "gw", label: "GW Water-soluble gel" },
+  { value: "sg", label: "SG Water-soluble granules" },
+  { value: "sp", label: "SP Water-soluble powders" },
+  { value: "wdg", label: "WDG Water-dispersible granules" },
+  { value: "wp", label: "WP Wettable powders" },
+  { value: "ec", label: "EC Emulsifiable concentrates" },
+  { value: "dc", label: "DC Dispersible concentrates" },
+  { value: "es", label: "ES Emulsions for seed treatment" },
+  { value: "me", label: "ME Micro-emulsions" },
+  { value: "ew", label: "EW Emulsions for seed treatment" },
+  { value: "sc", label: "SC Aqueous suspension concentrates" },
+  { value: "od", label: "OD Oil-based suspension concentrates" },
+  { value: "fs", label: "FS Suspension concentrates for seed treatment" },
+  { value: "se", label: "SE Aqueous suspo-emulsions" },
+  { value: "ae", label: "AE Aerosol dispensers" },
+  {
+    value: "zc",
+    label: "ZC Suspension of microcapsules and solid fine particles,",
+  },
+  {
+    value: "zw",
+    label: "ZW Aqueous dispersion of microcapsules and emulsion droplets",
+  },
+  {
+    value: "ze",
+    label:
+      "ZE Mixed formulation of Capsule suspension (CS) and Suspo-emulsion (SE) ",
+  },
+  { value: "df", label: "DF Dry Flowables" },
 ];
 
 export const seedTrailTableHeaders = [
@@ -2548,30 +2556,23 @@ export const seedTrailTableHeaders = [
 
 export const stages = [
   {
-    value: "senescence",
-    label: "Senescence",
-  },
-  {
-    value: "transplant",
-    label: "Transplant",
+    value: "germination",
+    label: "Germination/Transplant",
   },
   {
     value: "vegetative",
     label: "Vegetative",
   },
-  {
-    value: "germination",
-    label: "Germination",
-  },
+
   {
     value: "reproductive",
     label: "Reproductive",
   },
   {
-    value: "ripening",
-    label: "Ripening",
+    value: "senescence",
+    label: "Senescence",
   },
-].sort((a, b) => a.label.localeCompare(b.label));
+];
 
 export const nutrientsContent = [
   {

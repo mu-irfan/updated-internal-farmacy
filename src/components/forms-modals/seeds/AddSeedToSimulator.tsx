@@ -103,8 +103,8 @@ const AddSeedToSimulatorModal = ({
                 <Tabs defaultValue="Crop">
                   <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="Crop">Crop</TabsTrigger>
-                    <TabsTrigger value="Variety">Variety</TabsTrigger>
                     <TabsTrigger value="Stages">Stages</TabsTrigger>
+                    <TabsTrigger value="Variety">Variety</TabsTrigger>
                   </TabsList>
                   <TabsContent value="Crop">
                     <div className="py-3">

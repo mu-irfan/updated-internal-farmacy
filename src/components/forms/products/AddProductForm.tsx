@@ -687,7 +687,7 @@ const AddProductForm = ({
             </LabelInputContainer>
             <LabelInputContainer>
               <Label htmlFor="type" className="dark:text-farmacieGrey">
-                Bio/Chemical
+                Bio Control/Chemical Control
               </Label>
               <FormField
                 control={form.control}
