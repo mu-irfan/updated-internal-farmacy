@@ -136,13 +136,13 @@ const Ingredients = () => {
                 columns={IngredientColumns}
                 data={filterIngredientData as ingredientListTableRow[]}
                 extendWidth
-                paginate
+                paginate={ingredeintsList?.data?.ingredients?.length > 10}
               />
             ) : (
               <NoData message="No Data Available" />
             )}
           </div>
-          <Card className="relative flex flex-col justify-center py-5 lg:col-span-1 rounded-xl text-center bg-primary/10 transition-all delay-75 group/number dark:shadow-2xl">
+          <Card className="relative flex flex-col justify-center py-5 lg:col-span-1 rounded-xl text-center bg-primary/10 transition-all delay-75 group/number dark:shadow-2xl h-60">
             <CardHeader className="space-y-0 pb-2">
               <CardTitle className="text-3xl lg:text-6xl font-bold text-primary dark:text-green-500">
                 {ingredeintsList?.data?.count || "00"}

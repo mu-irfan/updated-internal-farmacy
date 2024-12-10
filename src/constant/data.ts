@@ -181,8 +181,8 @@ export const principalStages = [
 export const cropSeasons = [
   { value: "rabi", label: "Rabi (Winter)" },
   { value: "kharif", label: "Kharif (Mon Soon)" },
-  { value: "zaid_rabi", label: "Zaid Rabi (Winter)" },
-  { value: "zaid_kharif", label: "Zaid Kharif (Summer)" },
+  { value: "zaid_rabi", label: "Zaid Rabi (Spring)" },
+  { value: "zaid_kharif", label: "Zaid Kharif (Autumn)" },
 ];
 
 export const seasons = [

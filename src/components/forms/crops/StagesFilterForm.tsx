@@ -240,7 +240,6 @@ const StagesFilterForm = () => {
                     Get Stages
                   </Button>
                   <Button
-                    variant="outline"
                     className="dark:text-farmacieWhite font-medium border border-primary"
                     type="button"
                     onClick={() => setAddNewStageModalOpen((prev) => !prev)}
@@ -259,7 +258,7 @@ const StagesFilterForm = () => {
         <DataTable
           columns={stagesColoums}
           data={cropStages.data as StagesTableRow[]}
-          paginate
+          paginate={cropStages?.data?.length > 10}
           extendWidth
         />
       ) : (

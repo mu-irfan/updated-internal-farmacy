@@ -93,7 +93,7 @@ const DataTable = <T extends object>({
                         : {}
                     )}
                     key={ind}
-                    className="bg-gray-200 dark:bg-primary/10"
+                    className="bg-primary/10"
                   >
                     {extendedColumn.render("Header")}
                     <span>

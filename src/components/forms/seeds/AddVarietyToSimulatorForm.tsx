@@ -1046,11 +1046,11 @@ const AddVarietyToSimulatorForm = ({
               {checkboxData.map((item) => (
                 <div
                   key={item.id}
-                  className="flex justify-between items-center p-3 rounded dark:bg-[#27272A] border border-farmacieGrey"
+                  className="flex justify-between items-center p-3 rounded bg-primary/10 dark:bg-[#27272A]"
                 >
                   <label
                     htmlFor={item.id}
-                    className="text-sm font-medium leading-none dark:text-white peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className="text-sm font-medium leading-none dark:text-farmacieGrey peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
                     {item.label}
                   </label>
@@ -1065,7 +1065,7 @@ const AddVarietyToSimulatorForm = ({
                           onCheckedChange={(checked) => field.onChange(checked)}
                           checked={!!value}
                           id={item.id}
-                          className="border border-farmacieGrey"
+                          className="border border-farmacieDarkSecondary"
                         />
                       );
                     }}

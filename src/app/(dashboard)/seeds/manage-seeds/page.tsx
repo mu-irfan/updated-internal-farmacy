@@ -195,7 +195,7 @@ const ManageSeeds = () => {
           <DataTable
             columns={seedColumns}
             data={filteredSeeds as SeedTableRow[]}
-            paginate
+            paginate={filteredSeeds.length > 10}
             extendWidth
           />
         ) : (

@@ -384,7 +384,7 @@ const AllProducts = () => {
           <DataTable
             columns={productColumns}
             data={filteredProducts as ProductTableRow[]}
-            paginate
+            paginate={filteredProducts.length > 10}
             extendWidth
           />
         ) : (

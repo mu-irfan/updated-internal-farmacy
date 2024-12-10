@@ -66,7 +66,7 @@ export default function Dashboard() {
           Add product to global list
         </p>
         <Link href="/products/all-products" className="w-full mx-auto max-w-xl">
-          <Card className="w-full py-6 lg:py-8 rounded-xl text-center bg-primary/10 dark:bg-farmacieLightSecondary border-2 border-primary">
+          <Card className="relative w-full py-6 lg:py-8 max-w-xl rounded-xl text-center bg-primary/10 dark:bg-farmacieLightSecondary border-2 border-primary">
             <CardHeader className="space-y-0 pb-2">
               <CardTitle className="text-3xl lg:text-4xl font-medium lg:py-4">
                 <Search className="h-8 w-8 mx-auto text-primary dark:text-green-500" />
@@ -77,6 +77,7 @@ export default function Dashboard() {
                 Get Products
               </div>
             </CardContent>
+            <div className="absolute top-2 lg:-top-8 left-1/2 transform -translate-x-1/2 w-full mx-auto h-96 bg-primary/5 dark:bg-primary/10 rounded blur-3xl z-0" />
           </Card>
         </Link>
         <p className="text-sm text-left lg:pl-2 font-medium pb-4 w-full max-w-xl dark:text-farmacieGrey">

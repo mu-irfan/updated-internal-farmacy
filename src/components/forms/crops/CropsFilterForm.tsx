@@ -255,7 +255,7 @@ const CropsFilterForm = () => {
             <DataTable
               columns={cropColoums}
               data={filteredCrops as CropTableRow[]}
-              paginate
+              paginate={crops?.data?.length > 10}
             />
           </div>
         ) : (
@@ -269,7 +269,7 @@ const CropsFilterForm = () => {
             <DataTable
               columns={stageColumns}
               data={filteredCropStages as CropTrailsStages[]}
-              paginate
+              paginate={cropStage?.data?.length > 10}
             />
           </div>
         ) : (

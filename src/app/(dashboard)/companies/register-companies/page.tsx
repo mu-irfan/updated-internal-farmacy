@@ -136,7 +136,7 @@ const ManageRegisterCompanies = () => {
               columns={companyColumns}
               data={filterRegisterCompaniesData as FranchiseTableRow[]}
               extendWidth
-              paginate
+              paginate={registeredCompaniesList?.data?.length > 10}
             />
           ) : (
             <NoData message="No Data Available" />

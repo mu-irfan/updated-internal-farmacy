@@ -12,6 +12,9 @@ const createAccountFormSchema = z
       })
       .email({
         message: "Invalid email.",
+      })
+      .regex(/@agronomics\.pk$/, {
+        message: "Email must end with @agronomics.pk",
       }),
     password: z
       .string()
