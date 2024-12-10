@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { debounce } from "lodash";
-import { Search, Trash } from "lucide-react";
+import { MoveLeft, Search, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import DataTable from "@/components/Table/DataTable";
 import AddSeedToSimulatorModal from "@/components/forms-modals/seeds/AddSeedToSimulator";
@@ -20,6 +20,7 @@ import {
   useDeleteCropStage,
   useGetCropStage,
 } from "@/hooks/apis/crop/useStagesVarities";
+import { formatKey } from "@/lib/helper";
 
 const CropsFilterForm = () => {
   const { token } = useContextConsumer();
@@ -80,6 +81,7 @@ const CropsFilterForm = () => {
     setViewStageAgainstCrop(true);
     setCurrentCropName(crop.crop_name);
     refetch();
+    setSearchQuery("");
   };
 
   const handleCropStageView = (stage: any) => {
@@ -176,7 +178,9 @@ const CropsFilterForm = () => {
     {
       Header: "Principle Stage",
       accessor: "sub_stage",
-      Cell: ({ row }: any) => row.original?.sub_stage || "N/A",
+      Cell: ({ row }: any) => (
+        <span>{formatKey(row.original?.sub_stage) || "N/A"}</span>
+      ),
     },
     { Header: "BBCH scale", accessor: "bbch_scale" },
     {
@@ -210,23 +214,35 @@ const CropsFilterForm = () => {
       <Card className="w-full py-6 rounded-xl text-center bg-primary/10 mb-8">
         <CardContent className="p-0 px-6">
           <div className="flex justify-between items-center gap-2">
-            <div className="relative max-w-md lg:max-w-lg w-full">
-              <Input
-                placeholder="Search crop by name ..."
-                type="text"
-                className="outline-none border py-5 border-primary rounded-full pl-12 w-full"
-                onChange={(e) => handleSearchChange(e.target.value)}
-              />
-              <Search className="absolute left-3.5 -translate-y-1/2 bottom-0.5 w-5 h-5 text-gray-400" />
-            </div>
-            {viewStageAgainstCrop && (
-              <Button
-                className="text-farmacieWhite font-medium"
-                type="button"
-                onClick={() => setAddNewStageCropModalOpen((prev) => !prev)}
-              >
-                Add New Stage
-              </Button>
+            {!viewStageAgainstCrop ? (
+              <div className="relative max-w-md lg:max-w-lg w-full">
+                <Input
+                  placeholder="Search crop by name ..."
+                  type="text"
+                  className="outline-none border py-5 border-primary rounded-full pl-12 w-full"
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                />
+                <Search className="absolute left-3.5 -translate-y-1/2 bottom-0.5 w-5 h-5 text-gray-400" />
+              </div>
+            ) : (
+              <>
+                <Button
+                  className="text-farmacieWhite font-medium text-base dark:text-farmacieGrey"
+                  type="button"
+                  variant="link"
+                  onClick={() => setViewStageAgainstCrop(false)}
+                >
+                  <MoveLeft className="inline mr-1.5 mt-1 mb-1 w-6 h-6" />
+                  Back to crops
+                </Button>
+                <Button
+                  className="text-farmacieWhite font-medium"
+                  type="button"
+                  onClick={() => setAddNewStageCropModalOpen((prev) => !prev)}
+                >
+                  Add New Stage
+                </Button>
+              </>
             )}
           </div>
         </CardContent>

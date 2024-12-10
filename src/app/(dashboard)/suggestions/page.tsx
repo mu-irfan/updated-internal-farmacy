@@ -60,7 +60,7 @@ const Suggestions = () => {
           href="/suggestions/manage-suggestions"
           className="w-full mx-auto max-w-xl"
         >
-          <Card className="relative w-full py-6 lg:py-8 max-w-xl rounded-xl text-center bg-farmacieLightSecondary border-2 border-primary">
+          <Card className="relative w-full py-6 lg:py-8 max-w-xl rounded-xl text-center bg-primary/10 dark:bg-farmacieLightSecondary border-2 border-primary">
             <CardHeader className="space-y-0 pb-2">
               <CardTitle className="text-3xl lg:text-4xl font-medium lg:py-4">
                 <Search className="h-8 w-8 mx-auto text-primary dark:text-green-500" />

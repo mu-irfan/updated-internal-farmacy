@@ -239,6 +239,10 @@ export const provinces = [
 
 export const bbchScale = [
   {
+    value: "0",
+    label: "0",
+  },
+  {
     value: "1",
     label: "1",
   },
@@ -2544,6 +2548,10 @@ export const seedTrailTableHeaders = [
 
 export const stages = [
   {
+    value: "senescence",
+    label: "Senescence",
+  },
+  {
     value: "transplant",
     label: "Transplant",
   },
@@ -2563,7 +2571,7 @@ export const stages = [
     value: "ripening",
     label: "Ripening",
   },
-];
+].sort((a, b) => a.label.localeCompare(b.label));
 
 export const nutrientsContent = [
   {
