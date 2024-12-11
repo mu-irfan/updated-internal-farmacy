@@ -31,6 +31,7 @@ import {
   useCreateVarietyStage,
   useUpdateVarietyStage,
 } from "@/hooks/apis/crop/useStagesVarities";
+import { cn } from "@/lib/utils";
 
 const AddStagesToSimulatorForm = ({
   stage,
@@ -160,7 +161,14 @@ const AddStagesToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 stage?.crop_variety_fk || "Select Variety"
@@ -206,7 +214,14 @@ const AddStagesToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={stage?.stage || "Select Stage"}
                             />
@@ -246,7 +261,14 @@ const AddStagesToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={stage?.sub_stage || "Select Stage"}
                             />
@@ -284,7 +306,14 @@ const AddStagesToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 stage?.bbch_scale || "Select BBCH Scale"

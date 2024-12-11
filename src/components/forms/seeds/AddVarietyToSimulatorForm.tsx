@@ -53,6 +53,7 @@ import { SkeletonCard } from "@/components/SkeletonLoader";
 import { useGetAllCompanies } from "@/hooks/apis/useCompany";
 import { useGetAllCropsList } from "@/hooks/apis/crop/useCrop";
 import AddSeedModal from "@/components/forms-modals/seeds/AddSeed";
+import { cn } from "@/lib/utils";
 
 const AddVarietyToSimulatorForm = ({
   variety,
@@ -324,7 +325,14 @@ const AddVarietyToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 variety?.company ||
@@ -377,7 +385,14 @@ const AddVarietyToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 variety?.variety_type || "Select variety type"
@@ -417,7 +432,14 @@ const AddVarietyToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={variety?.crop_fk || "Select Crop"}
                             />
@@ -465,7 +487,14 @@ const AddVarietyToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 variety?.crop_season || "Select Crop Season"
@@ -506,7 +535,14 @@ const AddVarietyToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={variety?.season || "Select Season"}
                             />
@@ -576,7 +612,14 @@ const AddVarietyToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 variety?.irrigation_source ||
@@ -816,7 +859,14 @@ const AddVarietyToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 variety?.height_class || "Select height class"

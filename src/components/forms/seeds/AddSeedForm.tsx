@@ -38,7 +38,7 @@ import {
   uniqueFeatures,
 } from "@/constant/data";
 import { useContextConsumer } from "@/context/Context";
-import { baseUrl } from "@/lib/utils";
+import { baseUrl, cn } from "@/lib/utils";
 import Image from "next/image";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import toast from "react-hot-toast";
@@ -319,7 +319,14 @@ const AddSeedForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 seed?.company_fk ||
@@ -373,7 +380,14 @@ const AddSeedForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 seed?.crop_category || "Select Crop Category"
@@ -413,7 +427,14 @@ const AddSeedForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 seed?.crop || seed?.crop_fk || "Select Crop"
@@ -626,7 +647,14 @@ const AddSeedForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 seed?.suitable_region ||
@@ -671,7 +699,14 @@ const AddSeedForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 formatKey(seed?.package_type) ||
@@ -717,7 +752,14 @@ const AddSeedForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 seed?.height_class || "Select Height Class"

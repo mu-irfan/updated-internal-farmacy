@@ -4,7 +4,7 @@ import { FC, ReactNode } from "react";
 import ProtectedRoutes from "./ProtectedRoutes";
 
 export const metadata = {
-  title: "Farmacie Dashboard",
+  title: "Agronomics Internal Farmacie Dashboard",
   description: "Agronomics Farmacie Dashboard",
 };
 

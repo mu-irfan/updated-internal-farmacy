@@ -27,6 +27,7 @@ import { cropCategories, cropSources } from "@/constant/data";
 import { useContextConsumer } from "@/context/Context";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import { useCreateCrop, useUpdateCrop } from "@/hooks/apis/crop/useCrop";
+import { cn } from "@/lib/utils";
 
 const AddCropToSimulatorForm = ({
   crop,
@@ -148,7 +149,14 @@ const AddCropToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={
                                 crop?.crop_category || "Select Crop Category"
@@ -188,7 +196,14 @@ const AddCropToSimulatorForm = ({
                           }}
                           disabled={isViewMode}
                         >
-                          <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                          <SelectTrigger
+                            className={cn(
+                              "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                              !field.value
+                                ? "dark:text-farmaciePlaceholderMuted"
+                                : "dark:text-farmacieWhite"
+                            )}
+                          >
                             <SelectValue
                               placeholder={crop?.source || "Select Crop Source"}
                             />

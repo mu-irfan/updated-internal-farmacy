@@ -15,7 +15,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CirclePlus, CircleX, Plus, Trash } from "lucide-react";
-
+import {
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
+} from "@/components/ui/multi-select";
 import {
   packagingType,
   productCategory,
@@ -38,7 +45,7 @@ import {
 import useDynamicFields from "@/hooks/useDynamicFields";
 import { useContextConsumer } from "@/context/Context";
 import { SweetAlert } from "@/components/alerts/SweetAlert";
-import { baseUrl } from "@/lib/utils";
+import { baseUrl, cn } from "@/lib/utils";
 import Image from "next/image";
 import { SkeletonCard } from "@/components/SkeletonLoader";
 import toast from "react-hot-toast";
@@ -136,7 +143,10 @@ const AddProductForm = ({
           (item: any) => ({
             ingredient: item.ingredient ? item.ingredient : item.ingredient_fk,
             concentration: item.concentration,
-            unit: item.unit,
+            unit:
+              typeof item.unit === "string"
+                ? item.unit.split(",")
+                : item.unit || [],
           })
         );
 
@@ -157,7 +167,7 @@ const AddProductForm = ({
     const activeIngredientsArray = inputFields.map((field) => ({
       ingredient_name: field.ingredient,
       concentration: field.concentration,
-      unit: field.unit,
+      unit: Array.isArray(field.unit) ? field.unit.join(",") : field.unit,
     }));
 
     const formData = new FormData();
@@ -306,7 +316,14 @@ const AddProductForm = ({
                         }}
                         disabled={isViewMode}
                       >
-                        <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                        <SelectTrigger
+                          className={cn(
+                            "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                            !field.value
+                              ? "dark:text-farmaciePlaceholderMuted"
+                              : "dark:text-farmacieWhite"
+                          )}
+                        >
                           <SelectValue
                             placeholder={
                               productData?.company_fk || "Select Brand Company"
@@ -356,7 +373,14 @@ const AddProductForm = ({
                         }}
                         disabled={isViewMode}
                       >
-                        <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                        <SelectTrigger
+                          className={cn(
+                            "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                            !field.value
+                              ? "dark:text-farmaciePlaceholderMuted"
+                              : "dark:text-farmacieWhite"
+                          )}
+                        >
                           <SelectValue
                             placeholder={
                               productData?.category || "Select Category"
@@ -396,7 +420,14 @@ const AddProductForm = ({
                         }}
                         disabled={isViewMode}
                       >
-                        <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                        <SelectTrigger
+                          className={cn(
+                            "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                            !field.value
+                              ? "dark:text-farmaciePlaceholderMuted"
+                              : "dark:text-farmacieWhite"
+                          )}
+                        >
                           <SelectValue
                             placeholder={
                               productData?.sub_category || "Select Sub Category"
@@ -446,7 +477,14 @@ const AddProductForm = ({
                     }}
                     disabled={isViewMode || loadingActiveIngredients}
                   >
-                    <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                    <SelectTrigger
+                      className={cn(
+                        "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                        !field.ingredient
+                          ? "dark:text-farmaciePlaceholderMuted"
+                          : "dark:text-farmacieWhite"
+                      )}
+                    >
                       <SelectValue
                         placeholder={
                           field.ingredient || "Select Active Ingredient"
@@ -489,41 +527,45 @@ const AddProductForm = ({
                   />
                 </FormControl>
               </LabelInputContainer>
-
               <LabelInputContainer>
                 <Label
                   htmlFor={`units-${field.id}`}
                   className="dark:text-farmacieGrey"
                 >
-                  Units
+                  Unit/Formulation Type
                 </Label>
                 <FormControl>
-                  <Select
-                    value={field.unit}
-                    onValueChange={(value) => {
+                  <MultiSelector
+                    onValuesChange={(values) => {
                       const updatedFields = [...inputFields];
-                      updatedFields[index].unit = value;
+                      updatedFields[index].unit = values;
                       setInputFields(updatedFields);
                     }}
+                    values={Array.isArray(field.unit) ? field.unit : []}
                     disabled={isViewMode}
                   >
-                    <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
-                      <SelectValue placeholder={field.unit || "Select unit"} />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-xl">
-                      <SelectGroup>
-                        <SelectLabel>Select unit</SelectLabel>
+                    <MultiSelectorTrigger disabled={isViewMode}>
+                      <MultiSelectorInput
+                        placeholder={!isViewMode ? "Select units" : ""}
+                        className="text-sm"
+                        disabled={isViewMode}
+                      />
+                    </MultiSelectorTrigger>
+                    <MultiSelectorContent>
+                      <MultiSelectorList>
                         {units.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
+                          <MultiSelectorItem
+                            key={item.value}
+                            value={item.value}
+                          >
                             {item.label}
-                          </SelectItem>
+                          </MultiSelectorItem>
                         ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                      </MultiSelectorList>
+                    </MultiSelectorContent>
+                  </MultiSelector>
                 </FormControl>
               </LabelInputContainer>
-
               <div className="flex items-center gap-2">
                 {index === 0 && (
                   <Button
@@ -594,7 +636,14 @@ const AddProductForm = ({
                         }}
                         disabled={isViewMode}
                       >
-                        <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                        <SelectTrigger
+                          className={cn(
+                            "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                            !field.value
+                              ? "dark:text-farmaciePlaceholderMuted"
+                              : "dark:text-farmacieWhite"
+                          )}
+                        >
                           <SelectValue
                             placeholder={
                               productData?.weight_unit || "Select Weight Unit"
@@ -636,7 +685,14 @@ const AddProductForm = ({
                         }}
                         disabled={isViewMode}
                       >
-                        <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                        <SelectTrigger
+                          className={cn(
+                            "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                            !field.value
+                              ? "dark:text-farmaciePlaceholderMuted"
+                              : "dark:text-farmacieWhite"
+                          )}
+                        >
                           <SelectValue
                             placeholder={
                               formatKey(productData?.package_type) ||
@@ -701,7 +757,14 @@ const AddProductForm = ({
                         }}
                         disabled={isViewMode}
                       >
-                        <SelectTrigger className="p-3 py-5 dark:text-farmaciePlaceholderMuted rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20">
+                        <SelectTrigger
+                          className={cn(
+                            "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                            !field.value
+                              ? "dark:text-farmaciePlaceholderMuted"
+                              : "dark:text-farmacieWhite"
+                          )}
+                        >
                           <SelectValue
                             placeholder={productData?.type || "Select Type"}
                           />

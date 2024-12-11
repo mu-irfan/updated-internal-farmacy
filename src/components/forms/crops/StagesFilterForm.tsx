@@ -37,6 +37,7 @@ import {
   useGetAllCropsVaritites,
   useGetVarietyStage,
 } from "@/hooks/apis/crop/useCropVarities";
+import { cn } from "@/lib/utils";
 
 const StagesFilterForm = () => {
   const { token } = useContextConsumer();
@@ -169,7 +170,14 @@ const StagesFilterForm = () => {
                           <Select
                             onValueChange={(value) => field.onChange(value)}
                           >
-                            <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieLightGreen focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                            <SelectTrigger
+                              className={cn(
+                                "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                                !field.value
+                                  ? "dark:text-farmaciePlaceholderMuted"
+                                  : "dark:text-farmacieWhite"
+                              )}
+                            >
                               <SelectValue placeholder="Select Crop" />
                             </SelectTrigger>
                             <SelectContent className="rounded-xl">
@@ -206,7 +214,14 @@ const StagesFilterForm = () => {
                           <Select
                             onValueChange={(value) => field.onChange(value)}
                           >
-                            <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieLightGreen focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                            <SelectTrigger
+                              className={cn(
+                                "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                                !field.value
+                                  ? "dark:text-farmaciePlaceholderMuted"
+                                  : "dark:text-farmacieWhite"
+                              )}
+                            >
                               <SelectValue placeholder="Select Variety" />
                             </SelectTrigger>
                             <SelectContent className="rounded-xl">

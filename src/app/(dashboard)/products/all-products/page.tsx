@@ -239,7 +239,14 @@ const AllProducts = () => {
                                 field.onChange(value);
                               }}
                             >
-                              <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieLightGreen focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                              <SelectTrigger
+                                className={cn(
+                                  "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                                  !field.value
+                                    ? "dark:text-farmaciePlaceholderMuted"
+                                    : "dark:text-farmacieWhite"
+                                )}
+                              >
                                 <SelectValue placeholder="Select Category" />
                               </SelectTrigger>
                               <SelectContent className="rounded-xl">
@@ -272,7 +279,14 @@ const AllProducts = () => {
                             <Select
                               onValueChange={(value) => field.onChange(value)}
                             >
-                              <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieLightGreen focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                              <SelectTrigger
+                                className={cn(
+                                  "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                                  !field.value
+                                    ? "dark:text-farmaciePlaceholderMuted"
+                                    : "dark:text-farmacieWhite"
+                                )}
+                              >
                                 <SelectValue placeholder="All sub_category" />
                               </SelectTrigger>
                               <SelectContent className="rounded-xl">
@@ -308,7 +322,14 @@ const AllProducts = () => {
                             <Select
                               onValueChange={(value) => field.onChange(value)}
                             >
-                              <SelectTrigger className="p-3 py-5 rounded-md dark:text-farmacieGrey border-[0.5px] border-farmacieLightGreen focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                              <SelectTrigger
+                                className={cn(
+                                  "p-3 py-5 rounded-md border border-estateLightGray focus:outline-none focus:ring-1 focus:ring-primary disabled:bg-primary/20",
+                                  !field.value
+                                    ? "dark:text-farmaciePlaceholderMuted"
+                                    : "dark:text-farmacieWhite"
+                                )}
+                              >
                                 <SelectValue placeholder="All Companies" />
                               </SelectTrigger>
                               <SelectContent className="rounded-xl">

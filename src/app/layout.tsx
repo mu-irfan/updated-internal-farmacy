@@ -6,20 +6,20 @@ import QueryProvider from "@/query/QueryProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Business Farmacie - Login",
-  description: "Agronomics Business Farmacie (Login)",
+  title: "Agronomics Internal Farmacie - Login",
+  description: "Agronomics Internal Farmacie (Login)",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://farmacy-business.vercel.app/",
-    title: "Business Farmacie",
-    description: "Business Farmacie",
+    url: "https://admin.agronomics.pk/",
+    title: "Agronomics Internal Farmacie",
+    description: "Agronomics Internal Farmacie",
     images: [
       {
         url: "/assets/images/OG.png",
         width: 1200,
         height: 630,
-        alt: "Business Farmacie",
+        alt: "Agronomics Internal Farmacie",
       },
     ],
   },

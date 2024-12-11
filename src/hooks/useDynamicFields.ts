@@ -9,7 +9,7 @@ const useDynamicFields = (initialFields: Omit<InputField, "id">[]) => {
   const handleAddField = () => {
     setInputFields((prevFields) => [
       ...prevFields,
-      { id: nanoid(), ingredient: "", concentration: "", unit: "" },
+      { id: nanoid(), ingredient: "", concentration: "", unit: [] },
     ]);
   };
 
