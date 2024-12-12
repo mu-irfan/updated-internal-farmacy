@@ -344,6 +344,6 @@ type AddIngredientFormData = {
 type InputField = {
   id: string;
   ingredient: string;
-  concentration: string;
+  concentration: number;
   unit: string | string[];
 };

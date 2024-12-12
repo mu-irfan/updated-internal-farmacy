@@ -515,12 +515,15 @@ const AddProductForm = ({
                 <FormControl>
                   <Input
                     defaultValue={field.concentration}
-                    type="text"
+                    type="number"
+                    step="any"
                     placeholder="Enter concentration"
                     className="outline-none focus:border-primary disabled:bg-primary/20"
                     onChange={(e) => {
+                      const value = e.target.value;
                       const updatedFields = [...inputFields];
-                      updatedFields[index].concentration = e.target.value;
+                      updatedFields[index].concentration =
+                        value === "" ? 0 : parseInt(value, 10);
                       setInputFields(updatedFields);
                     }}
                     disabled={isViewMode}
